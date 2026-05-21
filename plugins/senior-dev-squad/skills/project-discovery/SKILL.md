@@ -38,6 +38,12 @@ Skip discovery = build the wrong thing. Every time.
 - "The user already told me everything" (they didn't)
 - "I know what this project looks like" (you don't)
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## Discovery Flow (8 Steps)
 
 ### Step 1: Project Identity — always ask

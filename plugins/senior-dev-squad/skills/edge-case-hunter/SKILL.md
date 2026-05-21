@@ -94,6 +94,12 @@ Copy-paste wrong ID, type "100" instead of "10", wrong currency (USD vs EUR), ph
 - When reviewing payment, order, or auth flows (high-risk)
 - Before production deployment of new features
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## Few-Shot Examples (MANDATORY Reference)
 
 ### ❌ BAD Output (Most common in benchmarks)

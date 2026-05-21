@@ -36,6 +36,12 @@ Rewrite it so the code speaks for itself.
 - "It's working, don't touch it" — working code that nobody understands will break and nobody will be able to fix it
 - "The original author knows what it means" — code is read far more often than it is written, by people who weren't the original author
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## The 10 Simplifications
 
 | # | Rule | Fix |

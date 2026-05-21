@@ -36,6 +36,12 @@ Without a before/after measurement, you didn't optimize — you just added compl
 - The app is user-facing and conversion or retention depends on speed
 - A slow query is already in production and causing timeouts or degraded UX
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## Core Web Vitals (Frontend)
 
 | Metric | Good | Poor | User Impact |

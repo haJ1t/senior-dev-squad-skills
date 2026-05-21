@@ -40,6 +40,12 @@ NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
 - "It's a UI-only change" (UI has the most edge cases)
 - "It's a prototype" (prototypes become production)
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## The Test Pyramid
 
 ```

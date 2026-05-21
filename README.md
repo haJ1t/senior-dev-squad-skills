@@ -1,8 +1,8 @@
-# 🧠 senior-dev-squad-skills v3.3.0
+# 🧠 senior-dev-squad-skills v3.4.0
 
-> **105 production-grade AI agent skills across 21 installable Claude Code plugins** (1 core `senior-dev-squad` plugin + 20 domain plugins). Complete SDLC pipeline: spec → architecture → frontend/backend → security → testing → DevOps → review → ship. Plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP integration, agent platforms, marketing, product management, cross-provider teams, AI/ML pipelines, developer experience, compliance, advanced testing, distributed-systems architecture, and epic orchestration.
+> **107 production-grade AI agent skills across 21 installable Claude Code plugins** (1 core `senior-dev-squad` plugin + 20 domain plugins). Complete SDLC pipeline: spec → architecture → frontend/backend → security → testing → DevOps → review → ship. Plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP integration, agent platforms, marketing, product management, cross-provider teams, AI/ML pipelines, developer experience, compliance, advanced testing, distributed-systems architecture, and epic orchestration.
 
-**85 core skills + 20 domain plugins = 105 skills across 21 installable plugins** that turn any AI coding agent into a disciplined, production-ready development squad.
+**87 core skills + 20 domain plugins = 107 skills across 21 installable plugins** that turn any AI coding agent into a disciplined, production-ready development squad.
 
 ## Phase Map
 
@@ -14,7 +14,7 @@
 | **Phase 3** | AI/ML Pipeline (5) + Developer Experience (5) + Compliance (4) + Advanced Testing (5) | 19 | **83** |
 | **Domain Plugins** | Framework, Database, Infra, Domain expertise | 20 | **103** |
 
-**Total:** 85 core skills + 20 domain plugins = **105 skills / 21 plugins**
+**Total:** 87 core skills + 20 domain plugins = **107 skills / 21 plugins**
 
 _Per-phase buckets above are historical groupings and are re-tallied for accuracy in the Phase 2 content pass._
 
@@ -348,7 +348,7 @@ Every skill follows the superpowers-quality format:
 | Metric | Value |
 |--------|-------|
 | Total Plugins | 21 (1 core + 20 domain) |
-| Total Skills | 105 (85 core + 20 domain) |
+| Total Skills | 107 (87 core + 20 domain) |
 | Skill Template | `templates/SKILL-template.md` (not shipped as a skill) |
 | Phases | 0, 1, 2, 3 — 4 phases |
 | Largest Skill | distributed-systems-architect (~592 lines) |
@@ -363,6 +363,7 @@ Every skill follows the superpowers-quality format:
 | 3.1.0 | 2026-05-20 | NEW: epic-orchestrator (epic-level multi-squad orchestration, 456 lines) + distributed-systems-architect (distributed systems/microservices architecture, 592 lines) |
 | **3.2.0** | **2026-05-21** | **Repackaged as an installable Claude Code marketplace: hybrid topology (1 core plugin + 20 domain plugins), valid `.claude-plugin/marketplace.json` + per-plugin `plugin.json`, deduped skills, `_template` moved out, counts corrected to 102 skills / 21 plugins, removed misleading auto-trigger/always-on claims. Content pass: all 82 core skills brought to the 7-section template bar (Iron Law / When-to-Use / Red Flags / Rationalizations / Human-Signals / Verification / Related Skills), 20 domain plugins to a lighter bar (When-to-Use + Related Skills), and all 102 descriptions trigger-optimized for auto-invocation.** |
 | **3.3.0** | **2026-05-21** | **Phase 3 expansion: added 3 core skills — `i18n-localization-engineer`, `realtime-systems-engineer`, `finops-cost-optimizer` (Product/Platform bucket), each at the full 7-section template bar → 105 skills / 21 plugins.** |
+| **3.4.0** | **2026-05-21** | **Adopted mattpocock/skills strengths: new `setup-senior-dev-squad` (interactive config) + `grill` (alignment interview) skills; `CONTEXT.md`/ADR cohesion convention (`templates/CONTEXT-FORMAT.md`, `templates/ADR-FORMAT.md`) woven into 10 flagship skills; lifecycle dirs (`incubator/`, `attic/`); `scripts/check-consistency.py` + maintenance `CLAUDE.md` → 107 skills / 21 plugins.** |
 
 ## License
 

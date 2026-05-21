@@ -78,6 +78,12 @@ Design production-ready architecture before implementation. Every decision docum
 - "We'll refactor the architecture later" (you won't).
 - "The app seems simple enough to figure out as we go".
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## The Seven Phases
 
 ### Phase 1: System Decomposition

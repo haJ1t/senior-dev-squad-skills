@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "senior-dev-squad",
-  "description": "Senior dev squad: 1 core SDLC plugin + 20 domain plugins (105 skills across 21 plugins).",
+  "description": "Senior dev squad: 1 core SDLC plugin + 20 domain plugins (107 skills across 21 plugins).",
   "owner": {
     "name": "senior-dev-squad",
     "url": "https://github.com/senior-dev-squad/senior-dev-squad-skills"
@@ -10,7 +10,7 @@
     {
       "name": "senior-dev-squad",
       "description": "Production-grade senior-engineer SDLC squad: spec, architecture, frontend/backend, security, testing, DevOps, review, ship, plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP, agent platform, product, marketing, AI/ML, DevEx, compliance, and advanced testing skills.",
-      "version": "3.3.0",
+      "version": "3.4.0",
       "source": "./plugins/senior-dev-squad"
     },
     {

@@ -36,6 +36,12 @@ If you haven't completed all 6 phases below, you cannot write code. Not a single
 - Under time pressure (a 15-minute spec beats 3 days of wrong implementation)
 - Feature seems trivial (trivial features still need acceptance criteria)
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## The Six Phases
 
 You MUST complete each phase before proceeding to the next.

@@ -70,6 +70,12 @@ EVERY FINDING MUST INCLUDE: OWASP mapping + concrete fix code + exploit scenario
 - "It's an internal tool" (internal compromise is still a breach)
 - "We're using an ORM so SQL injection isn't possible" (it is in raw queries)
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## Security by Stage
 
 ### Stage 1: Threat Model (During Spec & Architecture)

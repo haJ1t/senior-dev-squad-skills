@@ -38,6 +38,12 @@ If you can't say "this is safe" with confidence, you can't approve.
 - The author is senior (seniority reduces typos, not blind spots)
 - Tests pass (tests prove the happy path works, not that the code is correct)
 
+## Project Context
+
+Before significant work, check for a project glossary and decision log:
+- If `CONTEXT.md` exists, use its ubiquitous-language glossary for all naming, and respect the decisions recorded in `docs/adr/`.
+- If they are missing and the work is non-trivial, consider `/senior-dev-squad:grill` (alignment + glossary/ADR capture) or `/senior-dev-squad:setup-senior-dev-squad` first.
+
 ## What to Check (Every PR)
 
 ### 1. Correctness
