@@ -1,0 +1,15 @@
+{
+  "name": "devtools-pro",
+  "description": "CLI tools, VS Code extensions, SDKs, developer experience, API design. Use when building or improving developer tooling.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "devtools",
+    "domain"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "docker-k8s-pro",
+  "description": "Multi-stage Docker, K8s manifests, Helm, service mesh, scaling, monitoring. Use when containerizing or deploying services.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "docker-k8s",
+    "domain"
+  ]
+}

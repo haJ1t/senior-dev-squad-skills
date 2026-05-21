@@ -1,0 +1,23 @@
+{
+  "name": "senior-dev-squad",
+  "description": "Production-grade senior-engineer SDLC squad: spec, architecture, frontend/backend, security, testing, DevOps, review, ship, plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP, agent platform, product, marketing, AI/ML, DevEx, compliance, and advanced testing skills.",
+  "version": "3.3.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "sdlc",
+    "fullstack",
+    "security",
+    "testing",
+    "devops",
+    "code-review",
+    "orchestration",
+    "design-system",
+    "ai-ml",
+    "compliance"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "saas-pro",
+  "description": "Multi-tenant architecture, billing, subscription management, onboarding, RBAC. Use when building or reviewing SaaS platform features.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "saas",
+    "domain"
+  ]
+}

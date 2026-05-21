@@ -1,0 +1,15 @@
+{
+  "name": "game-dev-pro",
+  "description": "Unity, Unreal, Godot: game architecture, ECS, multiplayer, optimization, CI/CD. Use when building or optimizing game projects.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "game-dev",
+    "domain"
+  ]
+}

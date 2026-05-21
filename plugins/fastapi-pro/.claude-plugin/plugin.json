@@ -1,0 +1,15 @@
+{
+  "name": "fastapi-pro",
+  "description": "FastAPI patterns, Pydantic, async SQL, dependency injection, WebSocket, testing. Use when building or reviewing FastAPI services.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "fastapi",
+    "domain"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "django-pro",
+  "description": "Django ORM, DRF, signals, management commands, Celery, testing. Use when building or reviewing Django applications.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "repository": "https://github.com/senior-dev-squad/senior-dev-squad-skills",
+  "keywords": [
+    "django",
+    "domain"
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "senior-dev-squad",
+  "description": "Senior dev squad: 1 core SDLC plugin + 20 domain plugins (105 skills across 21 plugins).",
+  "owner": {
+    "name": "senior-dev-squad",
+    "url": "https://github.com/senior-dev-squad/senior-dev-squad-skills"
+  },
+  "plugins": [
+    {
+      "name": "senior-dev-squad",
+      "description": "Production-grade senior-engineer SDLC squad: spec, architecture, frontend/backend, security, testing, DevOps, review, ship, plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP, agent platform, product, marketing, AI/ML, DevEx, compliance, and advanced testing skills.",
+      "version": "3.3.0",
+      "source": "./plugins/senior-dev-squad"
+    },
+    {
+      "name": "ai-app-security-pro",
+      "description": "LLM security: prompt injection, guardrails, PII redaction, model access control, audit. Use when securing AI apps or auditing LLM pipelines.",
+      "version": "1.0.0",
+      "source": "./plugins/ai-app-security-pro"
+    },
+    {
+      "name": "ai-ml-pro",
+      "description": "ML workflows, training pipelines, model evaluation, deployment, experiment tracking. Use when building or reviewing ML systems.",
+      "version": "1.0.0",
+      "source": "./plugins/ai-ml-pro"
+    },
+    {
+      "name": "blockchain-web3-pro",
+      "description": "Smart contracts, dApps, DeFi, NFT, testing, security, gas optimization. Use when building or auditing Web3 or blockchain projects.",
+      "version": "1.0.0",
+      "source": "./plugins/blockchain-web3-pro"
+    },
+    {
+      "name": "data-engineering-pro",
+      "description": "ETL pipelines, data warehousing, streaming, orchestration, quality, governance. Use when designing or reviewing data pipelines.",
+      "version": "1.0.0",
+      "source": "./plugins/data-engineering-pro"
+    },
+    {
+      "name": "devtools-pro",
+      "description": "CLI tools, VS Code extensions, SDKs, developer experience, API design. Use when building or improving developer tooling.",
+      "version": "1.0.0",
+      "source": "./plugins/devtools-pro"
+    },
+    {
+      "name": "django-pro",
+      "description": "Django ORM, DRF, signals, management commands, Celery, testing. Use when building or reviewing Django applications.",
+      "version": "1.0.0",
+      "source": "./plugins/django-pro"
+    },
+    {
+      "name": "docker-k8s-pro",
+      "description": "Multi-stage Docker, K8s manifests, Helm, service mesh, scaling, monitoring. Use when containerizing or deploying services.",
+      "version": "1.0.0",
+      "source": "./plugins/docker-k8s-pro"
+    },
+    {
+      "name": "ecommerce-pro",
+      "description": "Cart, catalog, inventory, payments, checkout, orders, search, personalization. Use when building or reviewing e-commerce features.",
+      "version": "1.0.0",
+      "source": "./plugins/ecommerce-pro"
+    },
+    {
+      "name": "fastapi-pro",
+      "description": "FastAPI patterns, Pydantic, async SQL, dependency injection, WebSocket, testing. Use when building or reviewing FastAPI services.",
+      "version": "1.0.0",
+      "source": "./plugins/fastapi-pro"
+    },
+    {
+      "name": "fintech-pro",
+      "description": "Payments, compliance, auditing, reconciliation, fraud detection, ledger. Use when building or reviewing financial technology systems.",
+      "version": "1.0.0",
+      "source": "./plugins/fintech-pro"
+    },
+    {
+      "name": "game-dev-pro",
+      "description": "Unity, Unreal, Godot: game architecture, ECS, multiplayer, optimization, CI/CD. Use when building or optimizing game projects.",
+      "version": "1.0.0",
+      "source": "./plugins/game-dev-pro"
+    },
+    {
+      "name": "healthtech-pro",
+      "description": "HIPAA compliance, FHIR, EHR integration, audit, PHI protection. Use when building or auditing healthcare technology systems.",
+      "version": "1.0.0",
+      "source": "./plugins/healthtech-pro"
+    },
+    {
+      "name": "mobile-pro",
+      "description": "React Native / Flutter / SwiftUI: state management, navigation, offline, push, stores. Use when building or reviewing mobile apps.",
+      "version": "1.0.0",
+      "source": "./plugins/mobile-pro"
+    },
+    {
+      "name": "nextjs-pro",
+      "description": "Next.js App Router, Server Components, Server Actions, ISR, streaming, middleware. Use when building or reviewing Next.js apps.",
+      "version": "1.0.0",
+      "source": "./plugins/nextjs-pro"
+    },
+    {
+      "name": "node-express-pro",
+      "description": "Express.js patterns, middleware architecture, error handling, validation, file uploads. Use when building or reviewing Node.js/Express services.",
+      "version": "1.0.0",
+      "source": "./plugins/node-express-pro"
+    },
+    {
+      "name": "observability-pro",
+      "description": "Monitoring, logging, tracing, alerting, dashboards, SLOs, incident response. Use when setting up or improving observability stacks.",
+      "version": "1.0.0",
+      "source": "./plugins/observability-pro"
+    },
+    {
+      "name": "postgres-pro",
+      "description": "Advanced PostgreSQL: indexing, CTEs, window functions, partitioning, full-text search. Use when optimizing or reviewing PostgreSQL schemas and queries.",
+      "version": "1.0.0",
+      "source": "./plugins/postgres-pro"
+    },
+    {
+      "name": "saas-pro",
+      "description": "Multi-tenant architecture, billing, subscription management, onboarding, RBAC. Use when building or reviewing SaaS platform features.",
+      "version": "1.0.0",
+      "source": "./plugins/saas-pro"
+    },
+    {
+      "name": "supabase-pro",
+      "description": "Supabase auth, RLS, realtime, storage, edge functions, database design. Use when building or reviewing Supabase-backed applications.",
+      "version": "1.0.0",
+      "source": "./plugins/supabase-pro"
+    },
+    {
+      "name": "terraform-pro",
+      "description": "Terraform modules, remote state, workspaces, CI/CD for IaC, security scanning. Use when writing or reviewing Terraform infrastructure code.",
+      "version": "1.0.0",
+      "source": "./plugins/terraform-pro"
+    }
+  ]
+}
