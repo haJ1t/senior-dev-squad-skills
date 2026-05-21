@@ -488,7 +488,6 @@ class ShieldEvent:
         icon = {"INFO": "🟢", "WARN": "🟡", "CRITICAL": "🔴"}[self.severity]
         return f"[{self.timestamp}] {icon} [{self.severity}] [{self.category}] {self.message} → {self.action}"
 
-
 class ShieldLogger:
     def __init__(self):
         self.events: list[ShieldEvent] = []
@@ -603,8 +602,6 @@ After completing the process of this skill:
 6. **Traceability Check:** Have all security events been logged? Are the logs complete and understandable?
 7. **Improvement Check:** Can Agent Shield itself be improved? Should better patterns or smarter detection methods be added?
 
-
-
 ## Common Rationalizations
 
 | Excuse | Reality |
@@ -615,9 +612,6 @@ After completing the process of this skill:
 | "Passive mode is fine for now, we'll switch to Active before launch" | "Before launch" never comes. Passive mode hides the shield's value and normalizes bypassing it. |
 | "The prompt injection pattern didn't match our regex, so it's safe" | Regex patterns cover known attacks. Novel injection techniques bypass patterns by design — use defence-in-depth. |
 
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -634,27 +628,3 @@ After completing the process of this skill:
 [Full code with: validation, auth, transaction, logging, rate limit, idempotency]
 ```
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**

@@ -1,9 +1,6 @@
 ---
 name: supabase-pro
 description: "Supabase auth, RLS, realtime, storage, edge functions, database design. Use when building or reviewing Supabase-backed applications."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Supabase Pro
@@ -217,8 +214,6 @@ serve(async (req) => {
 - [ ] Database functions use SECURITY DEFINER sparingly
 - [ ] Migrations versioned (supabase migrations)
 
-
-
 ## Related Skills
 
 - **postgres-pro** — Supabase is PostgreSQL; reach for postgres-pro when queries require advanced indexes, partitioning, CTEs, or zero-downtime migration techniques beyond what Supabase migrations cover
@@ -228,10 +223,6 @@ serve(async (req) => {
 - **backend-senior-engineer** — server-side Supabase client setup, protected API routes, and Edge Function logic are backend concerns; use when the server-side auth pattern needs to integrate with a broader API layer
 - **test-engineer** — testing RLS policies requires running queries as different Postgres roles; use together when writing integration tests that verify tenant isolation or auth edge cases
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -245,24 +236,3 @@ serve(async (req) => {
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

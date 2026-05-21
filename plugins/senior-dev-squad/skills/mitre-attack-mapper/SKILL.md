@@ -172,10 +172,6 @@ After completing this process:
 3. **Validity Check:** Do all selected ATT&CK IDs and M-IDs exist in the official MITRE database?
 4. **Actionability Check:** Can a SOC analyst or developer immediately act on your recommendations?
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -189,24 +185,3 @@ After completing this process:
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code changes |
-| Missing severity tag | No prioritization | Always use CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan all categories independently |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

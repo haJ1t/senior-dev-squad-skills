@@ -1,9 +1,6 @@
 ---
 name: saas-pro
 description: "Multi-tenant architecture, billing, subscription management, onboarding, RBAC. Use when building or reviewing SaaS platform features."
-model: any
-user-invocable: true
-always: false
 ---
 
 # SaaS Pro
@@ -153,8 +150,6 @@ async function checkUsageLimit(tenantId: string, metric: string, limit: number):
 - [ ] Proration handling for plan changes
 - [ ] Multi-tenant data export/deletion (GDPR)
 
-
-
 ## Related Skills
 
 - **backend-senior-engineer** — tenant middleware, webhook handlers, and usage-tracking endpoints are backend code; use for implementation guidance once SaaS architecture decisions are made here
@@ -164,10 +159,6 @@ async function checkUsageLimit(tenantId: string, metric: string, limit: number):
 - **api-design-reviewer** — subscription tier enforcement and usage limit checks must be consistent across all API endpoints; use when auditing gating logic at the route layer
 - **test-engineer** — multi-tenant test isolation (separate tenants per test, seeded plans) is non-trivial; use together when writing integration tests for billing or feature-flag paths
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -181,24 +172,3 @@ async function checkUsageLimit(tenantId: string, metric: string, limit: number):
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

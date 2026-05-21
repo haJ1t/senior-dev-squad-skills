@@ -256,35 +256,3 @@ After completing the process of this skill:
 3. **Quality Check:** Do the outputs meet the standard of the Iron Law — is every claim referable?
 4. **Improvement Loop:** Did you note action items from this introspection to apply in the next task?
 5. **User Trust:** Is the report clear enough for the user to say "okay, I trust this"?
-
-
-
-## Output Schema (MANDATORY)
-
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**

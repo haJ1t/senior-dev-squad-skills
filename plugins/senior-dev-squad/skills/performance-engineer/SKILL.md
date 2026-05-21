@@ -82,8 +82,6 @@ LEFT JOIN tasks t ON p.id = t.project_id;
 | "Premature optimization is the root of all evil" | So is shipping apps that crawl. |
 | "CDN is overkill for our site" | A CDN is a few DNS changes and saves 50% load time. |
 
-
-
 ## Your Human Partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
@@ -103,32 +101,13 @@ LEFT JOIN tasks t ON p.id = t.project_id;
 - **test-engineer** — performance regression tests and load tests must be written alongside optimizations to prevent backsliding
 - **devops-release-engineer** — performance monitoring, alerting thresholds, and rollout strategies for optimizations belong in the deployment pipeline
 
-## Output Schema (MANDATORY)
+## Verification
 
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**
+- [ ] A baseline metric was captured before any change (number, not a vibe)
+- [ ] The bottleneck was confirmed by profiling/measurement, not guessed
+- [ ] Before/after numbers are shown side by side for each optimization
+- [ ] Core Web Vitals (LCP, INP, CLS) checked for user-facing changes
+- [ ] Database paths checked for N+1 queries and missing/covering indexes
+- [ ] Caching has an explicit invalidation strategy (no stale-data risk)
+- [ ] Bundle size impact measured (no unintended large dependencies shipped)
+- [ ] A performance regression test or budget guards against backsliding

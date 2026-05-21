@@ -193,33 +193,3 @@ After completing this process:
 1. **Step Validation:** Have you executed every phase (analysis, version calculation, build verification, tagging, publishing)?
 2. **SemVer Compliance:** Does the version bump match the semantic versioning standard relative to the change scope?
 3. **Artifact Quality:** Is the changelog clean and easy for users to digest?
-
-## Output Schema (MANDATORY)
-
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**

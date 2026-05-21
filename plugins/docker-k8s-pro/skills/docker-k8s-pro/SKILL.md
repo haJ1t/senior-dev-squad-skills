@@ -1,9 +1,6 @@
 ---
 name: docker-k8s-pro
 description: "Multi-stage Docker, K8s manifests, Helm, service mesh, scaling, monitoring. Use when containerizing or deploying services."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Docker & Kubernetes Pro
@@ -267,8 +264,6 @@ spec:
 - [ ] Helm: values per environment (dev/staging/prod)
 - [ ] Monitoring: metrics-server, Prometheus, Grafana dashboards
 
-
-
 ## Related Skills
 
 - **devops-release-engineer** — coordinates the CI/CD pipeline that builds images and triggers Helm deployments produced by this skill
@@ -278,41 +273,3 @@ spec:
 - **backend-senior-engineer** — define health check endpoint contracts (`/health/live`, `/health/ready`) that probes declared in manifests will call
 - **soc2-audit-prep** — verify that logging drivers, image provenance, and secret management patterns satisfy SOC 2 control requirements
 - **architecture-planner** — use when choosing between Docker Compose, single-cluster K8s, and multi-cluster topologies before writing manifests
-
-## Output Schema (MANDATORY)
-
-```yaml
-# Orchestration Plan
-project: {goal, constraints, success_criteria, token_budget}
-epics: [{id, name, hours, depends_on, budget, stories: [{tasks, acceptance}]}]
-dependency_dag: [ASCII or mermaid]
-critical_path: [hours]
-squads: [{id, epic, roles, budget, handoff_contracts}]
-timeline: {day_N: {squads, milestones}}
-monitoring: {interval, alerts: [token, stall, circuit_breaker]}
-recovery: {patterns per failure type}
-post_mortem: {planned_vs_actual, lessons, metrics}
-```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No decomposition | Vague plan | Project→Epic→Story→Task chain |
-| Missing DAG | Hidden dependencies | Visual dependency graph + critical path |
-| No token budget | Resource blind | Per-squad token estimate |
-| "Retry on failure" only | Incomplete recovery | Retry + fallback + escalate + circuit breaker |
-| No monitoring | Flying blind | 3+ alerts with conditions |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Decomposition depth | None | Epics only | Epic→Story→Task |
-| Dependency DAG | None | Text only | Visual + critical path |
-| Token budgeting | None | Total only | Per-squad calculated |
-| Squad design | "N squads" | Roles listed | Roles+budget+handoffs |
-| Failure recovery | None | "Retry" | Retry+fallback+escalate+CB |
-| Monitoring | None | 1 alert | 3+ with conditions |
-
-**Pass: 8/12**

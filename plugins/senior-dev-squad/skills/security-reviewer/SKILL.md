@@ -59,20 +59,6 @@ EVERY FINDING MUST INCLUDE: OWASP mapping + concrete fix code + exploit scenario
 - Overall: [PASS / FAIL — FAIL if any CRITICAL]
 ```
 
-## LLM Anti-Patterns (BENCHMARK FINDINGS)
-
-**These are mistakes models CONSISTENTLY make. Guard against them:**
-
-| Anti-Pattern | Example | Why Wrong | Correct Approach |
-|-------------|---------|-----------|-----------------|
-| **Vague fixes** | "Use parameterized queries" | No code, model assumes dev knows how | Show exact code: `cursor.execute("SELECT ... WHERE id = ?", (user_id,))` |
-| **Missing severity** | "There's an SQL injection" | No prioritization | Always tag: `CRITICAL \| OWASP A03: Injection` |
-| **Forgotten auth check** | Only flags SQLi, misses missing auth | Single-focus blindness | Run A01 (Access Control) SEPARATELY before A03 (Injection) |
-| **Rate limiting ignored** | "Add rate limiting" as afterthought | OWASP A05 + DoS vector | Always check: is there a rate limiter? If not → HIGH finding |
-| **No exploit scenario** | "SQL injection possible" | Not actionable | Show: `curl -X POST ... -d '{"q":"'\'' OR 1=1--"}'` |
-| **PII exposure missed** | Returns all user fields including email/role | Privacy violation | Flag: `SELECT *` returning `email, role` → HIGH (PII + privilege info leak) |
-| **Over-flagging** | "Missing Content-Security-Policy header" as CRITICAL | Severity inflation | CSP is MEDIUM unless there's inline scripts (then HIGH) |
-
 ## When to Use
 
 **Use this ESPECIALLY when:**
@@ -265,26 +251,9 @@ def admin_list_users(current_user = Depends(get_current_admin)):
 | **Gemini 2.5 Pro** | Shortest response, consistent severity classification but weak exploit scenario | "For EVERY finding, write a curl command showing the exploit" — Gemini skips exploit scenarios |
 | **DeepSeek V3** | Most economical, but 57% less detailed without skill. Good with skill but fix codes are short | "Write complete, runnable fix code — not one-liners" — DeepSeek keeps fixes short |
 
-## Scoring Rubric (Self-Evaluation)
+## Recommended Chaining
 
-Score each security review output according to the following criteria:
-
-| Criterion | 0 points | 1 point | 2 points |
-|-----------|----------|---------|----------|
-| **OWASP mapping** | No OWASP reference at all | Exists in some findings | A01-A10 mapping in EVERY finding |
-| **Severity accuracy** | At the level of "there is a problem" | CRITICAL/HIGH/MEDIUM exist but incorrectly assigned | Correct severity + matches its definition |
-| **Exploit scenario** | None | "SQL injection possible" | Step-by-step exploit with curl command |
-| **Fix code** | "Use parameterized queries" | Code exists but incomplete | Complete, executable fix code |
-| **PII awareness** | Endpoint returning SELECT * not noticed | Noticed but no fix | Noticed + SELECT restricted |
-| **Auth check** | Missing auth not noticed | Noticed but low severity | Flagged as CRITICAL + fix |
-| **Rate limiting** | Not checked at all | "Rate limiting should be added" | Concrete rate limiter code + 429 response |
-| **Output format** | Free text | Partially structural | Full compliance with the MANDATORY schema |
-
-**Passing score: 12/16** (At least 1 point in every critical area)
-
-## Chaining (Auto-Trigger)
-
-**Complete → auto-trigger:**
+**When complete, recommended next (invoke manually or wire via hooks):**
 - `mitre-attack-mapper` — map findings to the MITRE ATT&CK framework
 - `nist-csf-scanner` — NIST CSF compliance gap analysis
 - `supply-chain-verifier` — dependency CVE scanning

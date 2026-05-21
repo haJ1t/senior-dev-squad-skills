@@ -1,9 +1,6 @@
 ---
 name: healthtech-pro
 description: "HIPAA compliance, FHIR, EHR integration, audit, PHI protection. Use when building or auditing healthcare technology systems."
-model: any
-user-invocable: true
-always: false
 ---
 
 # HealthTech Pro
@@ -160,8 +157,6 @@ function validateBAACoverage(service: string): void {
 - [ ] FHIR R4 API for interoperability
 - [ ] De-identification for research/non-clinical use
 
-
-
 ## Related Skills
 
 - **security-reviewer** — always pair; healthtech-pro governs HIPAA/FHIR domain rules while security-reviewer covers OWASP, injection, and general API hardening
@@ -171,10 +166,6 @@ function validateBAACoverage(service: string): void {
 - **test-engineer** — writing integration tests against FHIR sandboxes, mocking EHR responses, and validating audit trail completeness
 - **devops-release-engineer** — for HIPAA-compliant infrastructure pipelines: encryption-at-rest enforcement, VPC configurations, and audit log archival automation
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -188,24 +179,3 @@ function validateBAACoverage(service: string): void {
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

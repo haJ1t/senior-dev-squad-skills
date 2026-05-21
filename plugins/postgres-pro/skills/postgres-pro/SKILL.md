@@ -1,9 +1,6 @@
 ---
 name: postgres-pro
 description: "Advanced PostgreSQL: indexing, CTEs, window functions, partitioning, full-text search. Use when optimizing or reviewing PostgreSQL schemas and queries."
-model: any
-user-invocable: true
-always: false
 ---
 
 # PostgreSQL Pro
@@ -248,8 +245,6 @@ ALTER TABLE projects VALIDATE CONSTRAINT projects_status_check;
 - [ ] statement_timeout set to prevent runaway queries
 - [ ] Regular VACUUM schedule for high-turnover tables
 
-
-
 ## Related Skills
 
 - **backend-senior-engineer** — ORM query patterns and connection management live in application code; coordinate when N+1 queries or missing indexes are introduced at the ORM layer
@@ -258,33 +253,3 @@ ALTER TABLE projects VALIDATE CONSTRAINT projects_status_check;
 - **api-design-reviewer** — pagination, filtering, and sorting decisions at the API layer directly determine which indexes are useful; align both skills when designing list endpoints on large tables
 - **devops-release-engineer** — zero-downtime migration techniques (expand-contract, NOT VALID constraints) must be coordinated with deploy strategy; involve this skill when a migration requires multi-phase deployment
 - **observability-pro** — pg_stat_statements, slow query logs, and connection pool metrics feed into the observability stack; use together when instrumenting database health
-
-## Output Schema (MANDATORY)
-
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**

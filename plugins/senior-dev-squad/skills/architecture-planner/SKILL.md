@@ -65,18 +65,6 @@ Design production-ready architecture before implementation. Every decision docum
 - Overall: READY FOR IMPLEMENTATION / NEEDS CLARIFICATION
 ```
 
-## LLM Anti-Patterns (BENCHMARK FINDINGS)
-
-| Anti-Pattern | Why Models Do It | Correct Approach |
-|-------------|-----------------|-----------------|
-| **No tradeoffs** | Lists decisions without saying what was rejected | Every ADR MUST compare 2+ options |
-| **Vague "use microservices"** | Generic advice without bounded contexts | Draw context map: Order, Payment, Inventory, etc. |
-| **Missing CAP analysis** | Ignores partition tolerance | Every DB choice: CP or AP? What happens during network split? |
-| **No concrete protocols** | "Async messaging" without broker name | Specify: Kafka topic `orders.events`, Avro schema, 12 partitions |
-| **Optimistic network** | No timeout/retry values | Every call: timeout in ms, retry count, circuit breaker threshold |
-| **Missing deployment** | Architecture on paper, no topology | Show: regions, AZs, instance counts, failover strategy |
-| **Forgotten idempotency** | Assumes "at most once" delivery | Every POST/PUT/PATCH: what's the idempotency key? |
-
 ## When to Use
 
 **Use this when:**
@@ -220,21 +208,6 @@ Deploy to AWS with auto-scaling.
 | **GPT-4o** | Fast but skips tradeoffs, writes "what we chose" instead of "why we chose it" | "For every choice, write: 'We chose X over Y because...' — never just state the choice" |
 | **Gemini 2.5 Pro** | Shortest, performs CAP analysis naturally but deployment topology is weak | "Draw an ASCII or mermaid deployment diagram showing regions, AZs, and service placement" |
 | **DeepSeek V3** | Most economical, good concrete YAML examples but skips the risk register | "Complete the Risk Register with at least 5 risks — likelihood, impact, mitigation, owner" |
-
-## Scoring Rubric (Self-Evaluation)
-
-| Criterion | 0 points | 1 point | 2 points |
-|-----------|----------|---------|----------|
-| **Service decomposition** | Services are not listed | Services exist but no bounded context/ownership | Each service: responsibility + data + dependencies |
-| **ADR tradeoffs** | Decisions lack tradeoffs | Some decisions have tradeoffs | EVERY decision has at least 2 alternatives + tradeoff matrix |
-| **CAP awareness** | CAP not mentioned at all | "Use PostgreSQL (CP)" | Each data store has CP/AP + partition behavior |
-| **Communication matrix** | None | Patterns exist but no timeout/retry | Each call: pattern + timeout + retry + circuit breaker |
-| **Fault tolerance** | "Add retry" | Some failure modes are listed | Each failure mode: probability + impact + mitigation + fallback |
-| **Deployment topology** | None | "Deploy to AWS" | Region/AZ diagram + instance count + failover strategy |
-| **Risk register** | None | 1-2 risks listed | At least 5 risks: likelihood + impact + mitigation + owner |
-| **Output format** | Free text | Partially structural | Full compliance with the MANDATORY schema |
-
-**Passing score: 12/16**
 
 ## Your Human Partner's Signals You're Doing It Wrong
 

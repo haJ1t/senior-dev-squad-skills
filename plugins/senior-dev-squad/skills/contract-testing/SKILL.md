@@ -58,11 +58,6 @@ Implements consumer-driven contract testing to prevent integration breakage betw
 - [ ] Contract compatibility verified before provider deployment
 - [ ] Stale contracts flagged for review (no verification in 30 days)
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -80,29 +75,6 @@ Implements consumer-driven contract testing to prevent integration breakage betw
 ```
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**
 ## Related Skills
 - `api-design-reviewer` — Contract testing validates API design decisions
 - `spec-first-development` — API specs become the basis for consumer contracts

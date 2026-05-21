@@ -111,8 +111,6 @@ class PostgresProjectRepository implements ProjectRepository {
 }
 ```
 
-
-
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself thinking:
@@ -146,10 +144,6 @@ If you catch yourself thinking:
 
 **When you see these:** STOP. Re-read the project type and scale indicators. Return to the Pattern Selection Guide and cut recommendations to the essential core patterns only.
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -164,28 +158,6 @@ If you catch yourself thinking:
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Every choice: "X over Y because..." |
-| Vague tech ("use Kafka") | No justification | ADR format with 2+ alternatives |
-| Missing CAP | Ignores partition reality | Every store: CP or AP? |
-| No deployment diagram | Paper architecture | ASCII topology with AZs |
-| Single option presented | No real analysis | Always compare 2+ choices |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**
 ## Related Skills
 
 - **architecture-planner** — uses pattern recommendations

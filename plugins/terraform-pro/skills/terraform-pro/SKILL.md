@@ -1,9 +1,6 @@
 ---
 name: terraform-pro
 description: "Terraform modules, remote state, workspaces, CI/CD for IaC, security scanning. Use when writing or reviewing Terraform infrastructure code."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Terraform Pro
@@ -287,8 +284,6 @@ infracost breakdown --path infrastructure/environments/prod
 - [ ] Workspace isolation (dev/staging/prod)
 - [ ] Deletion protection on production databases
 
-
-
 ## Related Skills
 
 - **devops-release-engineer** — Terraform provisions the infrastructure that release pipelines deploy to; coordinate when a new service requires both IaC changes and updated CI/CD configuration
@@ -298,10 +293,6 @@ infracost breakdown --path infrastructure/environments/prod
 - **postgres-pro** — RDS and Cloud SQL instances provisioned in Terraform must align with the database configuration (instance class, parameter groups, backup windows) that postgres-pro recommends; coordinate on database module design
 - **observability-pro** — CloudWatch, Grafana, and alerting infrastructure are often Terraform-managed; use together when building or extending the monitoring stack via IaC
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -315,24 +306,3 @@ infracost breakdown --path infrastructure/environments/prod
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

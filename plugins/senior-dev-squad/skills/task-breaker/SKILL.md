@@ -104,35 +104,6 @@ Tasks that say "implement all" instead of naming specific components. Tasks with
 
 **When you see these:** STOP. Return to the task list, identify the structural deficiency (missing paths, missing dependency, missing test step, wrong granularity), correct those tasks, and re-run the verification checklist before continuing execution.
 
-## Output Schema (MANDATORY)
-
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**
 ## Related Skills
 
 - **spec-first-development** — provides spec this skill breaks down

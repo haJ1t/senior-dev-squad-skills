@@ -1,9 +1,6 @@
 ---
 name: node-express-pro
 description: "Express.js patterns, middleware architecture, error handling, validation, file uploads. Use when building or reviewing Node.js/Express services."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Node Express Pro
@@ -232,8 +229,6 @@ exports.create = async (user, body) => {
 - [ ] Pagination on all list endpoints
 - [ ] Prisma/SQL with parameterized queries (no injection)
 
-
-
 ## Related Skills
 
 - **backend-senior-engineer** — for the higher-level service architecture and cross-cutting concerns (circuit breakers, service mesh, async messaging) that sit above Express
@@ -243,10 +238,6 @@ exports.create = async (user, body) => {
 - **test-engineer** — for Supertest integration test patterns, service-layer unit tests with mocked Prisma, and contract testing against downstream APIs
 - **devops-release-engineer** — for Dockerizing the Express app, setting up health-check probes, and configuring graceful shutdown in Kubernetes or ECS
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -260,26 +251,3 @@ exports.create = async (user, body) => {
 [ASCII diagram]
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Every choice: "X over Y because..." |
-| Vague tech ("use Kafka") | No justification | ADR format with 2+ alternatives |
-| Missing CAP | Ignores partition reality | Every store: CP or AP? |
-| No deployment diagram | Paper architecture | ASCII topology with AZs |
-| Single option presented | No real analysis | Always compare 2+ choices |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**

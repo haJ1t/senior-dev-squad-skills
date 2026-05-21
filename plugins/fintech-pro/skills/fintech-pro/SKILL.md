@@ -1,9 +1,6 @@
 ---
 name: fintech-pro
 description: "Payments, compliance, auditing, reconciliation, fraud detection, ledger. Use when building or reviewing financial technology systems."
-model: any
-user-invocable: true
-always: false
 ---
 
 # FinTech Pro
@@ -157,8 +154,6 @@ CREATE TRIGGER trg_audit_immutable
 - [ ] Statement/export generation (PDF, CSV)
 - [ ] Fraud detection rules (velocity, amount thresholds, geo anomalies)
 
-
-
 ## Related Skills
 
 - **postgres-pro** — design ledger table schemas, partitioned audit logs, and reconciliation query plans that back fintech data models
@@ -170,10 +165,6 @@ CREATE TRIGGER trg_audit_immutable
 - **ecommerce-pro** — reference for checkout and payment integration patterns when a fintech system powers an e-commerce storefront
 - **api-design-reviewer** — validate payment API contracts for idempotency key conventions, error codes, and webhook signature verification
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -187,24 +178,3 @@ CREATE TRIGGER trg_audit_immutable
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

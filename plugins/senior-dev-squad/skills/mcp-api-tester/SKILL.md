@@ -173,9 +173,6 @@ After completing this process:
 4. **Suite Stability:** Can the smoke test suite be executed repeatedly without failures?
 5. **Credential Integrity:** Are passwords and tokens removed from all reports?
 
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -192,27 +189,3 @@ After completing this process:
 [Full code with: validation, auth, transaction, logging, rate limit, idempotency]
 ```
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security vulnerability | Validate schemas at the service boundary |
-| Missing transactions | Data inconsistency | Wrap multi-step operations in database transactions |
-| No idempotency | Duplicate writes on retry | Implement idempotency keys with response caching |
-| print() instead of logger | Unstructured logging | Use structured JSON loggers with correlation IDs |
-| No rate limiting | Vulnerable to DoS | Apply rate limits on all public endpoints |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema validation per field |
-| AuthN/AuthZ | None | AuthN only | Both layers verified |
-| Transaction safety | None | Partial | Multi-step database operations are atomic |
-| Error handling | None | Generic | Structured error responses with codes |
-| Rate limiting | None | Documented only | Full working implementation |
-| Idempotency | None | Key present | Check and return cached response |
-| Structured logging | print() | Basic | Logs include correlation IDs |
-
-**Pass: 10/14**

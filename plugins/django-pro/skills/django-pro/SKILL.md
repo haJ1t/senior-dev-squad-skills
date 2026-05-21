@@ -1,9 +1,6 @@
 ---
 name: django-pro
 description: "Django ORM, DRF, signals, management commands, Celery, testing. Use when building or reviewing Django applications."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Django Pro
@@ -209,8 +206,6 @@ def project_created_handler(sender, instance, created, **kwargs):
 - [ ] N+1 query detection (django-debug-toolbar or nplusone)
 - [ ] .only() / .defer() for large model queries
 
-
-
 ## Related Skills
 
 - **backend-senior-engineer** — use for service-layer architecture decisions and cross-cutting concerns before implementing Django business logic
@@ -221,9 +216,6 @@ def project_created_handler(sender, instance, created, **kwargs):
 - **devops-release-engineer** — integrate Celery workers, management command runners, and Django migrations into CI/CD pipelines
 - **performance-engineer** — profile Django ORM query plans, connection pool sizing, and cache layer (Redis/Memcached) configuration
 
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -240,27 +232,3 @@ def project_created_handler(sender, instance, created, **kwargs):
 [Full code with: validation, auth, transaction, logging, rate limit, idempotency]
 ```
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**

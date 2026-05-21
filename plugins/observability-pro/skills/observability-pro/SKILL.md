@@ -1,9 +1,6 @@
 ---
 name: observability-pro
 description: "Monitoring, logging, tracing, alerting, dashboards, SLOs, incident response. Use when setting up or improving observability stacks."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Observability Pro
@@ -198,8 +195,6 @@ groups:
 - [ ] On-call rotation with escalation policy
 - [ ] Postmortem template with blameless culture
 
-
-
 ## Related Skills
 
 - **devops-release-engineer** — pairs directly: deploy pipelines emit the logs and metrics this skill instruments; coordinate when adding observability to a new service at release time
@@ -208,33 +203,3 @@ groups:
 - **docker-k8s-pro** — container and pod metrics (CPU, memory, restart counts) feed Prometheus; coordinate when setting up kube-state-metrics or Grafana dashboards for a Kubernetes workload
 - **security-reviewer** — log redaction of PII and secrets is a security concern as much as an observability one; cross-reference when defining redact paths in structured loggers
 - **cloud-security-auditor** — CloudTrail, VPC Flow Logs, and cloud-native alerting are the cloud layer of observability; use when instrumenting AWS/GCP/Azure infrastructure alongside application-level signals
-
-## Output Schema (MANDATORY)
-
-Structure your response with:
-1. **Analysis** — What you found/designed
-2. **Concrete output** — Code, YAML, tables (not just descriptions)
-3. **Tradeoffs/risks** — What you chose and why, what could go wrong
-4. **Verification** — How to confirm correctness
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague recommendations | Not actionable | Concrete examples, specific steps |
-| Missing tradeoffs | One-sided analysis | Every choice: "X over Y because..." |
-| "Consider doing X" | No commitment | "Do X. Why: [reason]" |
-| No verification criteria | Can't confirm quality | "Verify by: [test/check]" |
-| Generic response | Not tailored | Domain-specific vocabulary, exact tool names |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Specificity | Generic advice | Some specifics | Concrete, actionable output |
-| Tradeoff awareness | None | Mentioned | Documented with alternatives |
-| Output format | Free text | Partial structure | Structured, scannable |
-| Verification | None | Vague | Specific test/criteria |
-| Domain accuracy | Wrong terms | Mostly correct | Precise domain vocabulary |
-
-**Pass: 7/10**

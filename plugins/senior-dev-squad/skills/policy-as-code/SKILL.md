@@ -58,12 +58,6 @@ Implements governance, security, and operational policies as version-controlled,
 - [ ] Policy change process includes code review and testing (same as application code)
 - [ ] Exception process defined with approval workflow and automatic expiration
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -78,26 +72,6 @@ Implements governance, security, and operational policies as version-controlled,
 - Verdict: PASS/FAIL
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR rules encoded as OPA policies
 - `soc2-audit-prep` — SOC 2 controls automated through policy-as-code

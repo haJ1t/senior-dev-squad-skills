@@ -651,10 +651,6 @@ After completing this process, verify:
 4. **Edge Case Check:** Is there a fallback strategy for component requirements that the selected system does not natively cover?
 5. **Team Alignment:** Is the choice communicated clearly with developer onboarding documentation ready?
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -668,26 +664,3 @@ After completing this process, verify:
 [ASCII diagram]
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Always structure: "We chose X over Y because..." |
-| Vague tech ("use Kafka") | No justification | Use ADR format with 2+ alternatives analyzed |
-| Missing CAP | Ignores partition reality | Every storage system must be CP or AP, with partition behaviors defined |
-| No deployment diagram | Theoretical architecture | Provide ASCII topology with distinct AZs/nodes |
-| Single option presented | Lack of critical analysis | Always compare 2+ options before making a choice |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**

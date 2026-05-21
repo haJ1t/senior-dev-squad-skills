@@ -76,18 +76,6 @@ Every endpoint implementation MUST include:
 ```
 ```
 
-## LLM Anti-Patterns (BENCHMARK FINDINGS)
-
-| Anti-Pattern | Example | Fix |
-|-------------|---------|-----|
-| **No transaction** | `db.save(order); payment.charge();` — if charge fails, order is saved | Wrap in `db.$transaction(...)` |
-| **Forgotten rate limit** | No rate limiter on search/list endpoints | Every endpoint gets a rate limiter |
-| **Vague error messages** | `return 500` with no body | Always use the error schema format |
-| **Missing idempotency** | POST endpoint with no idempotency key | Add `Idempotency-Key` header check |
-| **Logs PII** | `logger.info({user})` — logs email, name, etc. | Redact: `logger.info({userId: user.id})` |
-| **No input constraints** | Accepts any string for "name" | `z.string().min(1).max(100).trim()` |
-| **Ignores response status codes** | Returns 200 for everything | Use correct codes: 201 for create, 204 for delete, 409 for conflict |
-
 ## When to Use
 
 - Implementing API endpoints from architecture plan
@@ -246,21 +234,6 @@ async def create_order(
 | **Gemini 2.5 Pro** | Concise and clean, but weak on transaction details | "Wrap ALL multi-step operations in a transaction — show explicit rollback behavior" |
 | **DeepSeek V3** | Highly cost-effective, writes structured logs, but sometimes produces a malformed error format | "Use EXACT error format: {error: {code, message, details, requestId}} — no variations" |
 
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| **Input validation** | None | Present but incomplete (a few fields) | Every field: type + constraint + error message |
-| **Auth check** | None | Present but only authN | AuthN + AuthZ (does the user access their own data?) |
-| **Transaction safety** | None | Transaction present but incomplete | All multi-step operations inside transactions |
-| **Error handling** | No try/except | Present but generic | Specific handler + error schema for each error type |
-| **Rate limiting** | None | "Add rate limit" comment | Working rate limiter + 429 + Retry-After |
-| **Idempotency** | None | Key present but no check | Key check + cached response + conflict handling |
-| **Structured logging** | print() | Simple log | request_id + user_id + duration + error detail |
-| **Output format** | Free text | Partial | MANDATORY format (schema + impl + tests) |
-
-**Pass mark: 12/16**
-
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself thinking:
@@ -302,11 +275,6 @@ If you catch yourself thinking:
 - **test-engineer** — tests error responses, auth, and validation
 - **edge-case-hunter** — finds missing failure states
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -324,29 +292,6 @@ If you catch yourself thinking:
 ```
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**
 ## Verification Checklist
 
 - [ ] Input validated at boundary (schema validation)

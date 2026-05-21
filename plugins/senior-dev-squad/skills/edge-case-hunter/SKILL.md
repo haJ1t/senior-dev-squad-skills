@@ -87,16 +87,6 @@ Upstream service returns 500, upstream returns success but with empty body, upst
 ### 8. Human Errors
 Copy-paste wrong ID, type "100" instead of "10", wrong currency (USD vs EUR), phone number with spaces/dashes/parentheses, address with special characters, name with apostrophe (O'Brien), negative quantity on refund.
 
-## LLM Anti-Patterns (BENCHMARK FINDINGS)
-
-| Anti-Pattern | Why Models Do It | Correct Approach |
-|-------------|-----------------|-----------------|
-| **Only finds happy-path failures** | "What if API returns 500" | Go deeper: "What if API returns 200 but body is empty?" |
-| **Ignores idempotency** | Assumes one call = one effect | Always ask: "What if called twice? Three times? Simultaneously?" |
-| **Skips time dimension** | Forgets DST, leap seconds, clock skew | Every timestamp operation: what timezone? What DST boundary? |
-| **Vague scenarios** | "Race condition possible" | Show exact sequence: Thread A reads X=5, Thread B writes X=10, Thread A writes X=6 → B's write lost |
-| **Only edge of input** | Empty, null, very long | Also: emoji, RTL text, zero-width chars, SQL keywords in name |
-
 ## When to Use
 
 - After test-engineer has written basic tests
@@ -152,21 +142,6 @@ Copy-paste wrong ID, type "100" instead of "10", wrong currency (USD vs EUR), ph
 | **GPT-4o** | Strong in Concurrency, tends to skip time/state dimensions | "Check Dimension 4 (Time) and Dimension 5 (State) SEPARATELY — GPT often skips these" |
 | **Gemini 2.5 Pro** | Concise but to the point, accurate severity assignment | "For each dimension, find at minimum 2 distinct edge cases — not just one" |
 | **DeepSeek V3** | Good in scale and integration dimensions, skips human errors | "Don't forget Dimension 8 (Human Errors) — copy-paste, fat-finger, wrong currency" |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|--------|---|---|---|
-| **Dimension coverage** | 1-3 dimensions | 4-7 dimensions | 8/8 dimensions |
-| **Scenario format** | Free text | Scenario exists but Expected/Actual is missing | Every finding: Scenario→Expected→Actual |
-| **Concurrency depth** | "Race condition possible" | 1 race condition found | At least 2 races + concrete sequence diagram |
-| **Severity accuracy** | None | Present but inconsistent | Accurate CRITICAL/HIGH/MEDIUM for every finding |
-| **Fix specificity** | "Add locking" | Partial code | Complete, executable fix code |
-| **Idempotency check** | Not checked | "Add idempotency key" | Idempotency analysis + fix for every mutation |
-| **Scale extremes** | 0 or max not checked | One extreme tested | 0, 1, max, max+1 tested |
-| **Output format** | Free text | Partially structured | Full compliance with the MANDATORY schema |
-
-**Passing Score: 12/16**
 
 ## Red Flags — STOP and Follow Process
 

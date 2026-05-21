@@ -1,9 +1,6 @@
 ---
 name: game-dev-pro
 description: "Unity, Unreal, Godot: game architecture, ECS, multiplayer, optimization, CI/CD. Use when building or optimizing game projects."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Game Dev Pro
@@ -211,8 +208,6 @@ public class LODSetup : MonoBehaviour { /* Set up 3 LOD levels */ }
 - [ ] Save system with versioning (backward compatible)
 - [ ] Audio: spatial blend, occlusion, dynamic mixing
 
-
-
 ## Related Skills
 
 - **architecture-planner** — use before game-dev-pro when the high-level system boundaries (client/server split, game services topology) are still undecided
@@ -222,10 +217,6 @@ public class LODSetup : MonoBehaviour { /* Set up 3 LOD levels */ }
 - **security-reviewer** — when the game handles real-money transactions, anti-cheat systems, or stores user account credentials
 - **test-engineer** — for writing PlayMode and EditMode tests in Unity's Test Framework, or Godot's GUT, alongside ECS unit tests
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -239,26 +230,3 @@ public class LODSetup : MonoBehaviour { /* Set up 3 LOD levels */ }
 [ASCII diagram]
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Every choice: "X over Y because..." |
-| Vague tech ("use Kafka") | No justification | ADR format with 2+ alternatives |
-| Missing CAP | Ignores partition reality | Every store: CP or AP? |
-| No deployment diagram | Paper architecture | ASCII topology with AZs |
-| Single option presented | No real analysis | Always compare 2+ choices |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**

@@ -64,8 +64,6 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 | "Duplication is only in two places" | Two is the beginning of three. Extract now. |
 | "I'll refactor it in the next PR" | You won't. Next PR adds more code on top. |
 
-
-
 ## Your Human Partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
@@ -97,10 +95,6 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 - **spec-first-development** — if simplification reveals ambiguous behavior, return to spec to clarify intent before rewriting
 - **task-breaker** — use to split a large refactor across multiple atomic commits so each step is independently reviewable
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Test Type]: [Target]
 ## Findings
 ### [ID]: [Title]
 **Scenario:** [Given/When/Then]
@@ -113,25 +107,3 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 - By severity: C=, H=, M=
 - Coverage: [dimensions/categories covered]
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Happy path only | Misses failures | Test error/edge/empty states |
-| Vague scenarios | Not reproducible | Exact Given/When/Then |
-| Missing severity | Can't prioritize | CRITICAL/HIGH/MEDIUM on every finding |
-| "Fix later" | Never gets fixed | Concrete fix with every finding |
-| Single dimension | Blind spots | Cover all categories systematically |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Coverage breadth | 1-2 dimensions | 4-6 | All categories |
-| Scenario specificity | Vague | Partial | Exact Given/When/Then |
-| Severity accuracy | None | Some | All correctly rated |
-| Fix quality | "Fix it" | Partial | Complete fix |
-| Reproducibility | Can't reproduce | Hard | Easy to reproduce |
-
-**Pass: 8/10**

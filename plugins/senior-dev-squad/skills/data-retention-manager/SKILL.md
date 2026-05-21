@@ -58,12 +58,6 @@ Automates data retention policy enforcement across storage systems. Implements l
 - [ ] Cross-border data transfer and retention rules enforced
 - [ ] Quarterly policy review scheduled and documented
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -78,26 +72,6 @@ Automates data retention policy enforcement across storage systems. Implements l
 - Verdict: PASS/FAIL
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR data minimization and right-to-erasure requirements
 - `soc2-audit-prep` — Data retention as a confidentiality and privacy control

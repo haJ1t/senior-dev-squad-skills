@@ -1,9 +1,6 @@
 ---
 name: devtools-pro
 description: "CLI tools, VS Code extensions, SDKs, developer experience, API design. Use when building or improving developer tooling."
-model: any
-user-invocable: true
-always: false
 ---
 
 # DevTools Pro
@@ -166,8 +163,6 @@ export class SeniorDevClient {
 - [ ] Extension: status bar indicators for long operations
 - [ ] Docs: getting started in < 5 minutes
 
-
-
 ## Related Skills
 
 - **api-design-reviewer** — REST/GraphQL API design for the service your SDK or CLI wraps; ensures the surface your tool exposes is coherent
@@ -179,9 +174,6 @@ export class SeniorDevClient {
 - **devops-release-engineer** — publishing pipelines for npm packages, GitHub Releases, VS Code Marketplace submissions, and Homebrew taps
 - **performance-engineer** — SDK connection pooling, request batching, and CLI startup-time profiling
 
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -198,27 +190,3 @@ export class SeniorDevClient {
 [Full code with: validation, auth, transaction, logging, rate limit, idempotency]
 ```
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**

@@ -122,8 +122,6 @@ Format: SVG (for web) + PNG (for social)
 
 Skipping branding for a user-facing project. Using generic colors without thinking about brand personality. Generating a logo prompt without asking the user about their vision.
 
-
-
 ## Common Rationalizations
 
 | Excuse | Reality |
@@ -145,10 +143,6 @@ Skipping branding for a user-facing project. Using generic colors without thinki
 
 **When you see these:** STOP. Return to Brand Foundation (Section 1). Confirm personality adjectives, target audience, and any existing brand elements before regenerating the palette, typography, or voice.
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -163,28 +157,6 @@ Skipping branding for a user-facing project. Using generic colors without thinki
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Every choice: "X over Y because..." |
-| Vague tech ("use Kafka") | No justification | ADR format with 2+ alternatives |
-| Missing CAP | Ignores partition reality | Every store: CP or AP? |
-| No deployment diagram | Paper architecture | ASCII topology with AZs |
-| Single option presented | No real analysis | Always compare 2+ choices |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**
 ## Related Skills
 
 - **frontend-senior-engineer** — implements the brand tokens

@@ -1,9 +1,6 @@
 ---
 name: fastapi-pro
 description: "FastAPI patterns, Pydantic, async SQL, dependency injection, WebSocket, testing. Use when building or reviewing FastAPI services."
-model: any
-user-invocable: true
-always: false
 ---
 
 # FastAPI Pro
@@ -297,8 +294,6 @@ def generate_report(project_id: str):
 - [ ] Alembic migrations for schema changes
 - [ ] Tests use real test DB (not mocks)
 
-
-
 ## Related Skills
 
 - **backend-senior-engineer** — design the service and repository layers that FastAPI routers delegate to, especially for complex domain logic
@@ -309,10 +304,6 @@ def generate_report(project_id: str):
 - **django-pro** — reference when migrating from or comparing Django/DRF patterns; FastAPI and Django handle auth and ORM differently
 - **performance-engineer** — profile async endpoint concurrency, connection pool exhaustion, and background task queue depth
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -326,24 +317,3 @@ def generate_report(project_id: str):
 - CRITICAL: N, HIGH: N, MEDIUM: N
 - Verdict: PASS/FAIL
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

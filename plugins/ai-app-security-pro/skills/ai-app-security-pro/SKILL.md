@@ -1,9 +1,6 @@
 ---
 name: ai-app-security-pro
 description: "LLM security: prompt injection, guardrails, PII redaction, model access control, audit. Use when securing AI apps or auditing LLM pipelines."
-model: any
-user-invocable: true
-always: false
 ---
 
 # AI App Security Pro
@@ -254,12 +251,6 @@ const rateLimiter = {
 - [ ] Dependency scanning for AI libraries (langchain, etc.)
 - [ ] Regular prompt injection red-teaming
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -274,15 +265,6 @@ const rateLimiter = {
 - Verdict: PASS/FAIL
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
 ## Related Skills
 
 - **security-reviewer** — general application security review; use alongside this skill for non-AI attack surfaces (SQLi, XSS, auth flaws)
@@ -292,15 +274,3 @@ const rateLimiter = {
 - **api-design-reviewer** — rate limiting and token-budget enforcement at the API gateway layer
 - **observability-pro** — structured audit logging and anomaly alerting for LLM interaction telemetry
 - **test-engineer** — automated red-teaming harnesses and prompt injection regression suites
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**

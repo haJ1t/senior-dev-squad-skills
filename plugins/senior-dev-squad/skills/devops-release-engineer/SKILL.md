@@ -131,8 +131,6 @@ Friday deployment = weekend incident. "We'll add monitoring later" = users will 
 | "Rollback is just reverting the commit" | Schema migrations make rollbacks hard. Test them. |
 | "Staging is close enough to production" | If staging isn't identical, it's not staging. |
 
-
-
 ## Your Human Partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
@@ -168,10 +166,6 @@ Friday deployment = weekend incident. "We'll add monitoring later" = users will 
 - **test-engineer** — use to confirm integration and smoke tests are in place for the CI pipeline's deploy stage
 - **edge-case-hunter** — use to verify the rollback plan covers failure scenarios in the migration and deployment sequence
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Test Type]: [Target]
 ## Findings
 ### [ID]: [Title]
 **Scenario:** [Given/When/Then]
@@ -184,25 +178,3 @@ Friday deployment = weekend incident. "We'll add monitoring later" = users will 
 - By severity: C=, H=, M=
 - Coverage: [dimensions/categories covered]
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Happy path only | Misses failures | Test error/edge/empty states |
-| Vague scenarios | Not reproducible | Exact Given/When/Then |
-| Missing severity | Can't prioritize | CRITICAL/HIGH/MEDIUM on every finding |
-| "Fix later" | Never gets fixed | Concrete fix with every finding |
-| Single dimension | Blind spots | Cover all categories systematically |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Coverage breadth | 1-2 dimensions | 4-6 | All categories |
-| Scenario specificity | Vague | Partial | Exact Given/When/Then |
-| Severity accuracy | None | Some | All correctly rated |
-| Fix quality | "Fix it" | Partial | Complete fix |
-| Reproducibility | Can't reproduce | Hard | Easy to reproduce |
-
-**Pass: 8/10**

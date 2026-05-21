@@ -304,10 +304,6 @@ If you catch yourself thinking:
 | "The semantic token layer is an unnecessary abstraction" | Component mapping is impossible without a semantic layer; it is critical during migrations. |
 | "We can handle dark mode with a single CSS file" | Each system implements dark mode differently; cross-mapping is mandatory. |
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Architecture Name]
 ## 1. Components/Contexts
 [Table: Name | Responsibility | Data | Dependencies]
 ## 2. Decisions (ADR format)
@@ -321,29 +317,6 @@ If you catch yourself thinking:
 [ASCII diagram]
 ## Verdict: READY / NEEDS CLARIFICATION
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No tradeoffs | Decision without context | Every choice: "X over Y because..." |
-| Vague tech ("use Kafka") | No justification | ADR format with 2+ alternatives |
-| Missing CAP | Ignores partition reality | Every store: CP or AP? |
-| No deployment diagram | Paper architecture | ASCII topology with AZs |
-| Single option presented | No real analysis | Always compare 2+ choices |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Component decomposition | None | Listed | Bounded contexts with ownership |
-| ADR tradeoffs | None | Some | Every decision: 2+ alternatives |
-| CAP awareness | None | Mentioned | Per-store CP/AP + behavior |
-| Communication matrix | None | Patterns only | Timeout+retry+circuit breaker |
-| Deployment topology | None | "Deploy to cloud" | AZ diagram with counts |
-| Risk register | None | 1-2 risks | 5+ with mitigation+owner |
-
-**Pass: 8/12**
 
 ## Related Skills
 

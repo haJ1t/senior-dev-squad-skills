@@ -83,18 +83,6 @@ post_mortem_template:
   metrics_for_future: {complexity_score, token_per_story, optimal_squad_size}
 ```
 
-## LLM Anti-Patterns (BENCHMARK FINDINGS)
-
-| Anti-Pattern | Model Error | Countermeasure |
-|-------------|-------------|----------------|
-| **Vague timeline** | "Day 1-2: Setup, Day 3-5: Migration" | Every day: active_squads + milestones + deliverables |
-| **No token budget** | Budget never calculated | For each squad: context_window × turns × sub-agents = estimated tokens |
-| **Missing DAG** | "Epic 2 depends on Epic 1" (plain text only) | Render: Mermaid DAG, calculate critical path |
-| **No failure plan** | "If something fails, we'll fix it" | For each epic: retry strategy + fallback + escalation path |
-| **Squad over-staffing** | 8 agents assigned to a single epic | Ideal size is 3-5. 7+ = coordination cost > work output |
-| **Forgotten monitoring** | No alert rules defined | Define at least 3 alerts: token, stall, circuit_breaker |
-| **No post-mortem** | Proje finished, next task | Perform planned_vs_actual + lessons + metrics_for_future at the end of every epic |
-
 ## Few-Shot Examples (MANDATORY Reference)
 
 ### ❌ BAD Output
@@ -212,28 +200,6 @@ recovery_patterns:
 | **GPT-4o** | Realistic timelines, assigns squad roles well but tends to skip token budgets | "Calculate token budget for EVERY squad: context_window × turns × subagents" |
 | **Gemini 2.5 Pro** | Concise, excellent monitoring rules, but weaker failure recovery strategies | "For each epic, define: retry strategy + fallback + escalation path" |
 | **DeepSeek V3** | Strong dependency DAG, but tends to omit the post-mortem templates | "Always include post_mortem_template with planned_vs_actual + lessons" |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| **Epic decomposition** | No division into epics | Epics defined but no stories/tasks | Complete Epic $\rightarrow$ Story $\rightarrow$ Task chain |
-| **Dependency DAG** | None | Plain text "X depends on Y" | Mermaid/ASCII DAG + calculated critical path |
-| **Token budgeting** | Not calculated | Total project budget only | Calculated separately for each squad |
-| **Squad design** | "3 squads" | Roles listed | Roles + budget + handoff contracts defined |
-| **Timeline** | "5 days" | Divided into days | Daily breakdown: active_squads + milestones |
-| **Failure recovery** | None | Vague "retry" | Retry + fallback + escalation + circuit breaker |
-| **Monitoring rules** | None | 1 alert defined | Minimum 3 alerts with specific conditions |
-| **Post-mortem** | None | Simple "lessons learned" | Complete template: planned_vs_actual + lessons + future metrics |
-
-**Pass: 12/16**
-
-- **Token budget exhaustion signal** — If estimated token usage exceeds 80% of budget, instantly prioritize or reduce scope.
-- **Inter-squad deadlock** — If Squad A blocks on Squad B, and Squad B blocks on Squad A: flatten the dependency graph by introducing stubs/mocks.
-- **Stall alert** — If no completed tasks are generated in 3 check intervals (15 mins each), pause all squads and conduct root-cause analysis.
-- **Context leakage** — If a squad's context contains irrelevant details from other squads, re-establish context isolation and restart the squads.
-- **Repetitive failure loops** — If the same bug type occurs 3 times across different squads, pause, extract the fix pattern, and distribute it to all squads.
-- **Human intervention bottleneck** — If more than 3 tasks are blocked waiting for human input, the epic decomposition or squad escalation strategy is flawed.
 
 ## Common Rationalizations
 
@@ -639,9 +605,9 @@ post_mortem:
 - [ ] Final summary report is delivered and approved by human partner.
 - [ ] Squad contexts are archived; historical benchmarks are registered.
 
-## Chaining (Auto-Trigger)
+## Recommended Chaining
 
-**Complete → auto-trigger:**
+**When complete, recommended next (invoke manually or wire via hooks):**
 - `squad-builder` — Squad composition and role assignment.
 - `task-lifecycle-manager` — Kanban task tracking.
 - `agent-teammate` — Creation of persistent squad members.

@@ -113,8 +113,6 @@ If you catch yourself thinking:
 
 **ALL of these mean: STOP. Read every changed line before approving.**
 
-
-
 ## Common Rationalizations
 
 | Excuse | Reality |
@@ -136,10 +134,6 @@ If you catch yourself thinking:
 
 **When you see these:** STOP. Re-read the changed lines from scratch. Apply the checklist in order: correctness, security, testing, code smells. Complete the full review format before submitting.
 
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -154,29 +148,9 @@ If you catch yourself thinking:
 - Verdict: PASS/FAIL
 ```
 
-## LLM Anti-Patterns
+## Recommended Chaining
 
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**
-## Chaining (Auto-Trigger)
-
-**Complete → auto-trigger:**
+**When complete, recommended next (invoke manually or wire via hooks):**
 - `cross-model-reviewer` — start multi-model review if PR is high-risk
 - `refactor-simplifier` — initiate refactoring if code smells are detected
 - `security-reviewer` — trigger if a security vulnerability is suspected

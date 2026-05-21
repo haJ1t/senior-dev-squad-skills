@@ -58,12 +58,6 @@ Prepares organizations for SOC 2 Type I and Type II audits by mapping existing c
 - [ ] Management assertion drafted and reviewed by leadership
 - [ ] Readiness assessment completed with no critical findings
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Review Type]: [Target]
 ## CRITICAL Findings
 ### C1: [Title] | [Framework]: [ID]
 **Finding:** [What]
@@ -78,26 +72,6 @@ Prepares organizations for SOC 2 Type I and Type II audits by mapping existing c
 - Verdict: PASS/FAIL
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Vague fixes ("add validation") | Not actionable | Show exact code |
-| Missing severity tag | No prioritization | Always CRITICAL/HIGH/MEDIUM/LOW |
-| Single-focus blindness | Misses related issues | Scan ALL categories separately |
-| No framework mapping | Can't track compliance | Map to OWASP/MITRE/NIST |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Finding completeness | Missed major issues | Found most | All issues found |
-| Severity accuracy | None/random | Some correct | All correctly rated |
-| Fix quality | "Fix it" | Partial code | Complete, runnable fix |
-| Framework mapping | None | Some mapped | All mapped to framework |
-| Output format | Free text | Partial structure | Schema-compliant |
-
-**Pass: 8/10**
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR and SOC 2 share data protection and access control requirements
 - `policy-as-code` — Automated policy enforcement reduces SOC 2 evidence collection burden

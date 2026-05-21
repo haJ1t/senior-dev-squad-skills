@@ -1,9 +1,6 @@
 ---
 name: nextjs-pro
 description: "Next.js App Router, Server Components, Server Actions, ISR, streaming, middleware. Use when building or reviewing Next.js apps."
-model: any
-user-invocable: true
-always: false
 ---
 
 # Next.js Pro
@@ -215,8 +212,6 @@ export async function POST(request: Request) {
 - [ ] Bundle minimized: dynamic imports for heavy libraries
 - [ ] Edge runtime considered for auth/cookies middleware
 
-
-
 ## Related Skills
 
 - **frontend-senior-engineer** — for deep React component design, custom hooks, and complex client-state patterns that sit inside Next.js pages
@@ -227,9 +222,6 @@ export async function POST(request: Request) {
 - **devops-release-engineer** — for Vercel/self-hosted deployment pipelines, preview environments, and environment variable management across stages
 - **api-design-reviewer** — when Route Handlers expose a public or mobile-consumed API and versioning, error envelope, and contract stability matter
 
-## Output Schema (MANDATORY)
-
-```markdown
 ## Endpoint: [METHOD] [PATH]
 ### Request
 ```json
@@ -246,27 +238,3 @@ export async function POST(request: Request) {
 [Full code with: validation, auth, transaction, logging, rate limit, idempotency]
 ```
 ```
-
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| No input validation | Security hole | Schema validation at boundary |
-| Missing transaction | Data corruption | Atomic multi-step operations |
-| No idempotency | Duplicate writes on retry | Idempotency key + cached response |
-| print() instead of logger | No structured logs | JSON logger with requestId |
-| No rate limiting | DoS vulnerable | Rate limiter on every endpoint |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Input validation | None | Partial | Full schema per field |
-| AuthN/AuthZ | None | AuthN only | Both layers |
-| Transaction safety | None | Partial | All multi-step atomic |
-| Error handling | None | Generic | Specific + error schema |
-| Rate limiting | None | Commented | Working implementation |
-| Idempotency | None | Key exists | Check + cached response |
-| Structured logging | print() | Basic | requestId + context |
-
-**Pass: 10/14**

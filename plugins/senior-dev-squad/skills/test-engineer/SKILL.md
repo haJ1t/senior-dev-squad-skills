@@ -162,12 +162,6 @@ If you catch yourself thinking:
 | New code coverage | 100% | Every new line must be covered |
 | Mutation score | ≥ 60% | `stryker` — tests kill mutants |
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Test Type]: [Target]
 ## Findings
 ### [ID]: [Title]
 **Scenario:** [Given/When/Then]
@@ -181,27 +175,6 @@ If you catch yourself thinking:
 - Coverage: [dimensions/categories covered]
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Happy path only | Misses failures | Test error/edge/empty states |
-| Vague scenarios | Not reproducible | Exact Given/When/Then |
-| Missing severity | Can't prioritize | CRITICAL/HIGH/MEDIUM on every finding |
-| "Fix later" | Never gets fixed | Concrete fix with every finding |
-| Single dimension | Blind spots | Cover all categories systematically |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Coverage breadth | 1-2 dimensions | 4-6 | All categories |
-| Scenario specificity | Vague | Partial | Exact Given/When/Then |
-| Severity accuracy | None | Some | All correctly rated |
-| Fix quality | "Fix it" | Partial | Complete fix |
-| Reproducibility | Can't reproduce | Hard | Easy to reproduce |
-
-**Pass: 8/10**
 ## Related Skills
 
 - **spec-first-development** — acceptance criteria ARE test cases

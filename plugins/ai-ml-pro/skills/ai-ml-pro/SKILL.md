@@ -1,9 +1,6 @@
 ---
 name: ai-ml-pro
 description: "ML workflows, training pipelines, model evaluation, deployment, experiment tracking. Use when building or reviewing ML systems."
-model: any
-user-invocable: true
-always: false
 ---
 
 # AI/ML Pro
@@ -265,12 +262,6 @@ class ModelRouter:
 - [ ] Model registry (versioned, staged: staging→production)
 - [ ] CI/CD pipeline trains + evaluates on every PR
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Test Type]: [Target]
 ## Findings
 ### [ID]: [Title]
 **Scenario:** [Given/When/Then]
@@ -284,16 +275,6 @@ class ModelRouter:
 - Coverage: [dimensions/categories covered]
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Happy path only | Misses failures | Test error/edge/empty states |
-| Vague scenarios | Not reproducible | Exact Given/When/Then |
-| Missing severity | Can't prioritize | CRITICAL/HIGH/MEDIUM on every finding |
-| "Fix later" | Never gets fixed | Concrete fix with every finding |
-| Single dimension | Blind spots | Cover all categories systematically |
-
 ## Related Skills
 
 - **data-engineering-pro** — upstream ETL, feature store construction, and data quality contracts that feed your training pipeline
@@ -304,15 +285,3 @@ class ModelRouter:
 - **performance-engineer** — inference latency optimization, batching strategies, and GPU/CPU profiling
 - **devops-release-engineer** — CI/CD pipeline that trains, evaluates, and promotes models through staging to production
 - **cloud-security-auditor** — IAM policies and storage security for model artifacts, datasets, and feature stores
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Coverage breadth | 1-2 dimensions | 4-6 | All categories |
-| Scenario specificity | Vague | Partial | Exact Given/When/Then |
-| Severity accuracy | None | Some | All correctly rated |
-| Fix quality | "Fix it" | Partial | Complete fix |
-| Reproducibility | Can't reproduce | Hard | Easy to reproduce |
-
-**Pass: 8/10**

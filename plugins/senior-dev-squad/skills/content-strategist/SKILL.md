@@ -57,12 +57,6 @@ Develops data-driven content strategies across multiple channels (blog, social, 
 - [ ] Performance tracking set up (GA, search console, social analytics)
 - [ ] A/B test running for at least one content variable (headline, CTA, format)
 
-
-
-## Output Schema (MANDATORY)
-
-```markdown
-# [Test Type]: [Target]
 ## Findings
 ### [ID]: [Title]
 **Scenario:** [Given/When/Then]
@@ -76,27 +70,6 @@ Develops data-driven content strategies across multiple channels (blog, social, 
 - Coverage: [dimensions/categories covered]
 ```
 
-## LLM Anti-Patterns
-
-| Anti-Pattern | Why Wrong | Fix |
-|-------------|-----------|-----|
-| Happy path only | Misses failures | Test error/edge/empty states |
-| Vague scenarios | Not reproducible | Exact Given/When/Then |
-| Missing severity | Can't prioritize | CRITICAL/HIGH/MEDIUM on every finding |
-| "Fix later" | Never gets fixed | Concrete fix with every finding |
-| Single dimension | Blind spots | Cover all categories systematically |
-
-## Scoring Rubric
-
-| Criterion | 0 | 1 | 2 |
-|-----------|---|---|---|
-| Coverage breadth | 1-2 dimensions | 4-6 | All categories |
-| Scenario specificity | Vague | Partial | Exact Given/When/Then |
-| Severity accuracy | None | Some | All correctly rated |
-| Fix quality | "Fix it" | Partial | Complete fix |
-| Reproducibility | Can't reproduce | Hard | Easy to reproduce |
-
-**Pass: 8/10**
 ## Related Skills
 - `geo-optimizer` — SEO is the foundation; GEO extends it for AI search
 - `social-media-manager` — Content created here flows to social distribution
