@@ -311,7 +311,7 @@ Every skill follows the superpowers-quality format:
 
 ```bash
 # 1. Add this marketplace (from GitHub or a local clone)
-/plugin marketplace add senior-dev-squad/senior-dev-squad-skills
+/plugin marketplace add haJ1t/senior-dev-squad-skills
 
 # 2. Install the core squad + any domain plugins you want
 /plugin install senior-dev-squad@senior-dev-squad
