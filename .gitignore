@@ -2,5 +2,8 @@
 *.bak-*/
 node_modules/
 .omc/
+.claude/
 docs/superpowers/plans/_*.json
 docs/superpowers/plans/_*.py
+
+.dfmt/

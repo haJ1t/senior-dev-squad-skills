@@ -101,6 +101,16 @@ Any document that passes all checklist items but still "feels wrong." Any checkl
 
 **When you see these:** STOP. Reopen the checklist for the relevant document type, identify which items were incorrectly marked passing, and re-run the full check.
 
+## Verification
+
+Before declaring a document checked:
+
+- [ ] Selected the correct checklist for the document type (spec / architecture / tasks / prompt)
+- [ ] Every checklist item verified against the actual text, not assumed
+- [ ] Each failed item recorded with the specific gap (section + what is missing)
+- [ ] Verdict is PASS only if zero items failed (partial compliance = fail)
+- [ ] Gaps handed back to the generating skill before any downstream handoff
+
 ## Related Skills
 
 - **code-reviewer** — applies to code (this skill applies to documents)

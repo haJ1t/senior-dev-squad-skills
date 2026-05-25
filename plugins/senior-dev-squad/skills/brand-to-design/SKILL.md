@@ -96,4 +96,13 @@ After completing this skill's process:
 3. **Export Check:** Have all tokens been exported in a format suitable for the target system (Tailwind/MUI/Chakra/CSS)? Can they be used with design-token-mapper?
 4. **Quality Check:** Was the Iron Law followed? Has every token been verified for WCAG contrast? Do the dark mode overrides meet the same standard?
 
+Final checklist before marking complete:
+
+- [ ] Every brand color expanded to a full 50-900 token scale
+- [ ] Typography, spacing, shadow, radius, and animation tokens all generated
+- [ ] Dark mode overrides produced for surface, background, and text
+- [ ] Every color pair passes WCAG AA contrast (4.5:1 normal, 3:1 large)
+- [ ] Tokens exported in every target format the project needs
+- [ ] Output is consumable by design-token-mapper
+
 See [REFERENCE.md](REFERENCE.md) for the full Phase 8 checklist.
