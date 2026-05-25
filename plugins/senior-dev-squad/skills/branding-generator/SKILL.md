@@ -143,20 +143,6 @@ Skipping branding for a user-facing project. Using generic colors without thinki
 
 **When you see these:** STOP. Return to Brand Foundation (Section 1). Confirm personality adjectives, target audience, and any existing brand elements before regenerating the palette, typography, or voice.
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 
 - **frontend-senior-engineer** — implements the brand tokens

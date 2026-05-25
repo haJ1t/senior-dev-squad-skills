@@ -57,19 +57,6 @@ Designs rigorous validation experiments to test product hypotheses before commit
 - [ ] Guardrail metrics identified to detect negative side effects
 - [ ] Experiment duration set and no-peeking rule enforced
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `opportunity-solver` — Opportunities identified feed into validation experiments
 - `growth-engineer` — Growth experiments use the same validation methodology

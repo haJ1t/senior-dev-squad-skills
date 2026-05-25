@@ -58,20 +58,6 @@ Prepares organizations for SOC 2 Type I and Type II audits by mapping existing c
 - [ ] Management assertion drafted and reviewed by leadership
 - [ ] Readiness assessment completed with no critical findings
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR and SOC 2 share data protection and access control requirements
 - `policy-as-code` — Automated policy enforcement reduces SOC 2 evidence collection burden

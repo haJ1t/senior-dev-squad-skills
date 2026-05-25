@@ -58,23 +58,6 @@ Implements consumer-driven contract testing to prevent integration breakage betw
 - [ ] Contract compatibility verified before provider deployment
 - [ ] Stale contracts flagged for review (no verification in 30 days)
 
-## Endpoint: [METHOD] [PATH]
-### Request
-```json
-{"field": "type (constraints)"}
-```
-### Success (200/201)
-```json
-{"data": {}, "meta": {"requestId": "uuid"}}
-```
-### Errors
-| Status | Code | When |
-### Implementation
-```[lang]
-[Full code with: validation, auth, transaction, logging, rate limit, idempotency]
-```
-```
-
 ## Related Skills
 - `api-design-reviewer` — Contract testing validates API design decisions
 - `spec-first-development` — API specs become the basis for consumer contracts

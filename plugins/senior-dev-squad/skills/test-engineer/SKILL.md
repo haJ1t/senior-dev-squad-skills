@@ -168,19 +168,6 @@ If you catch yourself thinking:
 | New code coverage | 100% | Every new line must be covered |
 | Mutation score | ≥ 60% | `stryker` — tests kill mutants |
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 
 - **spec-first-development** — acceptance criteria ARE test cases

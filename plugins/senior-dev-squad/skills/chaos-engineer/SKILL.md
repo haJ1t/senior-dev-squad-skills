@@ -59,20 +59,6 @@ Applies chaos engineering principles to proactively test system resilience. Desi
 - [ ] Experiment findings documented with remediation items tracked
 - [ ] Game Day schedule established (quarterly recommended)
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `mutation-testing` — Mutation testing for code; chaos engineering for infrastructure
 - `load-testing` — Chaos + load testing reveals failure modes under stress

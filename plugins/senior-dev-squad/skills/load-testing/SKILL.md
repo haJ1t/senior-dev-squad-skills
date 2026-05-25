@@ -61,19 +61,6 @@ Designs and executes load, stress, soak, and spike tests to validate system perf
 - [ ] Breaking point documented — max concurrent users before SLA violation
 - [ ] Baseline load test integrated into CI/CD pipeline
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `chaos-engineer` — Combine load + chaos to test resilience under stress
 - `performance-engineer` — Performance optimization based on load test findings

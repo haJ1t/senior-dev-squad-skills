@@ -216,19 +216,3 @@ def project_created_handler(sender, instance, created, **kwargs):
 - **devops-release-engineer** — integrate Celery workers, management command runners, and Django migrations into CI/CD pipelines
 - **performance-engineer** — profile Django ORM query plans, connection pool sizing, and cache layer (Redis/Memcached) configuration
 
-## Endpoint: [METHOD] [PATH]
-### Request
-```json
-{"field": "type (constraints)"}
-```
-### Success (200/201)
-```json
-{"data": {}, "meta": {"requestId": "uuid"}}
-```
-### Errors
-| Status | Code | When |
-### Implementation
-```[lang]
-[Full code with: validation, auth, transaction, logging, rate limit, idempotency]
-```
-```

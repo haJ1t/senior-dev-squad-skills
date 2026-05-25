@@ -144,20 +144,6 @@ If you catch yourself thinking:
 
 **When you see these:** STOP. Re-read the project type and scale indicators. Return to the Pattern Selection Guide and cut recommendations to the essential core patterns only.
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 
 - **architecture-planner** — uses pattern recommendations

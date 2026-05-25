@@ -140,20 +140,6 @@ If you catch yourself thinking:
 
 **When you see these:** STOP. Re-read the changed lines from scratch. Apply the checklist in order: correctness, security, testing, code smells. Complete the full review format before submitting.
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Recommended Chaining
 
 **When complete, recommended next (invoke manually or wire via hooks):**

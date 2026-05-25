@@ -262,19 +262,6 @@ class ModelRouter:
 - [ ] Model registry (versioned, staged: staging→production)
 - [ ] CI/CD pipeline trains + evaluates on every PR
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 
 - **data-engineering-pro** — upstream ETL, feature store construction, and data quality contracts that feed your training pipeline

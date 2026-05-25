@@ -251,20 +251,6 @@ const rateLimiter = {
 - [ ] Dependency scanning for AI libraries (langchain, etc.)
 - [ ] Regular prompt injection red-teaming
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 
 - **security-reviewer** — general application security review; use alongside this skill for non-AI attack surfaces (SQLi, XSS, auth flaws)

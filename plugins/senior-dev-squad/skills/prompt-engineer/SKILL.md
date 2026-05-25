@@ -57,19 +57,6 @@ Applies engineering rigor to prompt design — treating prompts as code that can
 - [ ] A/B test configured for prompt variants with success criteria
 - [ ] Production monitoring tracks quality drift and triggers alerts
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `model-evaluator` — Prompt quality is measured by model evaluation frameworks
 - `rag-architect` — RAG prompts require specialized structure for context injection

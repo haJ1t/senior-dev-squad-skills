@@ -193,16 +193,3 @@ dapp/
 - **devops-release-engineer** — CI/CD pipelines that compile, test, and deploy contracts across testnets and mainnet with staged promotion
 - **performance-engineer** — gas profiling, calldata compression, and batching strategies for high-throughput on-chain interactions
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

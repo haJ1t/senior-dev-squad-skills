@@ -57,20 +57,6 @@ Automates the developer onboarding journey from zero to first merged PR. Handles
 - [ ] First PR review SLA defined and met (<24 hours from submission)
 - [ ] Onboarding tested with someone unfamiliar with the codebase (fresh-eyes test)
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 - `dev-environment-manager` — Reproducible environments are the foundation of onboarding
 - `documentation-generator` — Generated docs provide the codebase tour content

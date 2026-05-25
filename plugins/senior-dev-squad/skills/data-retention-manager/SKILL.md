@@ -58,20 +58,6 @@ Automates data retention policy enforcement across storage systems. Implements l
 - [ ] Cross-border data transfer and retention rules enforced
 - [ ] Quarterly policy review scheduled and documented
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR data minimization and right-to-erasure requirements
 - `soc2-audit-prep` — Data retention as a confidentiality and privacy control

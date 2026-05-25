@@ -214,17 +214,3 @@ After completing this process:
 2. **Evidence Check:** Is there a clear evidence link or a NON_COMPLIANT tag for every subcategory?
 3. **Remediation Actionability:** Are remediation suggestions concrete, listing specific files or code paths?
 4. **Iron Law Audit:** Did you compile at least one piece of evidence for each analyzed subcategory?
-
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

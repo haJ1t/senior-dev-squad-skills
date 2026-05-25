@@ -58,19 +58,6 @@ Applies engineering rigor to growth — building measurement infrastructure, run
 - [ ] Retention cohort analysis running for at least 90-day windows
 - [ ] Experiment log tracks all tests including failures (for organizational learning)
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `content-strategist` — Content performance data feeds growth analysis
 - `validation-designer` — Growth experiments are validation experiments applied to growth metrics

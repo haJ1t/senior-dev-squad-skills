@@ -57,19 +57,6 @@ Develops data-driven content strategies across multiple channels (blog, social, 
 - [ ] Performance tracking set up (GA, search console, social analytics)
 - [ ] A/B test running for at least one content variable (headline, CTA, format)
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `geo-optimizer` — SEO is the foundation; GEO extends it for AI search
 - `social-media-manager` — Content created here flows to social distribution

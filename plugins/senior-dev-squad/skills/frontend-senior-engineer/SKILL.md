@@ -155,20 +155,6 @@ If you catch yourself thinking:
 | "This component is internal only" | Internal tools have users too. |
 | "useEffect is standard for data fetching" | Not anymore. Use RSC or React Query. |
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 
 - **spec-first-development** — spec defines all four states

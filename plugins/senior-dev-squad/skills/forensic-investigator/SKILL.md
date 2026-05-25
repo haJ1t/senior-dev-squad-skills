@@ -224,17 +224,3 @@ After completing this process:
 2. **Kill Chain Balance:** Are all phases of the attack represented in the timeline?
 3. **Actionability Check:** Does the remediation roadmap provide line-level code suggestions?
 4. **Iron Law Audit:** Has the Chain of Custody been documented and evidence integrity verified?
-
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

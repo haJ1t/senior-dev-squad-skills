@@ -235,17 +235,3 @@ After completing this process:
 2. **Perspective Check:** Are red (attack) and blue (defense) team viewpoints balanced?
 3. **PoC Safety:** Are all exploit payloads documented safely (e.g., executing `whoami` or reading mock database rows)?
 4. **Iron Law Audit:** Is a defense validation mapped for every single attack path?
-
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

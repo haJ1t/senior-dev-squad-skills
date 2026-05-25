@@ -196,19 +196,6 @@ If you catch yourself thinking:
 | "Time is tight, skip the spec" | Wrong implementation takes 3x longer to fix. |
 | "Specs are for PMs, not engineers" | Engineers who write specs ship faster with fewer bugs. |
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Recommended Chaining
 
 **When complete, recommended next (invoke manually or wire via hooks):**

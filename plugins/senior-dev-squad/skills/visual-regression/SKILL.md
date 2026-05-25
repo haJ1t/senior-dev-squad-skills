@@ -57,19 +57,6 @@ Implements automated visual regression testing to catch unintended UI changes be
 - [ ] Responsive breakpoints tested (mobile, tablet, desktop)
 - [ ] No flaky visual tests (same input → same screenshot every time)
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `test-engineer` — Visual tests are part of the testing pyramid
 - `ui-generator` — Generated UI components need visual regression testing

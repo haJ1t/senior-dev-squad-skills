@@ -58,20 +58,6 @@ Implements governance, security, and operational policies as version-controlled,
 - [ ] Policy change process includes code review and testing (same as application code)
 - [ ] Exception process defined with approval workflow and automatic expiration
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `gdpr-compliance-scanner` — GDPR rules encoded as OPA policies
 - `soc2-audit-prep` — SOC 2 controls automated through policy-as-code

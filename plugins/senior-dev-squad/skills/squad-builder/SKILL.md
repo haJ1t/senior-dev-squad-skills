@@ -54,19 +54,6 @@ Assembles purpose-built agent squads for complex tasks that require multiple spe
 - [ ] Squad output is coherent (no contradictory conclusions between agents)
 - [ ] Human can override any squad decision at any point
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `agent-teammate` — Squad members are individual agent teammates
 - `task-lifecycle-manager` — Squads execute tasks tracked in lifecycle manager

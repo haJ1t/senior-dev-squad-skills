@@ -172,20 +172,3 @@ After completing this process:
 3. **Contract Alignment:** Do all endpoint schemas align with the OpenAPI spec?
 4. **Suite Stability:** Can the smoke test suite be executed repeatedly without failures?
 5. **Credential Integrity:** Are passwords and tokens removed from all reports?
-
-## Endpoint: [METHOD] [PATH]
-### Request
-```json
-{"field": "type (constraints)"}
-```
-### Success (200/201)
-```json
-{"data": {}, "meta": {"requestId": "uuid"}}
-```
-### Errors
-| Status | Code | When |
-### Implementation
-```[lang]
-[Full code with: validation, auth, transaction, logging, rate limit, idempotency]
-```
-```

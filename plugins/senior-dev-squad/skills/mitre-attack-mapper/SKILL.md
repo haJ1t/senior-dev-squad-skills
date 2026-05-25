@@ -171,17 +171,3 @@ After completing this process:
 2. **Sub-Technique Check:** Are all techniques mapped to their most specific sub-techniques?
 3. **Validity Check:** Do all selected ATT&CK IDs and M-IDs exist in the official MITRE database?
 4. **Actionability Check:** Can a SOC analyst or developer immediately act on your recommendations?
-
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

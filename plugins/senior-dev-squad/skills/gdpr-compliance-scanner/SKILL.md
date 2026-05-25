@@ -57,20 +57,6 @@ Automatically scans codebases, data flows, and infrastructure for GDPR complianc
 - [ ] Data retention periods defined and enforced automatically
 - [ ] Third-party processors have signed Data Processing Agreements (DPAs)
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `soc2-audit-prep` — SOC 2 and GDPR share data protection requirements
 - `data-retention-manager` — Automated data retention enforcement

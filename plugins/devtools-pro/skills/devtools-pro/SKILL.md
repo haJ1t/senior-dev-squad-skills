@@ -174,19 +174,3 @@ export class SeniorDevClient {
 - **devops-release-engineer** — publishing pipelines for npm packages, GitHub Releases, VS Code Marketplace submissions, and Homebrew taps
 - **performance-engineer** — SDK connection pooling, request batching, and CLI startup-time profiling
 
-## Endpoint: [METHOD] [PATH]
-### Request
-```json
-{"field": "type (constraints)"}
-```
-### Success (200/201)
-```json
-{"data": {}, "meta": {"requestId": "uuid"}}
-```
-### Errors
-| Status | Code | When |
-### Implementation
-```[lang]
-[Full code with: validation, auth, transaction, logging, rate limit, idempotency]
-```
-```

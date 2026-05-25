@@ -57,19 +57,6 @@ Measures test suite quality through mutation testing — automatically introduci
 - [ ] Surviving mutants reviewed and triaged (fix test / mark equivalent / accept risk)
 - [ ] Incremental mutation testing configured for PR workflows
 
-## Findings
-### [ID]: [Title]
-**Scenario:** [Given/When/Then]
-**Expected:** [What should happen]
-**Actual:** [What happens / what could break]
-**Severity:** [CRITICAL/HIGH/MEDIUM]
-**Fix:** [Concrete fix]
-## Summary
-- Total findings: N
-- By severity: C=, H=, M=
-- Coverage: [dimensions/categories covered]
-```
-
 ## Related Skills
 - `test-engineer` — Test design and TDD practices that mutation testing validates
 - `test-driven-development` — TDD cycle extended with mutation testing verification

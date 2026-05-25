@@ -165,16 +165,3 @@ CREATE TRIGGER trg_audit_immutable
 - **ecommerce-pro** — reference for checkout and payment integration patterns when a fintech system powers an e-commerce storefront
 - **api-design-reviewer** — validate payment API contracts for idempotency key conventions, error codes, and webhook signature verification
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

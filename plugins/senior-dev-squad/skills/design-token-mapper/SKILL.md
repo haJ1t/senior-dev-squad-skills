@@ -36,238 +36,23 @@ NO BRAND TOKEN SHALL BE LEFT ORPHAN WITHOUT A CORRESPONDING TARGET SYSTEM MAPPIN
 - Someone says: "The token count is small, I will handle it manually" — orphan token risks and inconsistencies occur even in the smallest projects.
 - Someone says: "We are not migrating, we just need a mapping" — mapping is always required; migration is just a special case of mapping.
 
-## Phase 1: Defining Source and Target Systems
+## Workflow
 
-**BEFORE proceeding:**
+Work through the seven phases in order. Each phase must be complete before proceeding.
 
-1. **Identify source tokens** — read the output from brand-to-design (CSS custom properties, JSON, YAML).
-2. **Identify target system(s)** — MUI Theme, Chakra Theme, Tailwind Config, CSS Custom Properties, or a custom system.
-3. **Analyze the target system's token structure:**
-   - How are colors pathed? (`theme.palette.primary.main` vs. `colors.primary.500`)
-   - How is typography defined? (`theme.typography.h1.fontSize` vs. `fontSize.4xl`)
-   - What is the spacing system like? (`theme.spacing(4)` vs. `spacing.4`)
-4. **Create a mapping template** — a mapping dictionary defining the target system equivalent for each source token.
+**Phase 1 — Define source and target systems.** Identify source tokens (brand-to-design output), identify target system(s), analyze token path structures, and create a mapping template dictionary. See [REFERENCE.md](REFERENCE.md) for the mapping template YAML example and path-structure analysis guidance.
 
-```yaml
-# Example: Source → Target mapping template (MUI & Tailwind)
-mappings:
-  colors:
-    brand.color.primary.500:
-      mui: palette.primary.main
-      tailwind: colors.primary.500
-    brand.color.primary.600:
-      mui: palette.primary.dark
-      tailwind: colors.primary.600
-    brand.color.neutral.100:
-      mui: palette.grey.100
-      tailwind: colors.gray.100
-  typography:
-    brand.typography.base_size:
-      mui: typography.fontSize
-      tailwind: fontSize.base
-```
+**Phase 2 — Create the semantic token layer.** Define semantic meanings (danger/error, success, warning, info, primary, secondary), generate main/light/dark/contrastText variants for each, and map each to the target system. See [REFERENCE.md](REFERENCE.md) for the semantic token map JavaScript example.
 
-## Phase 2: Creating the Semantic Token Layer
+**Phase 3 — Component-level mapping.** Identify all component properties in each target system, bind each property to a semantic token, and generate theme overrides per component. See [REFERENCE.md](REFERENCE.md) for the MUI component-level override code example.
 
-**BEFORE proceeding:**
+**Phase 4 — Breakpoint and dark mode mapping.** Map brand breakpoints to target system breakpoints and generate cross-system dark mode token equivalents. See [REFERENCE.md](REFERENCE.md) for breakpoint value differences across systems and the cross-system dark mode mapping object.
 
-1. **Define semantic meanings:**
-   - danger/error, success, warning, info, primary, secondary
-   - Link each semantic meaning to a brand token.
-2. **Generate all variants for each semantic token:**
-   - main, light, dark, contrastText (MUI standard)
-   - Or 500, 200, 700, on-* (Tailwind/CSS standard)
-3. **Map each semantic token to its equivalent in the target system.**
+**Phase 5 — Generate theme overrides.** Create layered override files (base → brand → component) for each target system, keeping overrides isolated from direct system theme modifications. See [REFERENCE.md](REFERENCE.md) for the Chakra layered theme override example.
 
-```javascript
-// Example: Semantic token map
-const semanticTokens = {
-  error: {
-    main: 'brand.color.accent.500',    // #F59E0B → MUI: palette.error.main
-    light: 'brand.color.accent.300',   // #FCD34D → MUI: palette.error.light
-    dark: 'brand.color.accent.700',    // #B45309 → MUI: palette.error.dark
-    contrastText: 'brand.color.onAccent', // #FFFFFF → MUI: palette.error.contrastText
-  },
-  success: {
-    main: 'brand.color.success',
-    light: 'brand.color.success-100',  // Derived
-    dark: 'brand.color.success-700',
-    contrastText: '#FFFFFF',
-  },
-};
-```
+**Phase 6 — Migrations.** Record current mappings, analyze the target system's token structure, build a migration mapping, and execute the migration script. See [REFERENCE.md](REFERENCE.md) for the migration checklist and script strategy.
 
-## Phase 3: Component-Level Mapping
-
-**BEFORE proceeding:**
-
-1. **Identify all component properties in the target system:**
-   - MUI: `Button` → `color="primary"`, `variant="contained"`
-   - Chakra: `Button` → `colorScheme="blue"`, `variant="solid"`
-   - Tailwind: `Button` → `className="bg-primary-500"`
-2. **Bind each component property to a semantic token:**
-   - `Button.color="primary"` → `semantic.primary.main`
-   - `Alert.severity="error"` → `semantic.error.main`
-3. **Generate theme overrides:**
-   - Map all token assignments for a single component's variants.
-   - Export component overrides in a format compatible with the target system's theme structure.
-
-```javascript
-// Example: MUI Component-Level Mapping
-const MuiButtonOverride = {
-  styleOverrides: {
-    root: ({ ownerState, theme }) => ({
-      backgroundColor: ownerState.color
-        ? theme.palette[ownerState.color].main
-        : theme.palette.primary.main,
-      borderRadius: theme.shape.borderRadius,
-      padding: theme.spacing(1, 2),
-      transition: `all ${theme.transitions.duration.short}ms`,
-    }),
-    containedPrimary: {
-      backgroundColor: 'var(--color-primary-500)',
-      '&:hover': {
-        backgroundColor: 'var(--color-primary-600)',
-      },
-    },
-  },
-};
-```
-
-## Phase 4: Breakpoint and Dark Mode Mapping
-
-**BEFORE proceeding:**
-
-1. **Breakpoint mapping:**
-   - Map brand breakpoints (xs, sm, md, lg, xl) to target system breakpoints.
-   - Systems may have different breakpoint values (MUI: 600/900/1200, Tailwind: 640/768/1024).
-2. **Dark mode cross-mapping:**
-   - Generate dark mode token equivalents for all target systems.
-   - Implementation varies by system:
-     - MUI: `createTheme({ palette: { mode: 'dark' } })`
-     - Chakra: `extendTheme({ config: { initialColorMode: 'dark' } })`
-     - Tailwind: `dark:` prefix or CSS custom properties override.
-   - Verify dark mode produces the exact same visual results across all target systems.
-
-```javascript
-// Example: Cross-system dark mode mapping
-const darkModeMap = {
-  mui: {
-    palette: {
-      mode: 'dark',
-      background: { default: '#0F172A', paper: '#1E293B' },
-      primary: { main: '#60A5FA' },
-    },
-  },
-  chakra: {
-    config: { initialColorMode: 'dark' },
-    colors: {
-      brand: { bg: '#0F172A', surface: '#1E293B' },
-    },
-  },
-  tailwind: {
-    // CSS custom properties override
-    ':root.dark': {
-      '--color-background': '#0F172A',
-      '--color-surface': '#1E293B',
-    },
-  },
-};
-```
-
-## Phase 5: Generating Theme Overrides
-
-**BEFORE proceeding:**
-
-1. **Create theme override files for each target system:**
-   - Ensure overrides are safe from design system package updates.
-   - Keep overrides in a separate layer; do not modify system themes directly.
-2. **Override strategy:**
-   - **Layered:** Base theme → Brand override layer → Component override layer.
-   - **Isolated:** Each override can be updated independently.
-   - **Preservative:** Overrides are preserved when system updates are applied.
-3. **Structure the override format based on the target system:**
-
-```javascript
-// Example: Chakra Theme Override (layered)
-import { extendTheme } from '@chakra-ui/react';
-
-const brandOverrides = {
-  colors: {
-    brand: {
-      50: '#EFF6FF',
-      500: '#3B82F6',
-      900: '#1E3A8A',
-    },
-  },
-  fonts: {
-    heading: "'Inter', sans-serif",
-    body: "'Inter', sans-serif",
-  },
-  space: {
-    1: '8px',
-    2: '16px',
-    4: '32px',
-  },
-};
-
-const componentOverrides = {
-  components: {
-    Button: {
-      baseStyle: { borderRadius: '8px' },
-      variants: {
-        solid: (props) => ({
-          bg: `${props.colorScheme}.500`,
-        }),
-      },
-    },
-  },
-};
-
-export default extendTheme(brandOverrides, componentOverrides);
-```
-
-## Phase 6: Migrations — Switching Between Systems
-
-**BEFORE proceeding:**
-
-1. **Record all token mappings of the current system:**
-   - Which brand token maps to which system token?
-   - Note any custom/overridden mappings.
-2. **Analyze the target system's token structure:**
-   - Find tokens carrying the same semantic meaning.
-   - Identify discrepancies (e.g., MUI's `palette.primary.light` = Chakra's `colors.brand.200`).
-3. **Build a migration mapping:**
-   - Map each token from the source system to its target system equivalent.
-   - Set up a fallback strategy for tokens with no equivalents.
-4. **Execute the migration script:**
-   - Update all component overrides, theme files, and style references.
-   - Search for old token references and replace them with new ones.
-
-```bash
-# Example: Migration Checklist
-# 1. Export source system tokens (e.g., MUI theme object)
-# 2. Analyze target system token structure (e.g., Chakra)
-# 3. Generate mapping dict
-# 4. Execute the migration script
-# 5. Perform visual regression testing
-# 6. Remove obsolete system dependencies
-```
-
-## Phase 7: Final Verification — No Orphan Left Behind
-
-**BEFORE checking off:**
-
-- [ ] Does every brand token map to at least one target system equivalent? (orphan check)
-- [ ] Conversely, are there any target system tokens unmapped to the brand? (unused token check)
-- [ ] Is the semantic token layer (danger, success, warning, info, primary, secondary) complete?
-- [ ] Does each semantic token have main, light, dark, and contrastText variants?
-- [ ] Component-level mapping: are all component properties bound to a semantic token?
-- [ ] Is breakpoint mapping correct? (consistent responsive behavior across all systems)
-- [ ] Does dark mode mapping deliver identical visual results in all systems?
-- [ ] Are theme overrides protected against system updates? (layered architecture)
-- [ ] Migration check: have all old token references been removed? (grep verification)
-- [ ] Migration check: does visual regression testing pass?
+**Phase 7 — Final verification.** Complete the checklist below before marking done.
 
 ## Red Flags — STOP and Follow Process
 
@@ -304,20 +89,6 @@ If you catch yourself thinking:
 | "The semantic token layer is an unnecessary abstraction" | Component mapping is impossible without a semantic layer; it is critical during migrations. |
 | "We can handle dark mode with a single CSS file" | Each system implements dark mode differently; cross-mapping is mandatory. |
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 
 - **brand-to-design** — Generates the input for design-token-mapper; mapping cannot be done without it.
@@ -325,7 +96,7 @@ If you catch yourself thinking:
 - **wcag-validator** — Performs color contrast verification after mapping.
 - **component-auditor** — Used to verify that component-level mapping is comprehensive.
 
-## Self-Review
+## Verification
 
 After completing this skill's process:
 
@@ -333,3 +104,16 @@ After completing this skill's process:
 2. **Cross-System Check:** If multiple target systems exist, do they deliver identical visual results? Is dark mode consistent across all systems?
 3. **Migration Check (if applicable):** Have old token references been completely cleaned up? Does visual regression testing pass? Have old system dependencies been removed?
 4. **Quality Check:** Was the Iron Law followed? Have any tokens been left orphan? Is component-level mapping comprehensive? Is the layered override structure maintained?
+
+Final checklist before marking complete:
+
+- [ ] Does every brand token map to at least one target system equivalent? (orphan check)
+- [ ] Conversely, are there any target system tokens unmapped to the brand? (unused token check)
+- [ ] Is the semantic token layer (danger, success, warning, info, primary, secondary) complete?
+- [ ] Does each semantic token have main, light, dark, and contrastText variants?
+- [ ] Component-level mapping: are all component properties bound to a semantic token?
+- [ ] Is breakpoint mapping correct? (consistent responsive behavior across all systems)
+- [ ] Does dark mode mapping deliver identical visual results in all systems?
+- [ ] Are theme overrides protected against system updates? (layered architecture)
+- [ ] Migration check: have all old token references been removed? (grep verification)
+- [ ] Migration check: does visual regression testing pass?

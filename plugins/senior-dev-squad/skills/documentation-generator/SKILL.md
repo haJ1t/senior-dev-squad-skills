@@ -56,20 +56,6 @@ Automatically generates high-quality documentation from codebases. Produces API 
 - [ ] Getting-started guide takes new developer from zero to first PR in <30 minutes
 - [ ] Documentation search works and returns relevant results
 
-## 1. Components/Contexts
-[Table: Name | Responsibility | Data | Dependencies]
-## 2. Decisions (ADR format)
-### ADR-001: [Title]
-**Context:** [Why] **Options:** [2+ alternatives] **Decision:** [What] **Tradeoffs:** [+gain / -sacrifice]
-## 3. Communication Matrix
-[Table: From→To | Pattern | Protocol | Timeout | Retry]
-## 4. Data & CAP Analysis
-[Per store: Type | CP/AP | Partition behavior]
-## 5. Deployment Topology
-[ASCII diagram]
-## Verdict: READY / NEEDS CLARIFICATION
-```
-
 ## Related Skills
 - `api-design-reviewer` — API design provides the schema that docs are generated from
 - `spec-first-development` — Specs are documentation written before code

@@ -281,16 +281,3 @@ After completing this process:
 3. **Actionability:** Are IaC code snippets provided for all reported remediations?
 4. **Iron Law Audit:** Has every target template passed linter scans and CIS benchmark verification?
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```

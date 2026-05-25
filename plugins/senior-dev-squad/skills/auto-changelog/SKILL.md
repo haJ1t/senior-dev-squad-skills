@@ -34,231 +34,21 @@ THE CHANGELOG MUST BE UPDATED BEFORE EVERY RELEASE. AUTOMATED CHANGELOGS ARE ALW
 - "There is only one commit" — changelogs apply to projects of all sizes.
 - "Commit messages are messy" — analyze messy commits and extract a structured changelog regardless.
 
-## Phase 1: Commit History Analysis
+## Workflow
 
-**BEFORE proceeding:**
+Work through the six phases in order. Each gate must be confirmed before proceeding.
 
-1. **Determine the analysis range:**
-   - **First changelog:** The entire commit history (from initial commit to HEAD).
-   - **Subsequent changelogs:** Commits since the last tag (release).
-   - **Specific range:** Commits between two tags/SHAs.
-2. **Parse commits based on Conventional Commits:**
-   - `feat:` — New feature (minor version bump)
-   - `fix:` — Bug fix (patch version bump)
-   - `chore:` — Maintenance, configuration (no version bump)
-   - `docs:` — Documentation changes (no version bump)
-   - `refactor:` — Code refactoring (no version bump)
-   - `test:` — Test changes (no version bump)
-   - `style:` — Code style changes (no version bump)
-   - `perf:` — Performance improvement (patch version bump)
-   - `ci:` — CI/CD changes (no version bump)
-   - `build:` — Build system changes (no version bump)
-3. **Extract scope and breaking change metadata:**
-   - `feat(api):` → scope = "api"
-   - `feat!:` → breaking change (major version bump)
-   - `feat(api)!:` → scope + breaking change
+**Phase 1 — Commit history analysis.** Determine the range (first changelog vs. since last tag vs. specific range), parse commits by Conventional Commits type, and extract scope and breaking-change metadata. See [REFERENCE.md](REFERENCE.md) for the full commit-type table, scope/breaking-change syntax, and git log commands.
 
-```bash
-# List commits since the last tag
-git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-decorate
+**Phase 2 — Breaking change detection.** Scan for explicit `!` modifier commits and implicit breaking changes (API endpoints, DB schema, dependency majors, config format, public signatures). Prepare migration notes for each. See [REFERENCE.md](REFERENCE.md) for detection commands and implicit-change checklist.
 
-# Complete commit history (for initial changelog)
-git log --reverse --oneline --no-decorate
+**Phase 3 — Change categorization.** Sort commits into Added / Fixed / Changed / Deprecated / Removed / Security / Infrastructure, group by scope, and order chronologically. See [REFERENCE.md](REFERENCE.md) for the category-to-commit-type mapping and grouping shell commands.
 
-# Parse conventional commits
-git log --format="%s" $(git describe --tags --abbrev=0)..HEAD | grep -E "^(feat|fix|chore|docs|refactor|test|style|perf|ci|build)(\([a-z]+\))?!?:"
-```
+**Phase 4 — Version bump recommendation.** Apply SemVer rules (breaking → major, feat → minor, fix/perf → patch, rest → no bump), read the current version, and calculate the new version. See [REFERENCE.md](REFERENCE.md) for the full SemVer rules table, version-source commands, and worked examples.
 
-## Phase 2: Breaking Change Detection
+**Phase 5 — CHANGELOG.md generation.** Write or prepend the release section using the keepachangelog.com format (reverse chronological, `## [version] - YYYY-MM-DD`, Unreleased section, comparison links). See [REFERENCE.md](REFERENCE.md) for the full CHANGELOG.md template.
 
-**BEFORE proceeding:**
-
-1. **Explicit breaking change detection:** Search for commits containing the `!` modifier:
-   - `feat!: remove deprecated endpoint`
-   - `fix(api)!: change response format`
-2. **Implicit breaking change detection** — Changes not immediately obvious from the commit message alone:
-   - API endpoint changes (URLs, methods, parameters)
-   - Database schema changes (migrations, column deletions/type alterations)
-   - Dependency major version upgrades
-   - Configuration format changes
-   - Public API signature changes
-3. **Prepare migration/resolution notes for each change:**
-   - What changed?
-   - How should it be migrated?
-   - From which version is it applicable?
-
-```bash
-# Find explicit breaking changes
-git log --format="%s" $(git describe --tags --abbrev=0)..HEAD | grep "!:" 
-
-# Inspect diffs of relevant commits (implicit breaking changes)
-git diff <COMMIT_SHA>~1 <COMMIT_SHA> --stat
-```
-
-## Phase 3: Change Categorization
-
-**BEFORE proceeding:**
-
-1. **Sort commits into categories:**
-   - **Added:** New features (`feat:`)
-   - **Fixed:** Bug fixes (`fix:`, `perf:`)
-   - **Changed:** Changes to existing features (`refactor:`, `style:`)
-   - **Deprecated:** Features to be removed in future releases
-   - **Removed:** Deprecated features removed in this release
-   - **Security:** Security patches and fixes
-   - **Infrastructure:** CI/CD, build, and dependency changes
-2. **Group by scope** — Subgroup by scope within each category.
-3. **If no scope is provided** — Use the commit title directly.
-4. **Order commits chronologically** within each category (newest on top).
-
-```bash
-# Group commits by category
-echo "### Added"
-git log --format="  - %s" $(git describe --tags --abbrev=0)..HEAD | grep "^  - feat"
-
-echo "### Fixed"
-git log --format="  - %s" $(git describe --tags --abbrev=0)..HEAD | grep "^  - fix\|^  - perf"
-
-echo "### Changed"
-git log --format="  - %s" $(git describe --tags --abbrev=0)..HEAD | grep "^  - refactor\|^  - style"
-```
-
-## Phase 4: Version Bump Recommendation
-
-**BEFORE proceeding:**
-
-1. **SemVer calculation rules:**
-   - **Major (X.0.0):** Contains breaking changes → `feat!:` or `fix!:`
-   - **Minor (0.X.0):** Contains new features → `feat:`
-   - **Patch (0.0.X):** Contains only fixes/performance improvements → `fix:`, `perf:`
-   - **No Bump:** Contains only chore, docs, refactor, test, style, ci, build
-2. **Read the current version:**
-   - package.json, Cargo.toml, pyproject.toml, or VERSION file
-   - The most recent git tag
-3. **Calculate and recommend the new version:**
-   - Current: v1.2.3 → feat exists → v1.3.0
-   - Current: v1.2.3 → fix + breaking change exists → v2.0.0
-   - Current: v1.2.3 → docs only → v1.2.3 (no release required)
-
-```bash
-# Find the current version tag
-git describe --tags --abbrev=0
-
-# Read from package.json (if applicable)
-grep '"version"' package.json | head -1
-
-# Calculate SemVer
-# Major bump: git log --format="%s" <TAG>..HEAD | grep -q "!:"
-# Minor bump: git log --format="%s" <TAG>..HEAD | grep -q "^feat"
-# Patch bump: git log --format="%s" <TAG>..HEAD | grep -q "^fix\|^perf"
-```
-
-## Phase 5: CHANGELOG.md Generation
-
-**BEFORE proceeding:**
-
-1. **Use the keepachangelog.com format:**
-   - Reverse chronological order (newest release on top)
-   - Format each release header as `## [version] - YYYY-MM-DD`
-   - Use categories: Added, Changed, Deprecated, Removed, Fixed, Security
-   - Follow link formats: `[version]: https://github.com/owner/repo/releases/tag/v1.0.0`
-2. **Maintain an Unreleased section:**
-   - `## [Unreleased]` — changes not yet deployed to a tag
-   - Everything slated for the next release goes here
-3. **Write/Update the file:**
-   - If missing: Create a new CHANGELOG.md
-   - If present: Prepend the new release section to the top
-   - Update comparison links at the bottom
-
-```bash
-# CHANGELOG.md Format Template
-cat << 'CHANGELOG'
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/),
-and this project adheres to [Semantic Versioning](https://semver.org/).
-
-## [Unreleased]
-
-### Added
-- ...
-
-### Fixed
-- ...
-
-## [1.2.0] - 2026-05-15
-
-### Added
-- feat(api): user deletion endpoint
-- feat(cli): batch processing support
-
-### Fixed
-- fix(api): resolved null pointer error
-- perf(core): optimized caching layer
-
-[Unreleased]: https://github.com/owner/repo/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/owner/repo/releases/tag/v1.2.0
-CHANGELOG
-```
-
-## Phase 6: Release Notes Generation
-
-**BEFORE proceeding:**
-
-1. **Use user-oriented language:**
-   - Avoid deep developer jargon, use customer-facing terms.
-   - "Users can now do X" — feature
-   - "Resolved issue where X occurred" — fix
-   - "X has changed, please use Y instead" — breaking change
-2. **Order by importance:**
-   - Breaking Changes (critical)
-   - New Features
-   - Bug Fixes
-   - Performance Improvements
-   - Other Changes
-3. **Append PR/Issue links for traceability** — `(#123)`
-4. **Include a migration guide** — if there are breaking changes.
-
-```bash
-# Generate release notes
-cat << 'RELEASE'
-## v1.2.0 Release Notes
-
-🚀 **New Features**
-- Added user deletion endpoint — you can now remove users directly from the administration dashboard (#42)
-- Added batch processing CLI command (#45)
-
-🐛 **Bug Fixes**
-- Fixed null pointer error — resolved application crash during user profile load (#44)
-
-⚡ **Performance**
-- Caching layer improvements — API response latency reduced by 30% (#46)
-
-⚠️ **Breaking Changes**
-- **None**
-
----
-
-[Full Changelog](CHANGELOG.md)
-RELEASE
-```
-
-## Phase 7: Final Verification
-
-Before marking complete:
-
-- [ ] All commits have been successfully parsed according to the Conventional Commits specification.
-- [ ] Commits are categorized accurately (Added/Fixed/Changed/Removed etc.).
-- [ ] Breaking changes have been detected and migration paths documented.
-- [ ] Changes are grouped by scope.
-- [ ] Version bump recommendation is correctly calculated (major/minor/patch).
-- [ ] CHANGELOG.md is correctly structured using keepachangelog.com guidelines.
-- [ ] Release notes are user-friendly and clear.
-- [ ] Comparison links at the bottom are accurate and active.
-- [ ] Dates match the YYYY-MM-DD format.
-- [ ] CHANGELOG.md changes have been written to the target file.
+**Phase 6 — Release notes generation.** Write user-oriented notes (features, fixes, breaking changes with migration guide) ordered by importance, with PR/issue links. See [REFERENCE.md](REFERENCE.md) for the release notes template and language guidelines.
 
 ## Red Flags — STOP and Follow Process
 
@@ -299,10 +89,17 @@ If you catch yourself thinking:
 - **ship-readiness-checklist** — Evaluates release-readiness metrics.
 - **code-reviewer** — Reviews commit messages for conventional standard compliance.
 
-## Self-Review
+## Verification
 
-After completing this skill's process:
+Before marking complete:
 
-1. **Coverage check:** Have you scanned all commits? Are they accurately categorized?
-2. **Edge case check:** How are merge commits, revert commits, and empty or invalid commit messages handled?
-3. **Quality check:** Is the CHANGELOG.md clear? Is the recommended version bump accurate? Are breaking changes highlighted sufficiently?
+- [ ] All commits have been successfully parsed according to the Conventional Commits specification.
+- [ ] Commits are categorized accurately (Added/Fixed/Changed/Removed etc.).
+- [ ] Breaking changes have been detected and migration paths documented.
+- [ ] Changes are grouped by scope.
+- [ ] Version bump recommendation is correctly calculated (major/minor/patch).
+- [ ] CHANGELOG.md is correctly structured using keepachangelog.com guidelines.
+- [ ] Release notes are user-friendly and clear.
+- [ ] Comparison links at the bottom are accurate and active.
+- [ ] Dates match the YYYY-MM-DD format.
+- [ ] CHANGELOG.md changes have been written to the target file.

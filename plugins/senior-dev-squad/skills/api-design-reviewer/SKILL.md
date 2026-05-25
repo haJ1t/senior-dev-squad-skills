@@ -57,20 +57,6 @@ Reviews API designs for consistency, developer experience, and adherence to best
 - [ ] API documentation matches implementation (not outdated)
 - [ ] Rate limiting implemented with clear headers (X-RateLimit-*)
 
-## CRITICAL Findings
-### C1: [Title] | [Framework]: [ID]
-**Finding:** [What]
-**Impact:** [Why matters]
-**Fix:** [Concrete fix — code, not words]
-## HIGH Findings
-[Same format]
-## MEDIUM / LOW
-[Same format]
-## Summary
-- CRITICAL: N, HIGH: N, MEDIUM: N
-- Verdict: PASS/FAIL
-```
-
 ## Related Skills
 - `backend-senior-engineer` — API implementation follows the design reviewed here
 - `spec-first-development` — API specs written before implementation
