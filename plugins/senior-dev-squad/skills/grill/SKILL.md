@@ -109,18 +109,131 @@ The interview is complete when:
 
 Summarize the session: list what was decided, what was deferred, and what ADRs are needed. Then explicitly hand off to the next skill (typically `spec-first-development` or `architecture-planner`).
 
+## Question Taxonomy
+
+The design tree has predictable categories. Use this map to ensure no category is skipped before declaring the interview complete.
+
+| Category | What to expose | Example probing questions |
+|---|---|---|
+| **Scope boundary** | What is explicitly in vs. out | "Does this feature need to work for users who are not logged in?" / "Are mobile push notifications in scope for this iteration or a later one?" |
+| **Success criteria** | How anyone will know it is done | "What does success look like in six weeks — what number moves, and in which direction?" / "What would make a stakeholder demo this and say 'not quite'?" |
+| **Constraints** | Non-negotiable limits | "Are there latency SLAs we must not break?" / "Does this have to work on the existing data model, or can we migrate?" |
+| **Edge cases** | Rare-but-real scenarios | "What should happen if two users trigger this simultaneously?" / "What is the expected behavior when the upstream service is degraded?" |
+| **Non-goals** | Things explicitly excluded | "Is bulk export in scope or should we call that out as a non-goal to prevent scope creep?" |
+| **Assumptions** | Beliefs the plan depends on | "This plan assumes users have completed onboarding — is that guaranteed, or do we need to handle the partial-onboarding state?" |
+| **Dependencies** | Upstream services, teams, data | "Does this depend on a feature another team is building that isn't shipped yet?" / "Which external APIs must be reachable for the happy path?" |
+| **Failure modes** | What breaks and what the response is | "If the background job fails halfway through, is the result corrupted or safely idempotent?" / "Who gets paged and what does the retry policy look like?" |
+
+Not every category needs exhaustive drilling — some answers will be obvious from context or codebase reads. The purpose of the taxonomy is to guarantee you do not skip a whole category by accident.
+
+## Decision Tree
+
+Use this to decide whether to keep grilling or close the interview.
+
+```
+START: Is there at least one unanswered question in any taxonomy category?
+├── YES → Ask the single most load-bearing open question. (Return to START after answer.)
+└── NO → Are all key terms defined in CONTEXT.md?
+    ├── NO → Resolve undefined terms before stopping.
+    └── YES → Are any hard decisions (data model, public contract, vendor) flagged for ADRs?
+        ├── NO → Are open questions that cannot be resolved captured in a numbered list?
+        │   ├── NO → Capture them now.
+        │   └── YES → STOP. Produce session summary. Hand off.
+        └── YES (not yet flagged) → Flag them now. Then check open-questions list. (Return to that branch.)
+```
+
+**Keep grilling when:** any taxonomy category has an unexamined fork, any term is still ambiguous, or a hard decision was made orally but not written down.
+
+**Stop when:** you can produce a session summary — decisions made, terms defined, ADRs flagged, open questions listed — and it contains no implicit "TBD" items.
+
+The worst stopping error is stopping because the *conversation* feels done, not because the *decision tree* is actually exhausted.
+
+## Worked Example
+
+The following is a condensed but realistic transcript. The feature request arrives vague; the interviewer asks exactly one question per turn.
+
+---
+
+**User:** We should add notifications to the app.
+
+**Interviewer:**
+> **Question:** When you say "notifications" — are you thinking in-app alerts (a bell icon the user polls), push notifications to a mobile device, transactional emails, or some combination?
+>
+> **My recommended answer:** Start with in-app only. Email and push can follow once we know which events actually drive re-engagement.
+
+**User:** In-app for now, but designed so email can be added later.
+
+**Interviewer:** Understood — in-app notifications, extensible architecture. What event should trigger the first notification? I want to make sure we nail the most important one before designing the system around it.
+
+> **Question:** Which single event, if it never triggered a notification, would generate the most complaints from users?
+>
+> **My recommended answer:** Based on what I can see in the codebase, the most common action is a comment being posted on a task someone owns. I'd start there.
+
+**User:** Yes — comment on a task I'm assigned to.
+
+**Interviewer:** Good. One thing I need to check: should a user be notified when they comment on their own task, or only when someone else does?
+
+> **Question:** Self-comment: notify or suppress?
+>
+> **My recommended answer:** Suppress. Notifying someone about their own action is noise by default.
+
+**User:** Suppress, agreed.
+
+**Interviewer:** That's now a term that needs a home in CONTEXT.md. I'll note: "notification" = an in-app alert surfaced by the bell icon, triggered by other-user actions on records the recipient owns or watches. Does that definition match your model?
+
+**User:** Add "watches" — we have a watch list feature.
+
+**Interviewer:**
+> **Question:** A user can own a task (assignee) and also watch it independently. Should the notification rules be identical for both relationships, or should watchers get a subset of events — for example, no notifications for status changes, only for comments?
+>
+> **My recommended answer:** Watchers get comments only; assignees get comments + status changes. Keeps the volume manageable.
+
+**User:** Let's do that.
+
+**Interviewer:** One more category before we close: failure behavior.
+
+> **Question:** If the notification write fails (DB down, constraint violation), should we silently swallow the error and let the primary action succeed, or should the entire operation roll back?
+>
+> **My recommended answer:** Swallow and log. A failed notification should never block a user from saving a comment. We can replay from the event log.
+
+**User:** Agreed — best-effort delivery.
+
+**Interviewer:** I have enough to close. Here is the session summary:
+
+**Decisions made:**
+- In-app only (v1). Email/push are explicitly non-goals for this iteration.
+- Trigger: comment posted by another user on a task the recipient owns or watches.
+- Self-comment → suppressed.
+- Assignees: comments + status changes. Watchers: comments only.
+- Delivery is best-effort; notification write failure does not roll back the parent transaction.
+
+**Terms added to CONTEXT.md:**
+- `notification` — in-app alert surfaced by the bell icon, triggered by other-user actions on records the recipient owns or watches.
+- `watch` — a voluntary subscription to a record that grants comment notifications but not status-change notifications.
+
+**ADR warranted:** The best-effort delivery + event-log replay pattern is a significant reliability decision. An ADR should be created before implementation begins.
+
+**Open questions:**
+1. Read state: is a notification marked read on click, on view, or manually? Needs a follow-up decision before the UI is specced.
+
+---
+
+The resulting CONTEXT.md snippet and ADR stub are now ready inputs for `spec-first-development`.
+
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself doing any of the following, stop and return to the protocol:
 
-- Asking two questions in the same message
-- Offering implementation suggestions before the interview is complete
-- Accepting a vague answer without requesting precision ("flexible" is not an answer)
-- Using a term that has not been defined in `CONTEXT.md` as if its meaning is obvious
-- Moving to the next question without confirming the previous answer
-- Skipping the codebase read and asking a question the code already answers
-- Treating the interview as a formality and rushing to get it over with
-- Writing any code, schema, or config during the interview phase
+- **Asking two questions in the same message** — bundling is always a sign you are rushing. Split them. Ask the most load-bearing one first.
+- **Asking a leading question** — "You probably want the standard OAuth flow, right?" is not a question; it is an answer wearing a question mark. State your recommendation separately and ask an open question.
+- **Accepting a vague answer without pushing back** — "flexible", "scalable", "it depends", "probably fine" are not answers. Restate the question more concretely and ask again.
+- **Stopping because the conversation feels complete** — feelings are not evidence. Check the taxonomy and decision tree before declaring done.
+- **Offering implementation suggestions before the interview is complete** — even helpful suggestions ("we could use Redis for this") anchor the design before constraints are known. Hold them until after closure.
+- **Using a term that has not been defined in `CONTEXT.md`** as if its meaning is obvious. If it is not in the glossary, challenge it.
+- **Moving to the next question without confirming the previous answer** — restate what was just decided before advancing.
+- **Skipping the codebase read** and asking a question the code already answers. Reading first is cheaper and more credible.
+- **Treating the interview as a formality** — if you already know the answers and are just going through motions, the questions will be low-quality and the user will notice.
+- **Writing any code, schema, or config during the interview phase** — any artifact produced before closure is premature and biases the remaining questions.
 
 ## Common Rationalizations
 
@@ -131,6 +244,8 @@ If you catch yourself doing any of the following, stop and return to the protoco
 | "The feature is simple enough that we don't need this" | Simple features have forks too. A five-minute interview on a simple feature costs almost nothing. |
 | "They seem confident in their plan, I shouldn't challenge it" | Stress-testing a confident plan is a service, not a criticism. Unchallenged plans have unchallenged blind spots. |
 | "I'll just note the ambiguity and handle it later" | Ambiguity deferred is a decision made by accident. Make it on purpose, now, in writing. |
+| "I asked one question and got a long answer, that's good enough" | A long answer often contains multiple sub-decisions, each of which needs a dedicated question. Parse the answer; don't accept it wholesale. |
+| "The user is in a hurry, I'll ask fewer questions" | A hurried user is exactly who needs the interview most. Their urgency is the source of risk, not a reason to skip coverage. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 

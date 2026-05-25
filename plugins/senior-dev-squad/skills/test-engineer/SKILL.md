@@ -126,6 +126,66 @@ describe('createProject', () => {
 
 A flaky test is worse than no test. A test that sometimes fails erodes trust in the entire suite. Fix flakiness immediately.
 
+## Decision Tree — Where Does This Test Live?
+
+```
+Does the test cross a process boundary (network, DB, filesystem, 3rd-party)?
+├── YES → integration or e2e
+│   └── Does it drive a real browser / full user journey?
+│       ├── YES → e2e  (critical paths only — login, checkout, password reset)
+│       └── NO  → integration  (API contract + DB, services talking to each other)
+└── NO  → unit
+    └── Is the logic a pure function / isolated component / util?
+        ├── YES → unit (fast, no mocks needed)
+        └── NO  → do you need to mock more than 1 collaborator to test it?
+            ├── YES → design smell; consider splitting the unit first
+            └── NO  → unit with a single controlled double
+
+When NOT to write a test at all:
+  - The behavior is already fully covered by a test one level up
+  - The function is a trivial wrapper with no logic (e.g., re-exports, pass-throughs)
+  - The test would be more complex than the code it tests and adds no safety
+```
+
+## Flaky Test Triage
+
+A flaky test is a reliability tax on every engineer who runs the suite. Fix it the same sprint it appears; a retry is not a fix.
+
+**Step 1 — Reproduce deterministically.** Run the test 20× in isolation (`--repeat=20`). If it never fails alone, it is order-dependent or shares state.
+
+**Step 2 — Identify the root cause.**
+
+| Symptom | Likely cause | Fix |
+|---------|-------------|-----|
+| Fails only in CI | Clock/timezone drift or env var missing | Pin timezone; audit env |
+| Fails when another test runs first | Shared mutable state (global, DB row, module cache) | `beforeEach` teardown; factory fixtures |
+| Fails intermittently async | Assertion fires before async work settles | `await` the assertion; use `waitFor` not `setTimeout` |
+| Fails on different port/network | Hard-coded port or real outbound call | Mock at the boundary; use dynamic ports |
+| Fails only after file changes | Module cache not reset | `jest.resetModules()` in `afterEach` |
+
+**Step 3 — Verify the fix.** Run 50× in CI before closing. If it still flips once: root cause is wrong, keep digging.
+
+**Step 4 — Guard it.** Add a comment citing the root cause so the next engineer does not re-introduce it.
+
+## Coverage That Matters
+
+Line coverage tells you which lines were *executed*. It does not tell you whether your tests would catch a bug.
+
+**Test behavior, not lines.** A test that calls a function but makes no assertion is a lie. `expect(fn()).toBeDefined()` exercises the line and proves nothing about correctness.
+
+**Branch coverage is more honest.** A function with `if (user.isAdmin)` needs at least two tests — one where the flag is true and one where it is false. Aim for ≥ 70% branch coverage, not just line coverage.
+
+**Mutation testing is the strongest signal.** Tools like [Stryker](https://stryker-mutator.io/) change one operator at a time (`>` → `>=`, `&&` → `||`) and check whether your tests catch the change. A mutant that survives means your tests do not actually enforce that logic. Target ≥ 60% mutation score on critical business logic.
+
+**Why 100% line coverage can be misleading:**
+- A test that calls every line with no assertions has 100% coverage and zero safety.
+- Generated code, error-boundary boilerplate, and platform-specific branches inflate coverage without adding risk.
+- Focus your coverage budget on: auth flows, payment logic, state machines, and all error branches.
+
+## Worked Example — Password Reset Flow
+
+See [`REFERENCE.md`](./REFERENCE.md) for a complete worked example showing exactly which tests to write at each pyramid level for the password reset feature, with annotated snippets and the rationale for each placement.
+
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself thinking:
@@ -137,7 +197,13 @@ If you catch yourself thinking:
 - "I'll add the error test later"
 - "This test is flaky but it passes most of the time"
 
-**ALL of these mean: STOP. The missing test matters more than the next feature.**
+**Testing-specific anti-patterns that also mean STOP:**
+- **Testing implementation details** — asserting that `db.insert` was called instead of asserting the observable outcome; refactors break these tests without changing behavior
+- **Over-mocking** — mocking 5 collaborators to test 1 function; if you mock everything, you test nothing
+- **Snapshot-everything** — using snapshot tests on components with no behavioral assertions; snapshots catch diffs, not regressions
+- **Asserting nothing** — `expect(fn()).toBeDefined()` or `expect(result).toBeTruthy()` — these pass on any non-null return and prove no contract
+
+**ALL of these mean: STOP. The missing or broken test matters more than the next feature.**
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -158,6 +224,9 @@ If you catch yourself thinking:
 | "100% coverage means quality" | Coverage is a floor, not a ceiling. Meaningful tests matter. |
 | "The test passes on my machine" | CI is the source of truth. If it fails in CI, it fails. |
 | "This flaky test passes eventually" | Eventually is not a testing strategy. Fix it. |
+| "I mocked everything, so it's isolated" | Mocking every dependency tests your mock configuration, not your code. |
+| "The snapshot test covers the component" | Snapshots detect unexpected diffs; they do not assert that the component works correctly. |
+| "I tested the internal state" | Implementation tests survive refactors without telling you if behavior broke — behavioral tests catch what internal tests miss. |
 
 ## Coverage Targets
 
