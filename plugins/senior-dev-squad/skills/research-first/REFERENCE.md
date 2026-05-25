@@ -257,3 +257,83 @@ Compile research findings using the following template:
 ```
 
 **Output:** Structured research synthesis report.
+
+---
+
+## Worked Example
+
+**Scenario:** A Node.js API service needs to process outbound emails and PDF exports asynchronously. The team wants a background-job library. No job queue exists in the repo yet.
+
+### Phase 1 — Context Compilation
+
+Scan findings:
+- Runtime: Node.js 20 LTS, TypeScript 5.4, Express 4.
+- Existing persistence: PostgreSQL 16 via `pg` driver. No Redis instance in docker-compose.
+- `package.json` has no existing job/queue dependency.
+- Related files: `src/mailer.ts`, `src/exports/pdf.ts` — both called inline from request handlers (blocking the event loop on large exports).
+
+**Context map conclusion:** We need async processing with durable job storage. PostgreSQL is already present; adding Redis would mean a new infrastructure component. TypeScript support is mandatory.
+
+### Phase 2 — Web Research (version check, 2026-05)
+
+```bash
+npm view bull version          # 4.16.3  (latest stable)
+npm view bullmq version        # 5.12.0  (latest stable)
+npm view pg-boss version       # 10.1.2  (latest stable)
+```
+
+BullMQ 5.x requires Redis 7.2+. Bull 4.x (predecessor) is in maintenance mode — no new features, security patches only. `pg-boss` runs entirely on PostgreSQL with no additional infrastructure.
+
+### Phase 3 — Documentation Review
+
+- **BullMQ v5 migration guide:** `Queue` constructor options renamed; `createBullBoard` adapter updated. Breaking change from v4: workers must be created with `new Worker(…)` — the v3 `process()` callback is removed.
+- **pg-boss v10 changelog:** `pg-boss` now requires `pg` ≥ 8.11. Project uses `pg` 8.12 — compatible. New in v10: `sendAfter` API replaces `publishAfter` from v8.
+- **Bull (v4):** Docs mark several queue methods deprecated (`add` options `delay` shape changed in v5, but v4 is frozen).
+
+### Phase 4 — Solution Discovery
+
+GitHub search: `site:github.com background jobs node postgres no redis`. Top result: `pg-boss` (4.2 k stars, last commit 3 weeks ago, 23 open issues / 4 labeled `bug`). No awesome-list entry for a maintained pure-Postgres queue with TypeScript types that outranks it.
+
+### Phase 5 — Alternative Analysis
+
+| Criterion | BullMQ 5 | Bull 4 (legacy) | pg-boss 10 |
+|-----------|-----------|-----------------|------------|
+| Infrastructure | Redis 7.2+ required | Redis required | PostgreSQL only — already present |
+| Maintenance status | Active | Security patches only | Active |
+| TypeScript types | First-class (`@types` bundled) | `@types/bull` (community) | Bundled |
+| Throughput (jobs/s) | ~10 000+ | ~8 000 | ~500–2 000 |
+| Durable across restarts | Yes (Redis persistence) | Yes | Yes (WAL-backed) |
+| License | MIT | MIT | MIT |
+| New infra cost | Redis instance + ops | Redis instance + ops | None |
+| Known issues | Cluster mode config subtle | Frozen; won't fix new bugs | Advisory locks can block under very high concurrency |
+
+**Trade-off analysis:**
+- BullMQ is the performance leader but forces a Redis deployment. For the expected load (hundreds of jobs/hour, not thousands/second) this is over-engineering.
+- Bull 4 is ruled out — maintenance-only status is a disqualifying flag for a new dependency.
+- pg-boss fits the constraint set: no new infrastructure, durable, TypeScript-native, actively maintained, and adequate throughput for the workload.
+
+### Phase 6 — Version & Compatibility Verification
+
+```bash
+npm view pg-boss peerDependencies   # {"pg": ">=8.11"}
+node -e "require('./package.json').dependencies.pg"  # "^8.12.0" — satisfied
+npm audit                           # 0 vulnerabilities
+```
+
+pg-boss v10.1.2: no open CVEs, peer-dep satisfied, no deprecated API used by this project.
+
+### Phase 7 — Community Wisdom
+
+Stack Overflow (`site:stackoverflow.com pg-boss`): top-voted Q&A warns that `pg-boss` schema migrations run automatically on `start()` — they must not be called concurrently from multiple processes during a rolling deploy. Solution: use the `noSupervisor` option in workers and run `boss.start()` only from a single designated process or a migration job.
+
+GitHub Issues (`pg-boss` label `bug`, open): 4 issues. None affect `sendAfter` or basic worker patterns. One is a niche issue with `LISTEN`/`NOTIFY` under PgBouncer transaction pooling — project uses session pooling, so not affected.
+
+### Phase 8 — Synthesis
+
+**Recommendation: adopt `pg-boss` v10.1.2.**
+
+Rationale: It is the only candidate that adds zero new infrastructure. Throughput (≤ 2 000 jobs/s) comfortably covers the projected load. TypeScript types are bundled. License is MIT. The one real pitfall — concurrent `start()` calls during rolling deploys — is well-documented and has a one-line mitigation (`noSupervisor: true` on worker processes, `start()` only in the main API process).
+
+BullMQ would be revisited if throughput requirements exceed ~5 000 jobs/minute — at that point the Redis operational cost is justified.
+
+**Next step:** hand this report to `spec-first-development` to define the job schemas and retry policies before writing any code.

@@ -211,3 +211,189 @@ async def create_order(
 | **GPT-4o** | Fast, performs great Pydantic validation, but tends to skip the idempotency check | "Check idempotency key FIRST, before any business logic — return cached result if exists" |
 | **Gemini 2.5 Pro** | Concise and clean, but weak on transaction details | "Wrap ALL multi-step operations in a transaction — show explicit rollback behavior" |
 | **DeepSeek V3** | Highly cost-effective, writes structured logs, but sometimes produces a malformed error format | "Use EXACT error format: {error: {code, message, details, requestId}} — no variations" |
+
+---
+
+## Worked Example
+
+**Endpoint:** `POST /orders` (TypeScript · Express · Zod · Prisma)
+
+Walk through every Iron Law decision in order. Each block is preceded by a
+narration note explaining *why* that choice was made here.
+
+### Step 1 — Input validation at the boundary
+
+**Decision:** Zod parses and coerces the raw body before any other code runs.
+If the schema rejects the input, we short-circuit immediately with a 400 and
+never touch the database. `idempotency_key` is required (UUID) on every
+mutating request — the schema enforces it, not a downstream check.
+
+```typescript
+import { z } from 'zod'
+
+const OrderItemSchema = z.object({
+  product_id: z.string().uuid(),
+  quantity: z.number().int().min(1).max(100),
+})
+
+const CreateOrderSchema = z.object({
+  idempotency_key: z.string().uuid(),           // Iron Law 6: required on every POST
+  items: z.array(OrderItemSchema).min(1).max(50),
+  shipping_address: z.string().min(10).max(500).trim(),
+  payment_method_id: z.string().uuid(),
+})
+
+type CreateOrderInput = z.infer<typeof CreateOrderSchema>
+```
+
+### Step 2 — AuthN + AuthZ + rate limit (before business logic)
+
+**Decision:** Auth runs after schema validation but before any DB read. Rate
+limiting is the third sub-check — never deferred to "when we see abuse".
+The user can only create orders for themselves; the `user_id` comes from the
+verified JWT, not the request body (prevents mass-assignment of another user's
+orders).
+
+```typescript
+router.post('/api/v1/orders', rateLimiter({ max: 20, window: '1m' }), async (req, res) => {
+  // AuthN — 401 if token is missing or invalid
+  const currentUser = await verifyJwt(req.headers.authorization)
+  if (!currentUser) return res.status(401).json(errorBody('UNAUTHORIZED', 'Invalid token', req.id))
+
+  // AuthZ — 403 if the user's role cannot place orders
+  if (!currentUser.permissions.includes('orders:create'))
+    return res.status(403).json(errorBody('FORBIDDEN', 'Insufficient permissions', req.id))
+
+  // Input validation — 400 on schema failure
+  const parsed = CreateOrderSchema.safeParse(req.body)
+  if (!parsed.success)
+    return res.status(400).json(errorBody('VALIDATION_ERROR', 'Invalid input', req.id, parsed.error.issues))
+
+  const input: CreateOrderInput = parsed.data
+```
+
+### Step 3 — Idempotency key check
+
+**Decision:** Query the idempotency store *before* any write. If the key was
+already used, return the cached response immediately — the operation is
+complete from the caller's perspective. This makes retries safe at the network
+layer without duplicating records.
+
+```typescript
+  const cached = await db.idempotencyRecord.findUnique({
+    where: { key: input.idempotency_key },
+  })
+  if (cached) {
+    logger.info({ requestId: req.id, event: 'idempotent_replay', orderId: cached.response.orderId })
+    return res.status(cached.statusCode).json(cached.response)
+  }
+```
+
+### Step 4 — DB transaction boundary
+
+**Decision:** Order creation, inventory reservation, and audit-log write are
+one logical operation. All three succeed together or all three roll back. The
+audit-log write is *inside* the transaction so it never records an event for
+an order that was rolled back.
+
+```typescript
+  try {
+    const result = await db.$transaction(async (tx) => {
+      // Validate products exist — one query with IN clause (avoids N+1)
+      const products = await tx.product.findMany({
+        where: { id: { in: input.items.map((i) => i.product_id) }, active: true },
+      })
+      if (products.length !== input.items.length)
+        throw { code: 'INVALID_PRODUCT', status: 400, message: 'One or more products not found or inactive' }
+
+      const total = input.items.reduce((sum, item) => {
+        const product = products.find((p) => p.id === item.product_id)!
+        return sum + product.price * item.quantity
+      }, 0)
+
+      const order = await tx.order.create({
+        data: {
+          userId: currentUser.id,
+          status: 'CONFIRMED',
+          total,
+          idempotencyKey: input.idempotency_key,
+          items: { create: input.items.map((i) => ({ productId: i.product_id, quantity: i.quantity })) },
+        },
+      })
+
+      // Reserve inventory — single batched update per item
+      await Promise.all(
+        input.items.map((item) =>
+          tx.inventory.update({
+            where: { productId: item.product_id },
+            data: { reserved: { increment: item.quantity } },
+          })
+        )
+      )
+
+      // Audit log inside the transaction — rolls back if order creation fails
+      await tx.auditLog.create({
+        data: { userId: currentUser.id, action: 'ORDER_CREATED', resourceId: order.id },
+      })
+
+      return { orderId: order.id, status: order.status, total }
+    })
+```
+
+### Step 5 — Structured log on success + idempotency record
+
+**Decision:** Log at `info` level with the key fields from Iron Law 4. Store
+the idempotency record *after* the transaction commits so a replay always
+returns the real result, not a partial one.
+
+```typescript
+    logger.info({
+      requestId: req.id, event: 'order_created',
+      userId: currentUser.id, orderId: result.orderId, total: result.total,
+    })
+
+    const responseBody = { data: result, meta: { requestId: req.id } }
+    await db.idempotencyRecord.create({
+      data: { key: input.idempotency_key, statusCode: 201, response: responseBody },
+    })
+
+    return res.status(201).json(responseBody)
+```
+
+### Step 6 — Typed error responses (no swallowing)
+
+**Decision:** Domain errors thrown inside the transaction carry a `code` and
+`status`. Unknown errors get a generic 500 but are still logged with the full
+stack trace so on-call has something to work with. No exception is silently
+dropped.
+
+```typescript
+  } catch (err: any) {
+    if (err.code && err.status) {
+      logger.warn({ requestId: req.id, event: 'order_rejected', code: err.code, message: err.message })
+      return res.status(err.status).json(errorBody(err.code, err.message, req.id))
+    }
+    logger.error({ requestId: req.id, event: 'order_create_failed', error: String(err), stack: err?.stack })
+    return res.status(500).json(errorBody('INTERNAL_ERROR', 'Order creation failed', req.id))
+  }
+})
+```
+
+### Helper: `errorBody`
+
+```typescript
+function errorBody(code: string, message: string, requestId: string, details?: unknown) {
+  return { error: { code, message, ...(details ? { details } : {}), requestId } }
+}
+```
+
+### What each step enforces
+
+| Step | Iron Law |
+|---|---|
+| Schema parse with Zod | Never trust the client |
+| AuthN → AuthZ → rate limit | Every protected endpoint |
+| Idempotency key check before writes | Every POST/PUT/PATCH |
+| Single `$transaction` for order + inventory + audit | Transactions or death |
+| `logger.info` / `logger.error` with structured fields | Structured logging |
+| `errorBody` helper used everywhere | Consistent error format |

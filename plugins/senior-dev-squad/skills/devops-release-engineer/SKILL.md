@@ -118,18 +118,68 @@ Steps:
 ☐ Post-release monitoring plan in place
 ```
 
+## Decision Tree
+
+Use this before every release to resolve the four recurring judgment calls.
+
+```
+1. WHICH DEPLOY STRATEGY?
+   │
+   ├─ Can I run two versions in parallel (DB schema is backward-compatible)?
+   │    ├─ Yes, and traffic split is valuable → CANARY
+   │    │     (start at 1–5 %, watch error rate for 15 min, ramp to 100 %)
+   │    └─ Yes, but instant cutover is fine → BLUE-GREEN
+   │          (keep old stack warm for ≥ 30 min, swap LB, tear down only after monitors green)
+   │
+   └─ Cannot run two versions in parallel (breaking schema, single DB writer)?
+        ├─ Downtime is acceptable → RECREATE
+        │     (schedule maintenance window, announce to stakeholders)
+        └─ Downtime is NOT acceptable → ROLLING (with expand-contract migration)
+              (each pod replaced one-by-one; requires old + new code to coexist)
+
+2. ROLL BACK or FORWARD-FIX?
+   │
+   ├─ Error rate > threshold AND root cause is unknown → ROLL BACK immediately
+   ├─ Error rate > threshold AND fix is a one-line config change → FORWARD-FIX
+   │     (only if fix can be deployed in < 10 min and is lower risk than rollback)
+   └─ Error rate is acceptable but UX is degraded → FORWARD-FIX with feature flag disable
+
+3. MIGRATION BEFORE or AFTER DEPLOY?
+   │
+   ├─ Additive (ADD COLUMN, CREATE TABLE, ADD INDEX CONCURRENTLY) → BEFORE deploy
+   │     (old binary ignores new column; new binary uses it — safe overlap)
+   ├─ Destructive (DROP COLUMN, DROP TABLE, RENAME COLUMN) → AFTER deploy + after rollback window closes
+   │     (old binary must be gone before the column it reads disappears)
+   └─ Data backfill on large table → ASYNC background job, never in a blocking migration
+
+4. WHAT GATES PROMOTION TO PROD?
+   │
+   ├─ CI green (all tests + lint + security scan) → required
+   ├─ Staging smoke tests pass → required
+   ├─ /health/ready returns 200 on new pods → required (readiness gate)
+   ├─ Error rate stable for ≥ 5 min post-deploy (canary) → required
+   └─ Rollback tested against staging in this release cycle → required
+```
+
 ## Red Flags — STOP
 
-Friday deployment = weekend incident. "We'll add monitoring later" = users will tell you it's down. "Skip the rollback plan, it's a small change" = you'll need it.
+- **Deploy + destructive migration in the same pipeline step.** DROP COLUMN while the old binary is still serving traffic corrupts data. Use expand-contract: add column → deploy new binary → backfill → drop column in a follow-up release.
+- **No rollback path documented before deploy begins.** "We'll revert the commit" is not a rollback plan when a schema migration has run.
+- **No health check / readiness gate after deploy.** The load balancer routes traffic the moment a container starts, not when it is ready. Without `/health/ready`, you're sending real requests to a cold instance.
+- **Secrets in env vars or committed to the repo.** `DATABASE_URL=postgres://...` in a `.env` file checked into git is a breach waiting to be found.
+- **Friday-afternoon deploy with no monitoring watch.** If you can't stay for 30 minutes of post-deploy monitoring, the deploy waits until Monday.
+- **"Small change" skips Gates 1–7.** The gate list exists because small changes have caused the largest incidents.
 
 ## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "We'll add monitoring after deployment" | You'll notice it's down when users complain. |
-| "Friday deploy is fine" | Friday deploy is how weekend incidents start. |
-| "Rollback is just reverting the commit" | Schema migrations make rollbacks hard. Test them. |
-| "Staging is close enough to production" | If staging isn't identical, it's not staging. |
+| "We'll add monitoring after deployment" | You'll notice it's down when users complain, not from a dashboard. |
+| "Friday deploy is fine, it's a one-liner" | Friday deploys are how weekend incidents start. The size of the change is irrelevant. |
+| "Rollback is just reverting the commit" | Schema migrations do not revert with `git revert`. Test the rollback migration against staging data. |
+| "Staging is close enough to production" | If staging has a different DB version, different secret store, or synthetic data, it is not staging — it is theater. |
+| "We'll run the migration after deploy, it's additive" | Additive columns can still lock tables on large datasets. Measure migration time against prod row counts before the release window. |
+| "Health checks are handled by the platform" | Kubernetes/ECS liveness ≠ readiness. A container that has started but hasn't warmed connections is not ready. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -157,6 +207,10 @@ Friday deployment = weekend incident. "We'll add monitoring later" = users will 
 - [ ] `/health`, `/health/ready`, and `/health/live` endpoints respond correctly post-deploy
 - [ ] Alerts configured for error rate, p50/p99 latency, and downtime before production deployment
 - [ ] Release notes written and stakeholders notified before the release window
+
+## Worked Example
+
+See [REFERENCE.md](./REFERENCE.md) for a complete end-to-end release walk-through: CI pipeline snippet, expand-contract migration ordering, canary deploy config, health-check readiness gate, and automated rollback trigger — all narrated step-by-step.
 
 ## Related Skills
 

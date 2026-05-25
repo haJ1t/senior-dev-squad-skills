@@ -44,8 +44,21 @@ If you catch yourself thinking:
 - "I'll log the error later, let me just get the happy path working"
 - "Idempotency is only for payment APIs, not this endpoint"
 - "I'll use `SELECT *` for now and optimize later"
+- "The controller is just glue — it's fine to put the business rule here"
+- "I'll just swallow this exception and return 500 for now"
+- "It's a list endpoint, looping and fetching related records is fine"
 
 **ALL of these mean: STOP. Return to the relevant phase.**
+
+Backend-specific anti-patterns that always warrant a stop:
+
+| Anti-pattern | Why it matters |
+|---|---|
+| Business logic in controllers | Controllers route; services decide. Logic in controllers cannot be tested without HTTP overhead and leaks into every future controller that calls the same operation. |
+| Missing idempotency on POST | Network retries are real. A double-tap on `POST /orders` without an idempotency key creates two orders and two charges. |
+| N+1 query in a loop | `for item in items: db.fetch(item.id)` turns a 50-item list into 51 queries. Use `findMany` with an `IN` clause and a join. |
+| Swallowing exceptions | `catch (e) {}` or bare `except: pass` hides failures. Log the error with context, then either re-raise or return a structured error response. |
+| No transaction around multi-write | Creating an order and decrementing inventory are one logical operation. If the second write fails, the first must roll back — or you ship phantom stock. |
 
 ## Common Rationalizations
 
@@ -56,6 +69,8 @@ If you catch yourself thinking:
 | "Transactions slow things down" | Partial writes corrupt data permanently. The performance cost of a transaction is less than an incident. |
 | "We'll add rate limiting when we're bigger" | You'll add it after the first DoS or credential-stuffing attack — which will happen before "bigger." |
 | "I know what the caller passes, no need to validate" | Callers change. APIs outlive assumptions. Schema validate every input, every time. |
+| "The controller is just wiring up calls" | Business logic in controllers is invisible to unit tests and duplicated the moment a second endpoint needs the same rule. Move it to a service. |
+| "It's a tiny POST, idempotency is overkill" | Mobile clients retry on timeout. A missing idempotency check silently creates duplicate records under normal network conditions. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -67,6 +82,40 @@ If you catch yourself thinking:
 - "What if someone sends a 10MB payload here?" — Input constraints (size, length) are absent
 
 **When you see these:** STOP. Return to the relevant check and implement the missing guard before proceeding.
+
+## Decision Tree
+
+Use this before writing a single line of implementation code.
+
+```
+What protocol fits the interaction?
+├── Clients are browsers / third-party / mobile → REST (JSON over HTTP)
+│     └── Query-heavy, shape varies by caller → consider GraphQL
+├── Service-to-service, low latency, binary payload → gRPC
+└── Event / fire-and-forget → async (see below)
+
+Should the operation be synchronous or async?
+├── Response needed before caller proceeds → synchronous
+├── Operation > ~300 ms OR involves downstream services → async + queue
+│     └── Return 202 Accepted with a jobId; expose GET /jobs/:id for status
+└── Fan-out to multiple consumers → event bus (Kafka / SNS), not a direct call
+
+Where does the transaction boundary go?
+├── Single write → no explicit transaction needed (DB is atomic by default)
+├── 2+ writes that must all succeed or all fail → wrap ALL in one transaction
+│     └── Include audit-log writes inside the same transaction
+└── Cross-service writes (two DBs) → use outbox pattern, not a distributed tx
+
+Does this endpoint need an idempotency key?
+├── GET / DELETE → no (GET is inherently idempotent; DELETE is naturally safe to retry)
+├── POST that creates a resource → YES — check key before any write
+├── PUT / PATCH that mutates → YES if the caller could retry on timeout
+└── Charge / book / reserve (financial or inventory) → YES, mandatory
+```
+
+## Worked Example
+
+See [REFERENCE.md § Worked Example](REFERENCE.md#worked-example) for a complete `POST /orders` walkthrough: input validation → authn/authz → idempotency → DB transaction → structured logging → typed error responses, with a decision note at each step.
 
 ## Related Skills
 

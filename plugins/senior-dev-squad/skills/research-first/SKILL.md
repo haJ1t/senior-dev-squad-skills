@@ -59,17 +59,46 @@ Work through the eight phases in order. Each phase builds on the last.
 
 **Phase 8 — Synthesis.** Compile all findings into a structured research synthesis report before writing any code. See [REFERENCE.md](REFERENCE.md) for the full report template.
 
+## Decision Tree — Adopt vs. Build
+
+Use this before Phase 4 (Solution Discovery) locks in a direction.
+
+```
+Does an in-repo solution already exist?
+├── YES → Is its fit ≥ 90% for the new requirement?
+│         ├── YES → Use it. Extend if needed. STOP here.
+│         └── NO  → Is the gap a missing feature or a wrong abstraction?
+│                   ├── Missing feature → fork-and-extend (keep upstream diff minimal)
+│                   └── Wrong abstraction → treat as scratch (document why in ADR)
+└── NO  → Does a maintained OSS library exist?
+          ├── YES → Run the four gates:
+          │         1. License compatible with project? (MIT/Apache/BSD = safe; GPL = check)
+          │         2. Last commit < 12 months? (older = high abandonment risk)
+          │         3. Open critical issues < 10% of total issues?
+          │         4. Fit ≥ 70% without significant monkey-patching?
+          │         ALL FOUR PASS → adopt the library
+          │         ONE FAILS    → consider fork-and-customize
+          │         TWO+ FAIL    → build from scratch, log reasoning in ADR
+          └── NO  → Build from scratch. Document the search in the synthesis report.
+```
+
+**Fork-and-customize** is only justified when fit is 60–85% and the license allows it. Below 60% fit, a fork creates more maintenance burden than a clean implementation.
+
 ## Red Flags — Stop and Audit
 
 If you find yourself thinking:
 
-- "I already know this, no need for research" — You must verify the currency of your knowledge.
+- "I already know this, no need for research" — You must verify the currency of your knowledge. APIs change; your mental model may be 18 months stale.
 - "This is very simple, I can write it in 5 minutes" — Even simple things have pitfalls.
 - "Research is a waste of time" — Code written on a faulty foundation is 10 times more expensive to fix.
 - "Let me start coding first, I'll do the research later" — The sequence is wrong; research first.
-- "Everyone is using X, so it must be the best" — Popularity is not a guarantee of quality.
-- "This library is already in the project, so it must be the best" — It might not be the most suitable; check alternatives.
+- "Everyone is using X, so it must be the best" — Popularity is not a guarantee of fit for your constraints.
+- "This library is already in the project, so it must be the best" — It might not be the most suitable; always check alternatives.
 - "No need for version checks, it works" — Outdated versions mean security vulnerabilities and performance loss.
+- "I'll just use the version I know" — Coding from memory of an old API version is the single most common source of silent regressions.
+- "I checked the docs once before" — Documentation for the version you are targeting must be checked now, not recalled.
+- "The GitHub stars look fine" — Stars measure marketing success, not license suitability, maintenance health, or fit.
+- "The known issues section is probably empty" — Skip the Issues tab only after you have actually opened it.
 
 **ALL OF THE ABOVE MEAN: STOP. RETURN TO THE RELEVANT PHASE.**
 
@@ -79,11 +108,18 @@ If you find yourself thinking:
 |--------|--------|
 | "I already know it, no need for research" | What you know might have changed 6 months ago. APIs, best practices, and libraries are updated constantly. |
 | "This is very simple, I can write it in 5 minutes" | Pitfalls of simple things usually appear at the last minute. 5 minutes of research prevents hours of debugging. |
-| "Everyone is using X, so it must be the best" | Popularity ≠ quality. The most suitable solution for your need might not be the most popular one. |
+| "Everyone is using X, so it must be the best" | Popularity ≠ fit. The most suitable solution for your constraints is rarely the most-starred repo. |
 | "Research is a waste of time, let's write code immediately" | Rewriting code written on a faulty foundation takes 10 times longer than the initial research. |
 | "We'll look at Stack Overflow later" | Learning known pitfalls before encountering the problem is much faster than solving them afterward. |
 | "Version checks are useless, if it works don't touch it" | Outdated versions = known security vulnerabilities, performance issues, and missing features. |
 | "No need to think about alternatives, I'll use the first one that comes to mind" | The first solution that comes to mind is rarely the best. Evaluating 2-3 alternatives takes 15 minutes. |
+| "I know this API, I've used it before" | You may know v2; the project may need v3. Check the version in the lockfile, then read the changelog. |
+| "The license is probably fine" | GPL, SSPL, or Commons Clause can block commercial use entirely. Check before you commit to the dependency. |
+| "I didn't see any major issues mentioned online" | You didn't look. Run the search: `site:github.com/<org>/<repo>/issues label:bug`. |
+
+## Worked Example
+
+A full end-to-end demonstration — picking a background-job library for a Node.js app — is in [REFERENCE.md § Worked Example](REFERENCE.md#worked-example). It shows context compilation → version checks → three-way comparison table → community pitfalls → synthesis → justified recommendation, all produced by following the eight phases in order.
 
 ## Signals Your Human Partner Warns You With
 

@@ -162,14 +162,66 @@ Structure:
 
 Action items without owners and due dates are not action items.
 
+## Worked Example
+
+See [REFERENCE.md](./REFERENCE.md) for a complete narrated SEV1 walkthrough: payment service outage, detection to blameless postmortem. Key decisions illustrated: rollback chosen over diagnosis, comms cadence started before stabilization confirmed, four contributing factors identified (not one root cause), all action items ticketed with owners.
+
+## Decision Tree
+
+```
+ALERT / REPORT RECEIVED
+│
+├── Is the system currently degraded or down?
+│   NO → SEV4 triage during business hours. Skip to Phase 4.
+│   YES ↓
+│
+├── CLASSIFY SEVERITY
+│   ├── All/most users blocked OR data loss risk? → SEV1 (IC in <5 min)
+│   ├── Major feature broken, significant % of users? → SEV2 (IC in <15 min)
+│   ├── Partial degradation, workaround exists? → SEV3 (ack in <1 h)
+│   └── Minor / cosmetic, minimal impact? → SEV4 (triage in biz hours)
+│       ⚠ Unsure? → Classify UP. Downgrade only after stability confirmed.
+│
+├── STABILIZE — pick the fastest path:
+│   ├── Recent deploy correlates with incident start? → ROLLBACK FIRST
+│   │     kubectl rollout undo / git revert / terraform apply previous
+│   ├── Degraded path is behind a feature flag? → KILL THE FLAG
+│   ├── Healthy region / replica / fallback available? → FAILOVER
+│   ├── Resource exhaustion (CPU/mem/connections)? → SCALE OUT
+│   └── None of the above? → SHED LOAD (rate limit / degrade gracefully)
+│       then escalate to domain expert while shedding
+│
+├── PAGE / ESCALATE?
+│   ├── SEV1 / SEV2 → page IC immediately; page domain expert if stabilization
+│   │     stalls after 15 min
+│   ├── SEV3 → notify IC; page domain expert only if impact is spreading
+│   └── SEV4 → no page; ticket and assign
+│
+├── ROLLBACK vs FORWARD-FIX vs FAILOVER
+│   ├── Known bad change AND rollback is low-risk → ROLLBACK (fastest)
+│   ├── Rollback would cause data loss or is blocked → FAILOVER if available;
+│   │     else FORWARD-FIX with targeted patch under IC coordination
+│   └── Data corruption suspected → STOP ALL WRITES; engage data team
+│
+└── DECLARE RESOLVED?
+    ├── Monitoring green? YES
+    ├── Error rate at baseline for ≥ 15 min? YES
+    ├── Status page updated? YES
+    └── Postmortem scheduled? YES → RESOLVED ✓
+        Any NO → keep monitoring; do not declare resolved
+```
+
 ## Red Flags — STOP and Follow Process
 
-- "Let me dig into the logs before we do anything" — stabilize first, diagnose second
-- "We don't need an IC, we all know what to do" — uncoordinated engineers duplicate work and miss mitigations
-- "Skip the status page, it's almost resolved" — stakeholders finding out from customers is worse than a brief notice
+- "Let me dig into the logs before we do anything" — you are diagnosing before stabilizing; return to Phase 2 immediately
+- "We don't need an IC, we all know what to do" — uncoordinated engineers duplicate work, miss mitigations, and contradict each other in the war room
+- "Two of us will just figure it out together" — shared IC is no IC; one person must own the decision authority
+- "Skip the status page, it's almost resolved" — stakeholders hearing from customers before you tell them is a trust-destroying failure mode
+- "Let's stay in a side channel / DM to coordinate" — incident communication must be in the incident channel; side channels split the timeline
 - "The postmortem can wait, we're too busy" — the next incident will be identical if you wait long enough to forget this one
-- "We know who caused this" — blameless means systemic causes, not human blame; finger-pointing kills psychological safety
-- "Action items are obvious, no need to write them down" — untracked action items close at 0%
+- "We know who caused this" — blameless means systemic causes, not human blame; naming a person shuts down honest disclosure in every future postmortem
+- "Action items are obvious, no need to write them down" — untracked action items close at 0%; the evidence is every postmortem you have ever seen
+- "We're still investigating, no update needed yet" — silence during a SEV1 is itself an incident for stakeholders; send the cadence update regardless
 
 **ALL of these mean: STOP. Return to the relevant phase.**
 
@@ -177,12 +229,14 @@ Action items without owners and due dates are not action items.
 
 | Excuse | Reality |
 |--------|---------|
-| "We know the root cause, just fix it" | Knowing the cause doesn't mean the system is stable. Stabilize first, then fix properly. |
-| "We'll write the postmortem later" | Later never comes. Schedule it within 48 h while memory is fresh. |
-| "It was just one bad deploy, no need for process" | Skipping process is how one bad deploy becomes a recurring outage pattern. |
-| "Customers didn't notice" | Absence of complaints ≠ absence of impact. Check your error rates. |
-| "We fixed it so fast a postmortem is overkill" | Fast resolution is a reason to celebrate AND to document what made it fast. |
-| "The postmortem will demoralize the team" | Blameless postmortems build trust. Blame-heavy cultures hide incidents. |
+| "We know the root cause, just fix it" | Knowing the cause doesn't mean the system is stable. Stabilize first — the forward-fix can land cleanly after the bleeding stops. |
+| "We'll write the postmortem later" | Later never comes. Schedule within 48 h for SEV1; memory degrades fast and the team moves on. |
+| "It was just one bad deploy, no need for process" | Skipping process is how one bad deploy becomes a recurring outage pattern. The process also protects the deployer from blame. |
+| "Customers didn't notice" | Absence of complaints ≠ absence of impact. Check error rates, drop in conversions, silent data corruption. |
+| "We fixed it so fast a postmortem is overkill" | Fast resolution is exactly the scenario to document — the postmortem captures what made it fast, so next time isn't lucky. |
+| "The postmortem will demoralize the team" | Blameless postmortems build trust. Cultures that skip postmortems hide incidents, accumulate technical debt, and repeat them. |
+| "We have two commanders coordinating" | Two ICs mean no IC. Every contested decision escalates; one person must break ties and own outcomes. |
+| "Staging didn't show this problem" | Staging gaps are a contributing factor, not an excuse. Add a postmortem action item: close the fidelity gap. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 

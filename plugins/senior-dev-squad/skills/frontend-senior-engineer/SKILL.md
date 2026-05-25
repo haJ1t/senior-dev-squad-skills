@@ -122,18 +122,69 @@ const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm(
 | CLS | < 0.1 | 0.25 |
 | Lighthouse score | > 90 | > 80 |
 
+## Decision Tree
+
+Use this before writing a single line of component code.
+
+```
+Is this component read-only (no interactivity, no client hooks)?
+├── YES → React Server Component (RSC). Fetch in the component body.
+│          Only add "use client" when you need onClick / useState / useEffect.
+└── NO  → Client component. Then:
+           Does it fetch data?
+           ├── YES → Use React Query (useQuery) or SWR.
+           │          Never useEffect + fetch. Never.
+           └── NO  → Local state (useState/useReducer) is fine.
+
+Where should state live?
+├── Needed by ONE component only         → useState inside that component
+├── Needed by a small subtree (≤3 deep)  → prop drilling (explicit, traceable)
+├── Needed across a feature / many pages → React Query cache (server state)
+│                                           OR Zustand/Jotai (client state)
+└── Needed app-wide (auth, theme, locale)→ React Context
+     ⚠ Wrap only the subtree that needs it.
+     ⚠ Memoize the context value: const val = useMemo(() => ({user, logout}), [user])
+        Missing this memo re-renders EVERY consumer on every parent render.
+
+Should I memoize?
+├── useMemo / useCallback
+│   ├── YES if: expensive computation (>1ms), referential stability required
+│   │           (object/array passed to React.memo child or dep of another hook)
+│   └── NO  if: primitive value, component re-renders cheap, "feels slow" (profile first)
+└── React.memo
+    ├── YES if: pure presentational component with stable props, list item rendered 50+× 
+    └── NO  if: parent rarely re-renders, component has cheap render, props include callbacks
+                (memoize the callback with useCallback first, then consider React.memo)
+```
+
+## Worked Example
+
+**Feature: Users List page** — all four states + form with validation + double-submit guard.
+
+Full annotated code (RSC shell → client list → create-user form) lives in
+[REFERENCE.md](./REFERENCE.md). Key decisions narrated there:
+
+- Why the page shell is an RSC and only the interactive parts are `"use client"`
+- How React Query drives loading / error / empty / success without a single `useEffect`
+- How `react-hook-form` + Zod give blur validation, submit validation, and field-level
+  server errors without re-inventing the wheel
+- How `isSubmitting` from `useForm` prevents double-submit without any extra state
+
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself thinking:
 - "I'll add loading states later"
 - "This component is too simple for error handling"
 - "The design doesn't show error states, so I'll skip them"
-- "useEffect is fine for this one fetch"
+- "useEffect is fine for this one fetch" — it's not; use React Query or RSC
+- "I'll just use the array index as the key" — index keys break diffing on reorder/delete
+- "I'll pass this prop through five components" — that's prop drilling; use Query cache or context
 - "I don't need to test on mobile"
 - "The colors have enough contrast" (without checking)
 - "Keyboard navigation works fine" (without testing)
+- "This custom dropdown doesn't need ARIA" — yes it does; use `<select>` or radix-ui
 
-**ALL of these mean: STOP. Handle the missing state first.**
+**ALL of these mean: STOP. Handle the missing concern first.**
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -142,6 +193,7 @@ If you catch yourself thinking:
 - "What does it look like on mobile?" — You didn't test responsive
 - "I can't tab to this button" — You missed keyboard navigation
 - "The colors blend together" — You didn't check contrast
+- "This dropdown is broken in Safari" — You built a custom control without ARIA/keyboard support
 
 **When you see these:** STOP. Fix the missed state before adding new features.
 
@@ -154,6 +206,10 @@ If you catch yourself thinking:
 | "It works on my screen" | Your screen is not the only screen. |
 | "This component is internal only" | Internal tools have users too. |
 | "useEffect is standard for data fetching" | Not anymore. Use RSC or React Query. |
+| "key={index} is fine, the list never reorders" | Lists always eventually reorder or delete. Use stable IDs. |
+| "I'll just use Context for everything" | Unmemoized context value causes every consumer to re-render on every parent update. Profile before adding context. |
+| "I'll memoize everything to be safe" | Premature memoization hides bugs and costs more than it saves. Profile first; memoize what the profiler flags. |
+| "This custom select only needs onClick" | Custom interactive controls need full keyboard support (Enter/Space/Escape/Arrow) and correct ARIA roles or they are broken for keyboard and screen-reader users. |
 
 ## Related Skills
 

@@ -57,7 +57,69 @@ Before significant work, check for a project glossary and decision log:
 | 9 | Unnecessary variables | Inline |
 | 10 | Boolean parameters | Options object |
 
+## Decision Tree
+
+Use this before touching any code.
+
+```
+Is the code working and all tests green?
+├── NO  → Stop. Do not refactor broken code. Fix it first.
+└── YES ↓
+
+Is there a test covering the behaviour you're about to touch?
+├── NO  → Write the test first. Then refactor.
+└── YES ↓
+
+Is the complexity hurting you RIGHT NOW (reading, extending, debugging)?
+├── NO  → Leave it alone. Come back when you have a real reason.
+└── YES ↓
+
+Is the complex part shared / called from 3+ places?
+├── YES → Extract a named function. One authoritative place.
+└── NO  ↓
+
+Is it a single-use abstraction (one interface, one impl)?
+├── YES → Delete the abstraction. Inline the implementation.
+└── NO  ↓
+
+Is the logic nested > 3 levels or guarded by a boolean param?
+├── YES → Apply early returns / split into two named functions.
+└── NO  ↓
+
+Is this a "clever" trick that requires a comment to explain?
+├── YES → Rewrite for clarity. Delete the comment.
+└── NO  → The code is fine. Stop here.
+
+─────────────────────────────────────────────────────────────
+Refactor BEFORE a feature when: you need to extend this code
+  and the current shape will force you to write bad code.
+Refactor AFTER a feature when: you just shipped and can see
+  what settled — don't pre-optimise shape before usage is clear.
+A "clever" abstraction earns its keep when: it is used in 5+
+  call sites AND any change to the rule flows from one place.
+Delete the abstraction when: fewer than 3 callers, OR callers
+  keep passing exceptions / flags to work around it.
+```
+
+## Worked Example
+
+A full before → after walkthrough (three atomic steps, tests green after each) lives in [REFERENCE.md](REFERENCE.md). Summary:
+
+- **Before:** `processUserData(data, true)` — boolean flag, nested ternaries, inline validation repeated three times, one "strategy" interface with a single implementation.
+- **Step 1:** Replace boolean flag with two explicit functions. Tests green.
+- **Step 2:** Extract duplicated validation into `validateEmail`. Tests green.
+- **Step 3:** Delete the single-impl interface; inline the one concrete class. Tests green.
+- **After:** Four small, named functions. Zero comments needed. Cyclomatic complexity halved.
+
 ## Red Flags — STOP
+
+**Refactor anti-patterns that feel like progress but aren't:**
+
+- **Refactoring without tests.** If there is no test covering the code you are about to change, you do not know whether you have preserved behavior. Write the test first.
+- **Changing behavior while "cleaning up."** A refactor MUST leave observable behavior identical. If you are also fixing a bug or adding handling, commit that separately — do not bundle it with structural cleanup.
+- **Premature DRY.** Two things that look alike but serve different domains will diverge. Extracting them into a shared abstraction now forces you to add parameters later to handle the divergence. Wait for the third repetition, and confirm the repetitions are actually identical in intent, not just shape.
+- **Gold-plating.** Adding a plugin system, a registry, a factory, or a strategy pattern because "we might need it" is new complexity disguised as cleanup. Remove abstractions; do not add them.
+- **Big-bang rewrite.** Rewriting a function or module in one commit makes review impossible and is indistinguishable from a behavior change. Refactor in the smallest step that leaves tests green, then commit.
 
 Clever code is not impressive — it's a future bug. "We might need this later" is YAGNI. Delete it. "I'll refactor next PR" = never. Refactor now.
 
@@ -69,6 +131,10 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 | "We might need this abstraction" | Add it when you actually need it. Not before. |
 | "Duplication is only in two places" | Two is the beginning of three. Extract now. |
 | "I'll refactor it in the next PR" | You won't. Next PR adds more code on top. |
+| "I'm just cleaning up, tests aren't needed" | Tests are the only proof behavior is preserved. |
+| "This DRY extraction will save us later" | Premature DRY creates coupling between things that will diverge. |
+| "A full rewrite is simpler than small steps" | Big-bang rewrites cannot be reviewed or rolled back safely. |
+| "The abstraction adds flexibility" | Flexibility not yet needed is complexity you carry today. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -78,6 +144,7 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 - "This used to be simpler" — the refactor introduced new abstractions that weren't needed; revert the over-engineering
 - "Can you add a comment explaining this?" — if a comment is needed, the code is too clever; rewrite it to be self-explanatory
 - "What does `true` mean here?" — a boolean parameter is being used; replace with an options object or two explicit functions
+- "Did this change break something?" — you changed behavior during a refactor; separate the fix from the cleanup
 
 **When you see these:** STOP. Apply the relevant simplification from the 10 rules before adding any new code.
 
@@ -92,6 +159,8 @@ Clever code is not impressive — it's a future bug. "We might need this later" 
 - [ ] No function with nesting deeper than three levels (early returns applied)
 - [ ] No magic numbers or magic strings — all replaced with named constants
 - [ ] No boolean function parameters — replaced with options object or separate functions
+- [ ] Each step of the refactor was committed separately with tests green at each commit
+- [ ] No behavior change bundled into a structural cleanup commit
 - [ ] All simplifications verified against existing tests — no tests broken
 
 ## Related Skills

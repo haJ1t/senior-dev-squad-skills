@@ -122,89 +122,103 @@ Environments (dev/staging/prod), CI/CD pipeline, container strategy, multi-AZ, d
 
 Every risk: likelihood, impact, mitigation, owner. Critical risks must have tested mitigations before production.
 
+## Decision Tree
+
+Use these branches before writing any ADR to avoid defaulting to the fashionable choice.
+
+**Deployment model**
+```
+Is the team < 8 engineers?
+├── YES → monolith first (single deployable, shared DB, domain packages for isolation)
+│         Revisit when: independent deploy cadence needed OR distinct scale profiles emerge
+└── NO  → Are bounded contexts independently deployable today?
+          ├── YES → microservices (each owns its DB; see Iron Law 2)
+          └── NO  → modular monolith (strict package boundaries, shared DB is acceptable
+                    ONLY if packages never write to each other's tables)
+```
+
+**Communication pattern**
+```
+Does the caller need the result to continue?
+├── YES → synchronous (REST or gRPC)
+│         Mandatory: timeout + retry + circuit breaker on every call
+│         If call chain depth > 2: reconsider async or introduce BFF/aggregator
+└── NO  → asynchronous (event/message)
+          Choose broker by replay need:
+          ├── Replay needed (audit, re-processing) → Kafka / event-stream
+          └── Fire-and-forget / work queue       → RabbitMQ / SQS
+```
+
+**Consistency model**
+```
+Can this data store tolerate a stale read during a partition?
+├── NO  → CP (strong consistency): PostgreSQL primary, leader-election stores
+│         Cost: writes refused or latency spikes during partition
+└── YES → AP (eventual consistency): Redis cache, CDN, read replicas, search index
+          Document the staleness bound (e.g. "menus stale up to 5 min acceptable")
+```
+
+**Cross-service write strategy**
+```
+Do multiple services own data that must change together?
+├── Can one service own all the data? → refactor ownership (preferred)
+└── Cannot → choose:
+    ├── 2PC (XA)     → avoid in practice; blocks all participants, kills throughput
+    ├── Saga         → choreography (events) or orchestration (workflow engine)
+    │                  Use when: eventual consistency is acceptable, compensations are codeable
+    └── Transactional Outbox → service writes event to its own DB atomically,
+                               relay picks it up; strongest guarantee without 2PC
+                               Use when: at-least-once delivery + idempotent consumers
+```
+
+## Worked Example
+
+See `REFERENCE.md` in this directory for a complete walk-through: a **notifications service** decomposed into four bounded contexts, two full ADRs (broker choice + consistency strategy), a deployment topology sketch, and the CAP/outbox decision explained end-to-end. Read it before your first architecture session to see the method producing real output.
+
 ## Red Flags — STOP and Follow Process
 
-- No tradeoffs documented for any decision
-- "We'll figure out the tech stack later"
-- "The API is obvious, no need to document it"
-- "This DB will work for now, we can migrate later"
-- No mermaid/ASCII deployment diagram
-- Missing idempotency strategy
-- "We don't need CAP analysis, we're on AWS"
+**Decision quality failures:**
+- No tradeoffs documented for any decision — a decision without tradeoffs is a guess
+- ADR lists only one option ("we chose Kafka") — options considered is missing, so the reasoning cannot be reviewed
+- "We'll figure out the tech stack later" — tech choices ARE architecture; deferring them defers the architecture
+
+**Boundary failures:**
+- Two or more services writing to the same database table — this is a distributed monolith, not microservices
+- Services share a database and the boundaries are "logical" — logical boundaries in a shared schema drift to zero
+- "We'll split the monolith later" — the coupling that makes it a monolith is the same coupling that makes splitting it later painful
+
+**Network / reliability failures:**
+- Any inter-service call without a documented timeout — timeouts are not optional; the network will hang
+- Sync call chain depth > 2 without a circuit breaker — fan-out sync calls cascade failures by design
+- No idempotency strategy for any mutation — retries without idempotency cause double-writes; this is a data corruption risk
+
+**Consistency failures:**
+- Cross-service write with no documented consistency strategy (no saga, no outbox, no 2PC decision)
+- "We'll handle distributed transactions with try/catch" — catching exceptions across network boundaries does not provide atomicity
+- No documented partition behavior for any data store — partitions happen; "we're on AWS" is not a mitigation
+
+**Documentation failures:**
+- No mermaid/ASCII deployment diagram — if the team cannot draw where services run, they disagree about it
+- "The API is obvious, no need to document it" — obvious APIs still generate conflicting implementations
+- "This DB will work for now, we can migrate later" — live data migrations under load are the most expensive non-feature in distributed systems
 
 ## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "We'll document decisions later" | Future you has no memory of today's tradeoffs. |
-| "Everyone knows why we chose Postgres" | New team members don't. Neither will you in 6 months. |
-| "Let's keep it flexible" | Vague architectures create more work, not less. |
-| "CAP doesn't matter in practice" | Every cloud outage is a partition. Know your CP/AP choice. |
+| "We'll document decisions later" | Future you has no memory of today's tradeoffs. The ADR takes 10 minutes now or 10 hours of archaeology later. |
+| "Everyone knows why we chose Postgres" | New team members don't. Neither will you in 6 months after three oncall rotations. |
+| "Let's keep it flexible" | "Flexible" without constraints is undefined. Vague architectures create integration bugs, not options. |
+| "CAP doesn't matter in practice" | Every cloud outage is a partition event. Not knowing your CP/AP choice means discovering it during an incident. |
+| "Microservices give us agility" | Microservices without clear bounded contexts and owned data give you a distributed monolith with network latency added. |
+| "We don't need a circuit breaker, our infra is reliable" | Circuit breakers protect against slow callers, not just down callers. Timeouts without circuit breakers let slow dependencies drain your thread pools. |
+| "We can handle failures with retries" | Retries without idempotency keys turn transient failures into duplicate transactions. Idempotency is a correctness requirement, not a nice-to-have. |
 
-## Few-Shot Examples (MANDATORY Reference)
+## Output Quality Bar
 
-### ❌ BAD Output (Most common in benchmarks)
+**Bad output** names technologies without decomposing bounded contexts, skips tradeoff tables, and writes "deploy to AWS" without an AZ diagram. **Good output** follows the MANDATORY schema above: every service has a responsibility and owns its data, every ADR names at least two alternatives, every data store has a CP/AP declaration, and the deployment diagram shows regions, AZs, and replica counts.
 
-```markdown
-## Architecture
-Use microservices with Kafka for async communication. 
-PostgreSQL for main DB, Redis for caching.
-```
-**Why it is bad:** Which services? Which bounded contexts? CAP analysis? Tradeoffs? Deployment topology? None of these are present.
-
-### ✅ GOOD Output (As it should be)
-
-```yaml
-## Service Decomposition
-| Service | Responsibility | Owns Data | Depends On | Scale Profile |
-|---------|---------------|-----------|------------|---------------|
-| order-service | Order lifecycle, state machine | orders, order_items | payment-service (async) | 10K writes/min, 50K reads/min |
-| payment-service | Payment processing, PCI-DSS scope | payments, payment_methods | stripe (external) | 5K writes/min |
-| restaurant-service | Restaurant profile, menu, hours | restaurants, menus, hours | — | 1K writes/min, 100K reads/min |
-| delivery-service | Driver tracking, assignment, ETA | drivers, assignments, locations | maps (external) | 50K location updates/min |
-
-## ADR-001: Kafka over RabbitMQ
-**Context:** Order service needs to notify payment, delivery, notification services.
-**Options:** Kafka (event streaming), RabbitMQ (message queue), Direct HTTP
-**Decision:** Kafka
-**Tradeoffs:** +Replay capability, +Partition ordering, +Throughput | -Operational complexity, -Higher latency floor (~5ms vs ~1ms)
-**Consequences:** Need Kafka Connect for CDC, Schema Registry for Avro evolution, 12 partitions for order events topic
-
-## CAP Analysis
-| Data Store | Type | CP/AP | Partition Behavior |
-|-----------|------|-------|-------------------|
-| orders (PostgreSQL) | RDBMS | CP | Refuses writes during partition (consistency > availability for orders) |
-| driver_locations (Redis) | Cache | AP | Continues accepting writes, eventual consistency with Postgres |
-| menu_cache (CDN) | Read cache | AP | Stale data acceptable (menus change infrequently) |
-```
-
-### ❌ BAD: Missing deployment topology
-```markdown
-## Deployment
-Deploy to AWS with auto-scaling.
-```
-**Why it is bad:** Which region? How many AZs? How many instances? Network topology? None.
-
-### ✅ GOOD: Complete deployment diagram
-```
-                    [CloudFront CDN]
-                          |
-                    [ALB - us-east-1]
-                    /        |        \
-               [az-1a]   [az-1b]   [az-1c]
-                 |          |          |
-            [order-svc] [order-svc] [order-svc]  (3 replicas, HPA: 2-10)
-                 |          |          |
-            [RDS Primary - az-1a] [RDS Standby - az-1b]
-                       |
-            [Read Replica - az-1c]
-                       |
-            [ElastiCache Redis - Cluster mode, 3 shards]
-                       |
-            [MSK Kafka - 3 brokers, 12 partitions]
-                       |
-            [eu-west-1 — Active-Passive, async replication, RPO: 5min, RTO: 15min]
-```
+See `REFERENCE.md` in this directory for a complete worked example (notifications service, 4 services, 2 full ADRs, topology diagram, outbox decision, CAP table, risk register).
 
 ## Model-Specific Calibration (BENCHMARK FINDINGS)
 

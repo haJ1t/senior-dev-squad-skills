@@ -149,18 +149,58 @@ Before significant work, check for a project glossary and decision log:
 | **Gemini 2.5 Pro** | Concise but to the point, accurate severity assignment | "For each dimension, find at minimum 2 distinct edge cases — not just one" |
 | **DeepSeek V3** | Good in scale and integration dimensions, skips human errors | "Don't forget Dimension 8 (Human Errors) — copy-paste, fat-finger, wrong currency" |
 
+## Decision Tree — Which Dimensions Apply
+
+Use this before starting analysis to focus effort. All 8 dimensions still apply; this tree tells you which to treat as CRITICAL vs. DEFER.
+
+```
+What kind of operation is this?
+│
+├─ READ (query, report, list)
+│   ├─ CRITICAL: Scale (#6: 0 items, huge result set), Input (#1: malformed filter/sort param)
+│   ├─ HIGH:     Time (#4: report boundary, timezone), Integration (#7: upstream slow/down)
+│   └─ DEFER:    Concurrency (#2) — reads rarely race; State (#5) — no mutation
+│
+├─ WRITE (create, update, delete, submit)
+│   ├─ CRITICAL: Concurrency (#2: double-submit, race), State (#5: partial write, rollback)
+│   ├─ CRITICAL: Input (#1: empty/null/overflow), Integration (#7: downstream failure)
+│   ├─ HIGH:     Scale (#6), Human (#8: wrong ID pasted)
+│   └─ HIGH:     Time (#4) — especially if write generates timestamps or deadlines
+│
+├─ LONG-RUNNING (job, export, migration, bulk)
+│   ├─ CRITICAL: State (#5: checkpoint/resume, duplicate run), Scale (#6: OOM, timeout)
+│   ├─ CRITICAL: Concurrency (#2: two workers pick same job)
+│   ├─ HIGH:     Network (#3: partial failure mid-job), Time (#4: DST during overnight job)
+│   └─ HIGH:     Integration (#7: upstream rate limit during batch)
+│
+└─ MONEY / AUTH (payment, refund, permission grant)
+    ├─ CRITICAL: ALL 8 dimensions — no deferrals permitted
+    ├─ CRITICAL: Concurrency (#2) — double-charge, double-refund
+    ├─ CRITICAL: State (#5) — idempotency key, compensating transaction
+    └─ CRITICAL: Integration (#7) — webhook replay, partial ACK from payment provider
+
+Triage rule:
+  CRITICAL  → block merge, fix before ship
+  HIGH      → fix in same PR or file a tracked issue with owner+deadline
+  MEDIUM    → file issue, add TODO comment in code, acceptable to defer
+```
+
 ## Red Flags — STOP and Follow Process
 
 If you catch yourself thinking:
 - "I already know the edge cases for this feature, no need to go through the matrix"
 - "The happy path works, ship it — we'll handle edge cases in the next sprint"
-- "Race conditions aren't likely here, the load is low"
-- "DST and timezone issues only matter for scheduling features"
-- "I found three edge cases — that's enough"
-- "Integration failures are the upstream team's problem"
-- "Scale issues only matter after we grow"
+- "Race conditions aren't likely here, the load is low" — a race needs only two browser tabs
+- "DST and timezone issues only matter for scheduling features" — every timestamp crosses a timezone
+- "I found three edge cases — that's enough" — three means five dimensions were skipped
+- "Integration failures are the upstream team's problem" — your service owns its fallback
+- "Scale issues only matter after we grow" — 0-item and 1-item bugs exist at any traffic level
+- "I tested the form with valid data, that covers it" — only testing the happy path ships bugs
+- "Users won't do that" — users do exactly that, at the worst possible moment
+- "Empty state is just cosmetic" — empty inputs and empty DB results are distinct failure surfaces
+- "Concurrent access won't happen in this feature" — any stateful write has a race window
 
-**ALL of these mean: STOP. Return to the relevant phase.**
+**ALL of these mean: STOP. Return to the relevant dimension in the matrix.**
 
 ## Common Rationalizations
 
@@ -171,6 +211,10 @@ If you catch yourself thinking:
 | "The happy path is tested, edge cases are minor" | Production incidents are almost always caused by the untested edge case, not the happy path. |
 | "Three edge cases found is a good pass" | The 8-dimension matrix consistently surfaces 12–15 findings. Three means six dimensions were skipped. |
 | "We'll add retry logic later, integration failures are rare" | Upstream services fail at the worst moments. Retry and idempotency must be designed in from the start. |
+| "Only testing the happy path is fine for now" | The happy path is the one path that already works. Bugs live everywhere else. |
+| "Users won't do that" | Users do exactly that. "Won't" is not a test. |
+| "No empty/overflow handling needed — input is always valid" | The first production incident will be a null pointer on an empty string or an integer overflow on a large ID. |
+| "Concurrent access isn't a concern here" | Any read-then-write sequence without a lock is a race condition waiting to be triggered. |
 
 ## Your Human Partner's Signals You're Doing It Wrong
 
@@ -182,6 +226,10 @@ If you catch yourself thinking:
 - "We need the full analysis, not just the obvious cases" — Fewer than all 8 dimensions were covered
 
 **When you see these:** STOP. Return to the 8-dimension matrix and work through each dimension systematically before continuing.
+
+## Worked Example
+
+See [`REFERENCE.md`](./REFERENCE.md) for a full application of the 8-dimension matrix to a **file upload** feature — 24 concrete edge cases in Scenario→Expected→Actual format, one per dimension cell.
 
 ## Related Skills
 
