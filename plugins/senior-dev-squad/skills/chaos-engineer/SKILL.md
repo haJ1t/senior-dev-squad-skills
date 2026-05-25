@@ -60,7 +60,6 @@ Applies chaos engineering principles to proactively test system resilience. Desi
 - [ ] Game Day schedule established (quarterly recommended)
 
 ## Related Skills
-- `mutation-testing` — Mutation testing for code; chaos engineering for infrastructure
-- `load-testing` — Chaos + load testing reveals failure modes under stress
+- `test-engineer` — mutation testing for code and load/stress testing reveal failure modes under stress; chaos engineering for infrastructure completes the picture
 - `systematic-debugging` — Debugging unexpected chaos experiment results
 - `observability-pro` — Observability is a prerequisite for chaos engineering

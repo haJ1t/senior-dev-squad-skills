@@ -1,0 +1,15 @@
+{
+  "name": "agent-platform-pro",
+  "description": "Multi-agent platform: epic/subagent orchestration, squad building, multi-model debate, provider routing, agent introspection, persistent teammates, and skill marketplace. Use when orchestrating multiple agents or building agent systems.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "repository": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "keywords": [
+    "agents",
+    "orchestration"
+  ]
+}

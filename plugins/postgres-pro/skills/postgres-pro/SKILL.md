@@ -250,6 +250,6 @@ ALTER TABLE projects VALIDATE CONSTRAINT projects_status_check;
 - **backend-senior-engineer** — ORM query patterns and connection management live in application code; coordinate when N+1 queries or missing indexes are introduced at the ORM layer
 - **supabase-pro** — Supabase runs on PostgreSQL; this skill supplies the advanced index, partition, and migration knowledge that supabase-pro defers to when queries or schema complexity grows
 - **performance-engineer** — slow query analysis and EXPLAIN ANALYZE interpretation overlap with application-level profiling; use together when the bottleneck spans DB and runtime
-- **api-design-reviewer** — pagination, filtering, and sorting decisions at the API layer directly determine which indexes are useful; align both skills when designing list endpoints on large tables
+- **code-reviewer** — pagination, filtering, and sorting decisions at the API layer directly determine which indexes are useful; align both skills when designing list endpoints on large tables
 - **devops-release-engineer** — zero-downtime migration techniques (expand-contract, NOT VALID constraints) must be coordinated with deploy strategy; involve this skill when a migration requires multi-phase deployment
 - **observability-pro** — pg_stat_statements, slow query logs, and connection pool metrics feed into the observability stack; use together when instrumenting database health

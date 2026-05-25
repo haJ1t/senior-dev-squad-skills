@@ -80,7 +80,7 @@ Use FastAPI's `BackgroundTasks` for lightweight async work (e.g. welcome emails)
 ## Related Skills
 
 - **backend-senior-engineer** — design the service and repository layers that FastAPI routers delegate to, especially for complex domain logic
-- **api-design-reviewer** — review Pydantic request/response schemas and OpenAPI doc accuracy before the API is consumed by clients
+- **code-reviewer** — review Pydantic request/response schemas and OpenAPI doc accuracy before the API is consumed by clients
 - **postgres-pro** — optimize SQLAlchemy async queries, connection pool settings, and Alembic migration patterns for PostgreSQL backends
 - **test-engineer** — structure pytest-asyncio fixtures, async test databases, and httpx AsyncClient test suites for FastAPI apps
 - **security-reviewer** — audit JWT dependency chains, CORS configuration, and rate-limiting middleware for authentication bypass risks

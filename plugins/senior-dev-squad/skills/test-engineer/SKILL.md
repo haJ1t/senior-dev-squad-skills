@@ -237,6 +237,17 @@ If you catch yourself thinking:
 | New code coverage | 100% | Every new line must be covered |
 | Mutation score | ≥ 60% | `stryker` — tests kill mutants |
 
+## Specialized Testing Techniques
+
+Beyond the standard pyramid, reach for these when the situation demands it:
+
+- **Mutation testing** — when you need to know if your tests would actually catch a bug (not just execute lines); run Stryker on critical modules to get a kill-rate score.
+- **Visual regression** — when a UI component or page layout must not drift; use Percy, Chromatic, or Playwright snapshots to diff screenshots against an approved baseline.
+- **Contract testing** — when two services or a mobile app + API must stay in sync across independent deploys; use Pact so consumers define what they need and providers verify it in CI.
+- **Load & stress testing** — when you need to validate SLAs, find capacity limits, or catch resource leaks before a high-traffic event; use k6 or Locust with defined p95 latency and error-rate thresholds.
+
+See [REFERENCE.md](REFERENCE.md) for mutation, visual-regression, contract, and load testing details.
+
 ## Related Skills
 
 - **spec-first-development** — acceptance criteria ARE test cases

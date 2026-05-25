@@ -1,0 +1,15 @@
+{
+  "name": "security-compliance-pro",
+  "description": "Security & compliance: GDPR/SOC2/NIST-CSF scanning, MITRE ATT&CK mapping, purple-team analysis, DFIR forensics, OPA policy-as-code, and cloud security audit. Use when auditing security/compliance or investigating incidents.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "repository": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "keywords": [
+    "security",
+    "compliance"
+  ]
+}

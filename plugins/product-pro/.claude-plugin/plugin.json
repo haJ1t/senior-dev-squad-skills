@@ -1,0 +1,15 @@
+{
+  "name": "product-pro",
+  "description": "Product management: opportunity discovery (JTBD), roadmap prioritization (RICE/ICE/MoSCoW), validation experiments, and growth engineering. Use when discovering, prioritizing, validating, or growing a product.",
+  "version": "1.0.0",
+  "author": {
+    "name": "senior-dev-squad"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "repository": "https://github.com/haJ1t/senior-dev-squad-skills",
+  "keywords": [
+    "product",
+    "growth"
+  ]
+}

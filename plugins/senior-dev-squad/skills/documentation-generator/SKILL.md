@@ -57,7 +57,7 @@ Automatically generates high-quality documentation from codebases. Produces API 
 - [ ] Documentation search works and returns relevant results
 
 ## Related Skills
-- `api-design-reviewer` — API design provides the schema that docs are generated from
+- `code-reviewer` — API design provides the schema that docs are generated from
 - `spec-first-development` — Specs are documentation written before code
 - `onboarding-automator` — Generated docs accelerate developer onboarding
 - `dev-environment-manager` — Docs include environment setup instructions

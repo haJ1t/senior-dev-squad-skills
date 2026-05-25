@@ -232,7 +232,7 @@ exports.create = async (user, body) => {
 ## Related Skills
 
 - **backend-senior-engineer** — for the higher-level service architecture and cross-cutting concerns (circuit breakers, service mesh, async messaging) that sit above Express
-- **api-design-reviewer** — when the Express router layer exposes a public API and versioning strategy, error envelope design, and OpenAPI spec matter
+- **code-reviewer** — when the Express router layer exposes a public API and versioning strategy, error envelope design, and OpenAPI spec matter
 - **postgres-pro** — for Prisma schema design, migration strategy, connection pooling with PgBouncer, and query optimization for the service's database layer
 - **security-reviewer** — pair on every production-bound Express service to audit JWT validation, rate-limit bypass vectors, and injection surface in route handlers
 - **test-engineer** — for Supertest integration test patterns, service-layer unit tests with mocked Prisma, and contract testing against downstream APIs

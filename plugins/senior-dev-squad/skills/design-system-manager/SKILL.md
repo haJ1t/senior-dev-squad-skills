@@ -1,6 +1,6 @@
 ---
 name: design-system-manager
-description: "Design system catalog, comparison, setup, theming, migration across 72+ systems. Use when selecting, adopting, or migrating a design system."
+description: "Design system catalog, selection, theming, token generation from brand, and cross-system mapping/migration. Use when selecting, adopting, migrating, or tokenizing a design system."
 ---
 
 # Design System Manager
@@ -96,6 +96,15 @@ If you find yourself rationalizing like this, STOP:
 - "Are we allowed to use this commercially?" — You skipped the licensing audit.
 
 **When you receive these signals:** STOP. Return to the relevant phase: decision validation, component inventory, bundle auditing, or licensing verification.
+
+## Tokens: Generation & Cross-System Mapping
+
+Phase 4 (theming) may require generating tokens from scratch or mapping them across systems before customizing the chosen design system. Two extended workflows are in [REFERENCE.md](REFERENCE.md):
+
+- **Brand → Tokens generation** — Converts brand kit inputs (colors, typography, spacing, personality) into a full token set: 50-900 color scales, type scale from `base_size × scale_ratio`, spacing from `base_unit`, shadow/radius/animation from personality flags, WCAG-verified dark mode overrides, and multi-format export (CSS / Tailwind / MUI / Chakra).
+- **Cross-system token mapping & export** — Maps brand tokens to one or more target systems via a mapping template and semantic token layer (danger/success/warning/info). Covers component-level binding, breakpoint alignment, dark mode cross-mapping, layered override patterns, and a migration checklist for switching systems without orphaning tokens.
+
+Run the relevant sub-checklist at the end of each workflow before returning to the main Phase 5.
 
 ## Related Skills
 

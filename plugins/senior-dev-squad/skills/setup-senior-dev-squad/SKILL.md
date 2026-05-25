@@ -106,7 +106,7 @@ Based on the answers, recommend the most relevant next skill to run:
 
 - If the project has no spec yet → **spec-first-development**
 - If there are open issues that need sorting → **issue-triage-bot**
-- If scope is unclear → **project-discovery**
+- If scope is unclear → **grill**
 - Otherwise → **task-breaker** to break the first feature into tasks
 
 ## Red Flags — STOP and Follow Process
@@ -143,7 +143,7 @@ If you catch yourself:
 ## Related Skills
 
 - **grill** — interrogates implementation plans using the conventions captured in `## Squad Config`
-- **project-discovery** — run before setup when the codebase is unfamiliar and scope is unclear
+- **grill** — run before setup when the codebase is unfamiliar and scope is unclear
 - **spec-first-development** — the recommended next step after setup on a new feature
 - **task-breaker** — breaks an approved spec into atomic tasks, respecting the issue tracker set in config
 - **issue-triage-bot** — applies the triage labels configured in Step 2 to incoming issues automatically

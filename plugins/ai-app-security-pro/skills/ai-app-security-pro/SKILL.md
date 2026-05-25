@@ -257,6 +257,6 @@ const rateLimiter = {
 - **ai-ml-pro** — training pipelines and MLOps; pair when the LLM you are securing is also one you are training or fine-tuning
 - **backend-senior-engineer** — API hardening and auth patterns that wrap your LLM endpoints
 - **cloud-security-auditor** — IAM and secrets management for API keys, model access credentials, and S3/GCS buckets used by RAG pipelines
-- **api-design-reviewer** — rate limiting and token-budget enforcement at the API gateway layer
+- **code-reviewer** — rate limiting and token-budget enforcement at the API gateway layer
 - **observability-pro** — structured audit logging and anomaly alerting for LLM interaction telemetry
 - **test-engineer** — automated red-teaming harnesses and prompt injection regression suites

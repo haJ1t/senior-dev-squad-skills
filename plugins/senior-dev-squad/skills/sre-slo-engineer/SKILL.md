@@ -229,7 +229,7 @@ If you catch yourself thinking:
 ## Related Skills
 
 - **observability-pro** — SLIs require structured metrics and tracing; instrument the Four Golden Signals before defining SLOs
-- **load-testing** — validate that SLO targets hold under peak traffic; use load test results to calibrate latency SLI thresholds
+- **test-engineer** — validate that SLO targets hold under peak traffic; use load test results to calibrate latency SLI thresholds
 - **chaos-engineer** — run controlled failure experiments to measure how fast chaos events burn the error budget; SLO steady-state hypothesis maps directly to chaos experiment abort conditions
 - **performance-engineer** — latency SLIs share thresholds with Core Web Vitals and p99 profiling; coordinate when tightening latency SLOs post-optimization
 - **devops-release-engineer** — error-budget policy affects release gates; wire freeze policy into the deployment pipeline and feature-flag controls

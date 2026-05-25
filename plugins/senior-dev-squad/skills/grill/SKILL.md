@@ -260,13 +260,19 @@ If you catch yourself doing any of the following, stop and return to the protoco
 
 **When you see these:** STOP. Name what you observed, acknowledge it, and correct course.
 
+## Requirements Elicitation & User Stories
+
+Grill now absorbs two previously separate skills. When the context calls for it, extend the session with either or both modes — full details in [`REFERENCE.md`](REFERENCE.md).
+
+- **Structured project discovery (Part 1):** when a project or feature arrives with little context, run the 8-step question flow (Project Identity → Technical Direction → Data & Storage → Features & Scope → Architecture → Operations → Scale → Meta) and the adaptive questioning matrix *before* the main interview loop. The answers seed your first grill question.
+- **INVEST user-story refinement (Part 2):** after grilling surfaces what is wanted, transform raw ideas into production-ready stories — INVEST validation, Given/When/Then acceptance criteria, edge-case enumeration, and SPIDR story-splitting patterns.
+
 ## Related Skills
 
 - **spec-first-development** — the natural successor; run after alignment is complete to turn decisions into formal acceptance criteria
-- **project-discovery** — use before grilling when the codebase is unfamiliar and you need to map the territory before asking intelligent questions
 - **architecture-planner** — use after grilling when the decisions made warrant a formal architecture design pass
 - **setup-senior-dev-squad** — use when onboarding to a new project before any feature work begins
-- **user-story-refiner** — use after grilling to sharpen user stories that surfaced during the interview into well-formed, testable form
+- **tech-stack-advisor** — invoke from the discovery flow (Part 1) when the user needs help choosing a stack
 
 ## Verification
 

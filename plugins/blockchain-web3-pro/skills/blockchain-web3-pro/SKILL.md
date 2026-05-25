@@ -187,7 +187,7 @@ dapp/
 - **security-reviewer** — broad application security for the off-chain backend and API layer that supports your dApp
 - **frontend-senior-engineer** — React/Next.js dApp frontend patterns; pair when building the wallet-connected UI
 - **backend-senior-engineer** — Node/Go indexer services, event listeners, and off-chain API that complement on-chain logic
-- **api-design-reviewer** — RPC and REST API design for your dApp backend, event webhooks, and subgraph endpoints
+- **code-reviewer** — RPC and REST API design for your dApp backend, event webhooks, and subgraph endpoints
 - **test-engineer** — unit and integration test strategies; for contracts this means Hardhat/Foundry test suites and fork-testing against mainnet state
 - **cloud-security-auditor** — secrets management for deployer private keys, node provider API keys, and multisig signer credentials
 - **devops-release-engineer** — CI/CD pipelines that compile, test, and deploy contracts across testnets and mainnet with staged promotion

@@ -109,7 +109,7 @@ If you find yourself thinking:
 - **spec-first-development** — used to write specifications after the research synthesis report is completed
 - **architecture-planner** — research findings feed architectural decisions
 - **tech-stack-advisor** — research findings form input for stack selection, working alongside this skill
-- **project-discovery** — clarifies project requirements before research
+- **grill** — clarifies project requirements before research
 - **edge-case-hunter** — pitfalls discovered during research feed the edge case list
 - **security-reviewer** — security vulnerabilities detected during research provide input to this skill
 

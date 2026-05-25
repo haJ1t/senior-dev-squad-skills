@@ -163,5 +163,5 @@ CREATE TRIGGER trg_audit_immutable
 - **cloud-security-auditor** — review infrastructure handling cardholder data for PCI DSS scope, encryption at rest, and network segmentation
 - **backend-senior-engineer** — design the domain model and service boundaries for accounts, transactions, and fraud detection before implementation
 - **ecommerce-pro** — reference for checkout and payment integration patterns when a fintech system powers an e-commerce storefront
-- **api-design-reviewer** — validate payment API contracts for idempotency key conventions, error codes, and webhook signature verification
+- **code-reviewer** — validate payment API contracts for idempotency key conventions, error codes, and webhook signature verification
 

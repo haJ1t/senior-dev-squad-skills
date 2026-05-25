@@ -1,7 +1,7 @@
 {
   "name": "senior-dev-squad",
-  "description": "Production-grade senior-engineer SDLC squad: spec, architecture, frontend/backend, security, testing, DevOps, review, ship, plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP, agent platform, product, marketing, AI/ML, DevEx, compliance, and advanced testing skills.",
-  "version": "3.5.0",
+  "description": "Lean senior-engineer SDLC core: spec, architecture, frontend/backend, data/DB, testing, systematic debugging, code/security review, DevOps/SRE, ship readiness, plus guardrails and cross-cutting senior-dev workflow skills. Specialty suites ship as separate opt-in plugins.",
+  "version": "4.0.0",
   "author": {
     "name": "senior-dev-squad"
   },

@@ -161,7 +161,7 @@ function validateBAACoverage(service: string): void {
 
 - **security-reviewer** — always pair; healthtech-pro governs HIPAA/FHIR domain rules while security-reviewer covers OWASP, injection, and general API hardening
 - **backend-senior-engineer** — for the broader REST/gRPC service architecture that hosts FHIR endpoints and clinical workflows
-- **api-design-reviewer** — when designing or auditing FHIR-conformant API contracts, search parameter support, and capability statements
+- **code-reviewer** — when designing or auditing FHIR-conformant API contracts, search parameter support, and capability statements
 - **postgres-pro** — for PHI-at-rest schema design, audit log table partitioning, row-level security for multi-tenant patient data, and retention policies
 - **test-engineer** — writing integration tests against FHIR sandboxes, mocking EHR responses, and validating audit trail completeness
 - **devops-release-engineer** — for HIPAA-compliant infrastructure pipelines: encryption-at-rest enforcement, VPC configurations, and audit log archival automation

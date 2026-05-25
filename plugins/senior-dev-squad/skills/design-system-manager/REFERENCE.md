@@ -509,3 +509,366 @@ import { MantineProvider } from '@mantine/core';
 | `--bs-border-radius` | Border Radius | theme.defaultRadius="md" |
 | `--bs-font-family` | Font Family | theme.fontFamily |
 | `--bs-spacer` | Spacing Value | theme.spacing |
+
+---
+
+## Brand → Tokens Generation
+
+Transforms brand identity inputs (colors, typography, spacing, personality) into a full design token set before feeding Phase 4 (theming). Work through each step in order; no token is emitted without WCAG contrast verification.
+
+### Step 1 — Collect & verify brand inputs
+
+Required fields from the brand kit:
+
+```yaml
+brand:
+  colors:
+    primary: "#3B82F6"
+    secondary: "#8B5CF6"
+    accent: "#F59E0B"
+    neutral: "#6B7280"
+  typography:
+    font_family_heading: "Inter, sans-serif"
+    font_family_body: "Inter, sans-serif"
+    base_size: "16px"
+    scale_ratio: 1.25   # Major Second
+  spacing:
+    base_unit: 8
+    density: "comfortable"   # or "compact"
+  personality:
+    shape: "rounded"    # or "sharp" / "mixed"
+    shadow: "soft"      # or "hard"
+    animation: "playful"  # or "professional"
+```
+
+Flag missing fields and apply defaults before continuing.
+
+### Step 2 — Color system: 50-900 scales
+
+Generate a 10-shade (50–900) scale via HSL manipulation for every brand color (primary, secondary, accent, neutral). Derive:
+
+- Surface/background tokens: `--color-background`, `--color-surface`, `--color-surfaceVariant`
+- Text-on tokens: `--color-on-background`, `--color-on-surface`, `--color-on-primary`, `--color-on-secondary`, `--color-on-accent`
+- Semantic state tokens: `--color-success`, `--color-warning`, `--color-error`, `--color-info`
+
+```css
+:root {
+  --color-primary-50:  #EFF6FF;
+  --color-primary-100: #DBEAFE;
+  --color-primary-200: #BFDBFE;
+  --color-primary-300: #93C5FD;
+  --color-primary-400: #60A5FA;
+  --color-primary-500: #3B82F6;
+  --color-primary-600: #2563EB;
+  --color-primary-700: #1D4ED8;
+  --color-primary-800: #1E40AF;
+  --color-primary-900: #1E3A8A;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error:   #EF4444;
+  --color-info:    #3B82F6;
+
+  --color-background: #FFFFFF;
+  --color-surface:    #F3F0FF;
+  --color-on-background: #111827;
+  --color-on-surface:    #1F2937;
+  --color-on-primary:    #FFFFFF;
+}
+```
+
+### Step 3 — Typography scale
+
+Build a 7-level type scale from `base_size × scale_ratio`. Provide separate mobile and desktop values.
+
+```css
+:root {
+  --font-family-heading: 'Inter', sans-serif;
+  --font-family-body:    'Inter', sans-serif;
+  --font-family-mono:    'JetBrains Mono', monospace;
+
+  /* Desktop */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+
+  /* Mobile overrides */
+  --text-2xl-mobile: 1.25rem;
+  --text-3xl-mobile: 1.5rem;
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --line-height-tight:   1.15;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.75;
+}
+```
+
+### Step 4 — Spacing scale
+
+Generate from `base_unit`. Apply density multipliers (compact = ×0.75, comfortable = ×1). Add semantic aliases.
+
+```css
+:root {
+  --spacing-0:   0px;
+  --spacing-0_5: 4px;
+  --spacing-1:   8px;
+  --spacing-1_5: 12px;
+  --spacing-2:   16px;
+  --spacing-3:   24px;
+  --spacing-4:   32px;
+  --spacing-5:   40px;
+  --spacing-6:   48px;
+  --spacing-8:   64px;
+  --spacing-10:  80px;
+  --spacing-12:  96px;
+
+  --spacing-section: var(--spacing-12);
+  --spacing-card:    var(--spacing-4);
+  --spacing-element: var(--spacing-2);
+  --spacing-gap:     var(--spacing-3);
+}
+```
+
+### Step 5 — Shadows, border radius, animation
+
+Map brand personality → token values. Minimum: sm/md/lg shadows; none/sm/md/lg/xl/full radii; fast/normal/slow durations.
+
+```css
+:root {
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+
+  --radius-none: 0px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
+  --duration-slow:   500ms;
+  --easing-playful:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --easing-professional: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --easing-exit:  cubic-bezier(0.4, 0, 1, 1);
+}
+```
+
+### Step 6 — Dark mode (WCAG-verified)
+
+Override surface, background, and text tokens for dark context. Verify WCAG AA (4.5:1 normal text, 3:1 large text) on every color pair; auto-adjust tones on failure.
+
+```css
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0F172A;
+    --color-surface:    #1E293B;
+    --color-on-background: #F8FAFC;
+    --color-on-surface:    #E2E8F0;
+
+    --color-primary-500: #60A5FA;
+    --color-primary-600: #93C5FD;
+  }
+}
+```
+
+### Step 7 — Multi-format export
+
+Generate all formats the project needs. No token is omitted.
+
+```javascript
+// Tailwind config export
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#EFF6FF', 100: '#DBEAFE', /* ... */ 900: '#1E3A8A',
+        },
+        semantic: {
+          success: '#10B981', warning: '#F59E0B',
+          error: '#EF4444',  info: '#3B82F6',
+        },
+      },
+      fontFamily: {
+        heading: ['Inter', 'sans-serif'],
+        body:    ['Inter', 'sans-serif'],
+        mono:    ['JetBrains Mono', 'monospace'],
+      },
+      spacing: { 0: '0px', 0.5: '4px', 1: '8px' /* ... */ },
+      boxShadow: {
+        sm: '0 1px 2px 0 rgba(0,0,0,0.05)',
+        md: '0 4px 6px -1px rgba(0,0,0,0.1)',
+      },
+      borderRadius: { none: '0px', sm: '4px', md: '8px' },
+    },
+  },
+};
+```
+
+### Brand → Tokens checklist
+
+- [ ] 50-900 palette generated for all brand colors
+- [ ] Text-on tokens (onPrimary, onSurface, etc.) defined for every color
+- [ ] Typography scale has at least 7 levels; mobile/desktop values separated
+- [ ] Spacing scale consistent with chosen base_unit and density mode
+- [ ] Shadow, border-radius, and animation tokens match brand personality
+- [ ] Dark mode overrides defined and WCAG AA verified (4.5:1 / 3:1)
+- [ ] All tokens exported in every format the project needs (CSS / Tailwind / MUI / Chakra)
+
+---
+
+## Cross-System Token Mapping & Export
+
+Maps a token set to one or more target systems and manages cross-system migrations. The core principle: brand identity is independent of the design system — only the mapping layer changes when systems change.
+
+**Iron rule:** No brand token may be left orphan without a corresponding target-system mapping. All mappings must be verified on every system transition.
+
+### Mapping template
+
+```yaml
+mappings:
+  colors:
+    brand.color.primary.500:
+      mui:     palette.primary.main
+      chakra:  colors.brand.500
+      tailwind: colors.primary.500
+    brand.color.primary.600:
+      mui:     palette.primary.dark
+      tailwind: colors.primary.600
+    brand.color.neutral.100:
+      mui:     palette.grey.100
+      tailwind: colors.gray.100
+  typography:
+    brand.typography.base_size:
+      mui:     typography.fontSize
+      tailwind: fontSize.base
+```
+
+### Semantic token layer
+
+Define semantic meanings (danger/error, success, warning, info, primary, secondary) and map each to target systems. Every semantic token needs main, light, dark, and contrastText variants.
+
+```javascript
+const semanticTokens = {
+  error: {
+    main:        'brand.color.accent.500',
+    light:       'brand.color.accent.300',
+    dark:        'brand.color.accent.700',
+    contrastText: 'brand.color.onAccent',
+  },
+  success: {
+    main:        'brand.color.success',
+    light:       'brand.color.success-100',
+    dark:        'brand.color.success-700',
+    contrastText: '#FFFFFF',
+  },
+};
+```
+
+### Component-level mapping (MUI example)
+
+```javascript
+const MuiButtonOverride = {
+  styleOverrides: {
+    root: ({ ownerState, theme }) => ({
+      backgroundColor: ownerState.color
+        ? theme.palette[ownerState.color].main
+        : theme.palette.primary.main,
+      borderRadius: theme.shape.borderRadius,
+      padding: theme.spacing(1, 2),
+      transition: `all ${theme.transitions.duration.short}ms`,
+    }),
+    containedPrimary: {
+      backgroundColor: 'var(--color-primary-500)',
+      '&:hover': { backgroundColor: 'var(--color-primary-600)' },
+    },
+  },
+};
+```
+
+### Breakpoint + dark mode cross-system mapping
+
+Systems use different breakpoint values (MUI: 600/900/1200px; Tailwind: 640/768/1024px). Dark mode implementation also differs per system:
+
+```javascript
+const darkModeMap = {
+  mui: {
+    palette: {
+      mode: 'dark',
+      background: { default: '#0F172A', paper: '#1E293B' },
+      primary: { main: '#60A5FA' },
+    },
+  },
+  chakra: {
+    config: { initialColorMode: 'dark' },
+    colors: { brand: { bg: '#0F172A', surface: '#1E293B' } },
+  },
+  tailwind: {
+    ':root.dark': {
+      '--color-background': '#0F172A',
+      '--color-surface':    '#1E293B',
+    },
+  },
+};
+```
+
+### Layered theme override pattern (Chakra)
+
+Always keep overrides in a separate layer (base → brand → component) so they survive design-system package updates:
+
+```javascript
+import { extendTheme } from '@chakra-ui/react';
+
+const brandOverrides = {
+  colors: { brand: { 50: '#EFF6FF', 500: '#3B82F6', 900: '#1E3A8A' } },
+  fonts:  { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  space:  { 1: '8px', 2: '16px', 4: '32px' },
+};
+
+const componentOverrides = {
+  components: {
+    Button: {
+      baseStyle: { borderRadius: '8px' },
+      variants: {
+        solid: (props) => ({ bg: `${props.colorScheme}.500` }),
+      },
+    },
+  },
+};
+
+export default extendTheme(brandOverrides, componentOverrides);
+```
+
+### Migration checklist
+
+When switching design systems, run this sequence:
+
+1. Export all current token mappings (source system theme object).
+2. Analyze target system's token structure; find semantic equivalents.
+3. Build migration mapping dict; set fallback strategy for unmapped tokens.
+4. Execute migration script: update component overrides, theme files, style references.
+5. Grep for obsolete token references; replace automatically.
+6. Run visual regression tests.
+7. Remove old system package dependency.
+
+### Cross-system mapping checklist
+
+- [ ] Every brand token maps to at least one target-system equivalent (no orphans)
+- [ ] Semantic token layer (danger, success, warning, info, primary, secondary) complete with main/light/dark/contrastText variants
+- [ ] Component-level mapping: all component properties bound to a semantic token
+- [ ] Breakpoint mapping verified for consistent responsive behavior
+- [ ] Dark mode mapping produces identical visual results across all systems
+- [ ] Theme overrides are layered (not modifying system theme directly)
+- [ ] Migration: all old token references removed and visual regression passing

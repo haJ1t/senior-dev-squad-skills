@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "senior-dev-squad",
-  "description": "Senior dev squad: 1 core SDLC plugin + 20 domain plugins (117 skills across 21 plugins).",
+  "description": "Senior dev squad: 1 lean core SDLC plugin + 26 specialty plugins (107 skills across 27 plugins).",
   "owner": {
     "name": "senior-dev-squad",
     "url": "https://github.com/haJ1t/senior-dev-squad-skills"
@@ -9,8 +9,8 @@
   "plugins": [
     {
       "name": "senior-dev-squad",
-      "description": "Production-grade senior-engineer SDLC squad: spec, architecture, frontend/backend, security, testing, DevOps, review, ship, plus guardrails, orchestration, design systems, security frameworks, repo automation, MCP, agent platform, product, marketing, AI/ML, DevEx, compliance, and advanced testing skills.",
-      "version": "3.5.0",
+      "description": "Lean senior-engineer SDLC core: spec, architecture, frontend/backend, data/DB, testing, systematic debugging, code/security review, DevOps/SRE, ship readiness, plus guardrails and cross-cutting senior-dev workflow skills. Specialty suites (product, marketing, security/compliance, AI/ML, MCP, agent-platform) ship as separate opt-in plugins.",
+      "version": "4.0.0",
       "source": "./plugins/senior-dev-squad"
     },
     {
@@ -132,6 +132,42 @@
       "description": "Terraform modules, remote state, workspaces, CI/CD for IaC, security scanning. Use when writing or reviewing Terraform infrastructure code.",
       "version": "1.0.0",
       "source": "./plugins/terraform-pro"
+    },
+    {
+      "name": "product-pro",
+      "description": "Product management: opportunity discovery (JTBD), roadmap prioritization (RICE/ICE/MoSCoW), validation experiments, growth engineering. Use when discovering, prioritizing, validating, or growing a product.",
+      "version": "1.0.0",
+      "source": "./plugins/product-pro"
+    },
+    {
+      "name": "marketing-pro",
+      "description": "Marketing: content strategy + SEO briefs, social media, generative-engine optimization (GEO) for AI search, brand identity generation. Use when planning content, social, SEO/AI-search, or brand assets.",
+      "version": "1.0.0",
+      "source": "./plugins/marketing-pro"
+    },
+    {
+      "name": "security-compliance-pro",
+      "description": "Security & compliance: GDPR/SOC2/NIST-CSF scanning, MITRE ATT&CK mapping, purple-team, DFIR forensics, OPA policy-as-code, cloud security audit. Use when auditing security/compliance or investigating incidents.",
+      "version": "1.0.0",
+      "source": "./plugins/security-compliance-pro"
+    },
+    {
+      "name": "ai-ml-eng-pro",
+      "description": "AI/ML engineering: RAG system design, embeddings and vector search, dataset curation, model evaluation, prompt engineering. Use when building RAG, embeddings, ML datasets, model evals, or LLM prompts.",
+      "version": "1.0.0",
+      "source": "./plugins/ai-ml-eng-pro"
+    },
+    {
+      "name": "mcp-tools-pro",
+      "description": "MCP tooling: API endpoint testing, live database connector, infrastructure/CIS scanning, hub for dockerized MCP security tools. Use when building, testing, or operating MCP servers and tools.",
+      "version": "1.0.0",
+      "source": "./plugins/mcp-tools-pro"
+    },
+    {
+      "name": "agent-platform-pro",
+      "description": "Multi-agent platform: epic/subagent orchestration, squad building, multi-model debate, provider routing, agent introspection, persistent teammates, skill marketplace. Use when orchestrating multiple agents or building agent systems.",
+      "version": "1.0.0",
+      "source": "./plugins/agent-platform-pro"
     }
   ]
 }

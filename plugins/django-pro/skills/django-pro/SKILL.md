@@ -210,7 +210,7 @@ def project_created_handler(sender, instance, created, **kwargs):
 
 - **backend-senior-engineer** — use for service-layer architecture decisions and cross-cutting concerns before implementing Django business logic
 - **postgres-pro** — pair when designing Django model indexes, writing raw SQL, or tuning ORM-generated queries against PostgreSQL
-- **api-design-reviewer** — review DRF serializer contracts and endpoint conventions before they are consumed by clients
+- **code-reviewer** — review DRF serializer contracts and endpoint conventions before they are consumed by clients
 - **test-engineer** — covers pytest-django fixtures, factory_boy patterns, and test database isolation strategies for Django test suites
 - **security-reviewer** — audit DRF permission classes, authentication backends, and signal handlers for privilege escalation risks
 - **devops-release-engineer** — integrate Celery workers, management command runners, and Django migrations into CI/CD pipelines

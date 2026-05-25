@@ -178,7 +178,7 @@ Recommending without asking project type first. Recommending without checking if
 
 ## Related Skills
 
-- **project-discovery** — provides project type + scope this skill needs
+- **grill** — provides project type + scope this skill needs
 - **architecture-planner** — uses stack decision for detailed architecture
 - **version-checker** — verify latest stable versions before recommending
 

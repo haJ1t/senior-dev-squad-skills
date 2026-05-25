@@ -234,7 +234,7 @@ Deploy to AWS with auto-scaling.
 - **security-reviewer** — reviews the auth model and data boundary decisions produced in Phase 5
 - **test-engineer** — derives integration and contract test strategy from the communication matrix
 - **performance-engineer** — validates the scaling profile and CAP tradeoff decisions against load requirements
-- **quality-checker** — verifies the architecture document passes its checklist before implementation begins
+- **code-reviewer** — verifies the architecture document passes its checklist before implementation begins
 
 ## Verification Checklist
 

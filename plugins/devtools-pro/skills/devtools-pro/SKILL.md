@@ -165,7 +165,7 @@ export class SeniorDevClient {
 
 ## Related Skills
 
-- **api-design-reviewer** — REST/GraphQL API design for the service your SDK or CLI wraps; ensures the surface your tool exposes is coherent
+- **code-reviewer** — REST/GraphQL API design for the service your SDK or CLI wraps; ensures the surface your tool exposes is coherent
 - **backend-senior-engineer** — server-side implementation of the API endpoints consumed by your SDK or CLI
 - **frontend-senior-engineer** — web-based developer portals, interactive API explorers, and documentation sites that complement the CLI/SDK
 - **test-engineer** — contract tests, integration tests against a sandbox API, and CLI golden-output tests

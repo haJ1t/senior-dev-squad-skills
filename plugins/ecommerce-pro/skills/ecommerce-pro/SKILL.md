@@ -175,7 +175,7 @@ async function searchProducts(query: string, filters: ProductFilters): Promise<S
 - **backend-senior-engineer** — design the service layer for cart, order, and inventory domains before wiring up e-commerce-specific logic
 - **postgres-pro** — tune product catalog queries, variant joins, and full-text search indexes that power storefront listing pages
 - **fintech-pro** — apply payment processing, idempotency, and ledger patterns when checkout integrates real money movement
-- **api-design-reviewer** — validate cart, product, and order REST contracts for pagination, error shapes, and versioning before clients integrate
+- **code-reviewer** — validate cart, product, and order REST contracts for pagination, error shapes, and versioning before clients integrate
 - **security-reviewer** — audit PCI-scope endpoints, payment token handling, and customer PII storage against OWASP guidelines
 - **performance-engineer** — profile catalog search, cart recalculation, and checkout transaction throughput under peak traffic
 - **test-engineer** — build integration test suites covering checkout state machines, stock reservation races, and payment webhook replay

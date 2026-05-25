@@ -199,3 +199,137 @@ test('user can reset their password via email link', async ({ page }) => {
 | Expired token rejected | Integration | DB read + business rule |
 | Token consumed after use | Integration | DB mutation verified |
 | Full browser journey: request → email → confirm → dashboard | E2E | Only a browser can exercise the UI + email link together |
+
+---
+
+## Specialized Testing Techniques
+
+### Mutation Testing
+
+**What it is:** Automatically introduce small code mutations (`>` → `>=`, `&&` → `||`, return a null instead of the real value) and verify that at least one test fails. A mutant that *survives* is a gap your suite will not catch in production.
+
+**Key tool:** [Stryker](https://stryker-mutator.io/) (JS/TS/C#), PIT (Java), mutmut (Python).
+
+**Kill-rate targets:**
+
+| Code category | Minimum mutation score |
+|---------------|----------------------|
+| Critical business logic (auth, payments) | ≥ 80% |
+| General application logic | ≥ 70% |
+| Utilities / helpers | ≥ 60% |
+
+**Workflow:**
+1. Run Stryker on the module under review: `npx stryker run`
+2. Review surviving mutants — each is a specific assertion you are missing.
+3. Add targeted tests to kill surviving mutants; mark equivalent mutants with justification.
+4. Gate CI: fail the build when mutation score drops below threshold.
+
+**Example — surviving mutant reveals weak assertion:**
+```typescript
+// Source:  if (user.role === 'admin') { grantAccess() }
+// Mutant:  if (user.role !== 'admin') { grantAccess() }  ← survives → no test checks the non-admin branch
+// Fix: add it('denies non-admin access', () => { expect(grantAccess).not.toHaveBeenCalled() })
+```
+
+**Red flags:** mutation score < 60% on any critical module; equivalent-mutant ratio > 10% (code redundancy smell); CI gate disabled "because it's slow" — run on changed files only via `--incremental`.
+
+---
+
+### Visual Regression Testing
+
+**What it is:** Capture screenshots of UI components or full pages, diff them against an approved baseline using perceptual diffing, and flag any visual change for human review before it reaches production.
+
+**Key tools:** [Percy](https://percy.io/), [Chromatic](https://www.chromatic.com/) (Storybook-native), Playwright's built-in `expect(page).toHaveScreenshot()`.
+
+**Determinism requirements** (flakiness root cause): fixed viewport, locked fonts, disabled CSS animations, mocked `Date.now()` and any randomness, stable test data.
+
+**Workflow:**
+1. Capture baseline screenshots and version-control the approved snapshots.
+2. On every PR, re-capture and diff; present diffs in the review UI.
+3. Human reviews each diff: intentional change → approve new baseline; regression → fix before merge.
+4. Use perceptual diffing (not pixel-exact) to absorb sub-pixel anti-aliasing noise.
+
+**Example — Playwright snapshot:**
+```typescript
+test('card renders correctly', async ({ page }) => {
+  await page.goto('/components/card?story=default')
+  await expect(page).toHaveScreenshot('card-default.png', { threshold: 0.02 })
+})
+```
+
+**Red flags:** baselines updated without human review (silent regression approval); flaky visual tests (non-deterministic rendering — fix root cause, not the threshold); one change diffing 50+ components (component coupling smell).
+
+---
+
+### Contract Testing
+
+**What it is:** Consumer-driven contract testing — each API consumer publishes its expectations (the "contract": specific request + expected response schema); the provider CI verifies it satisfies every consumer's contract. Catches breaking API changes before deployment, far faster than shared E2E environments.
+
+**Key tools:** [Pact](https://docs.pact.io/) (HTTP + async/messaging), Pact Broker / PactFlow for contract storage, Spring Cloud Contract (JVM).
+
+**Core rule:** the *consumer* defines the contract (only what it actually uses), not the provider. Over-specified contracts (asserting unused fields) needlessly constrain the provider.
+
+**Workflow:**
+```
+Consumer test  →  generates pact file  →  published to Pact Broker
+Provider CI    →  fetches all contracts →  replays each interaction against real provider
+                                         →  fails build if any response mismatches
+```
+
+**Example — consumer side (Pact/JS):**
+```typescript
+await provider.addInteraction({
+  state: 'user 1 exists',
+  uponReceiving: 'a request for user 1',
+  withRequest: { method: 'GET', path: '/users/1' },
+  willRespondWith: {
+    status: 200,
+    body: { id: 1, name: like('Ada'), email: like('ada@example.com') }
+  }
+})
+```
+
+**Red flags:** consumer integration with no contract defined (invisible dependency); provider verification not running in CI; stale contracts (no verification in 30+ days — consumer may be abandoned); breaking a contract and shipping anyway ("we versioned the API").
+
+---
+
+### Load & Stress Testing
+
+**What it is:** Generate realistic or extreme traffic against a service to validate SLAs (latency percentiles, error rate, throughput), find capacity limits, detect resource leaks under sustained load, and verify auto-scaling behaviour.
+
+**Key tools:** [k6](https://k6.io/) (JS scripts, excellent CI integration), [Locust](https://locust.io/) (Python, distributed), Gatling (JVM).
+
+**Test profile ladder — run in this order:**
+
+| Profile | Purpose | Duration |
+|---------|---------|---------|
+| Baseline | Confirm system behaves at expected normal load | 5 min |
+| Load | Target-concurrency sustained run, verify SLAs hold | 15–30 min |
+| Stress | Ramp beyond capacity to find breaking point | Until failure |
+| Soak | Constant load for hours — find memory/connection leaks | ≥ 2 h |
+| Spike | Instant 10× load burst — verify auto-scaling gap | 5 min |
+
+**Example — k6 load test with SLA thresholds:**
+```javascript
+import http from 'k6/http'
+import { check } from 'k6'
+
+export const options = {
+  stages: [
+    { duration: '2m', target: 100 },   // ramp up
+    { duration: '10m', target: 100 },  // sustained
+    { duration: '2m', target: 0 },     // ramp down
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<200'],  // 95th percentile < 200 ms
+    http_req_failed: ['rate<0.001'],   // error rate < 0.1 %
+  },
+}
+
+export default function () {
+  const res = http.get('https://api.example.com/health')
+  check(res, { 'status 200': (r) => r.status === 200 })
+}
+```
+
+**Red flags:** running load tests without observability active (CPU, memory, DB connections, queue depth); test environment that does not match production configuration (invalid results); soak test shorter than 2 hours (leaks show up late); treating auto-scaling as a substitute for a baseline capacity plan.

@@ -220,4 +220,4 @@ export async function POST(request: Request) {
 - **performance-engineer** — for Core Web Vitals forensics, bundle analysis, and ISR/CDN cache strategy tuning beyond the checklist
 - **security-reviewer** — for CSRF posture in Server Actions, CSP headers in middleware, and OAuth callback route hardening
 - **devops-release-engineer** — for Vercel/self-hosted deployment pipelines, preview environments, and environment variable management across stages
-- **api-design-reviewer** — when Route Handlers expose a public or mobile-consumed API and versioning, error envelope, and contract stability matter
+- **code-reviewer** — when Route Handlers expose a public or mobile-consumed API and versioning, error envelope, and contract stability matter

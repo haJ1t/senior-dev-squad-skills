@@ -201,7 +201,7 @@ If you catch yourself thinking:
 **When complete, recommended next (invoke manually or wire via hooks):**
 - `architecture-planner` — transition to architecture after spec is completed
 - `edge-case-hunter` — extract edge cases from scenarios in the spec
-- `project-discovery` — start automatic discovery if scope is ambiguous
+- `grill` — start automatic discovery if scope is ambiguous
 
 ## Related Skills
 

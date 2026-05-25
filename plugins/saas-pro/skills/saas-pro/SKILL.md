@@ -156,5 +156,5 @@ async function checkUsageLimit(tenantId: string, metric: string, limit: number):
 - **postgres-pro** — row-level discriminator columns, RLS policies for tenant isolation, and schema migrations for plan changes require advanced PostgreSQL; defer to postgres-pro for query and migration specifics
 - **supabase-pro** — when the SaaS stack is built on Supabase, RLS and auth patterns from supabase-pro replace the custom middleware shown here; the two skills are complementary
 - **security-reviewer** — tenant isolation boundaries, API key scoping, and GDPR data-deletion flows are security concerns; cross-reference when designing data export, deletion, or impersonation features
-- **api-design-reviewer** — subscription tier enforcement and usage limit checks must be consistent across all API endpoints; use when auditing gating logic at the route layer
+- **code-reviewer** — subscription tier enforcement and usage limit checks must be consistent across all API endpoints; use when auditing gating logic at the route layer
 - **test-engineer** — multi-tenant test isolation (separate tenants per test, seeded plans) is non-trivial; use together when writing integration tests for billing or feature-flag paths
